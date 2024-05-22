@@ -1,0 +1,22 @@
+version: '3'
+services:
+  frontend:
+    build: 
+      context: frontend/
+      dockerfile: docker/Dockerfile
+    ports:
+      - 3000:3000
+  backend:
+    build: 
+      context: backend/
+      dockerfile: docker/Dockerfile
+    ports:
+      - 5001:5001
+    depends_on:
+      - db
+  db:
+    image: mongo
+    volumes:
+      - mongodb_data:/data/db
+volumes:
+  mongodb_data:
