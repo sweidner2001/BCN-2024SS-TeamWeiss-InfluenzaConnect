@@ -164,6 +164,7 @@ cython_debug/
 
 backend/bin/
 backend/include/
+backend/pyvenv.cfg
 
 
 # dependencies
