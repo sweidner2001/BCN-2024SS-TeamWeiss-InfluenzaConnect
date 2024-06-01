@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env pwsh
 
 # Stop and remove Docker containers
 docker-compose -f devenv/docker-compose.yml down
