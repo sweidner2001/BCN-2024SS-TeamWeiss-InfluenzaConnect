@@ -37,6 +37,6 @@ Cyan	15:40	15:55
 > > .\setup_devenv.ps1
 > ```
 
-**Docker-Container Herunterfahren:**
+**Docker-Container Herunterfahren:**\
 `teardown_devenv.sh` fährt die mit `setup_devenv.sh` gestarteten Docker-Container herunter. 
 `total_teardown_devenv.sh` löscht die Docker-Images/ Docker-Builds, sowie die Virtuelle venv-Umgebung von Python. Diese können dann anschließend wieder mit `setup_devenv.sh` erstellt werden. 
