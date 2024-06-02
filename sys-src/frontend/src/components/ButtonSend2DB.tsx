@@ -13,7 +13,7 @@ const ButtonSend2DB = () => {
     }
   };
 
-  return <button onClick={handleClick}>Click me32</button>;
+  return <button onClick={handleClick}>testInsertInDB</button>;
 };
 
 export default ButtonSend2DB;

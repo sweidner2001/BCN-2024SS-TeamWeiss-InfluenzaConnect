@@ -11,7 +11,7 @@ const MyButton = () => {
     }
   };
 
-  return <button onClick={handleClick}>Click me</button>;
+  return <button onClick={handleClick}>testRequestToBackend</button>;
 };
 
 export default MyButton;

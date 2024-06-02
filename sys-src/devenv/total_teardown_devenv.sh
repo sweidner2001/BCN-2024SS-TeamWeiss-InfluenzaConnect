@@ -6,11 +6,11 @@ if command -v deactivate > /dev/null 2>&1; then
 fi
 
 # Remove venv
-if [ -d "backend/lib" ]; then
-    rm -rf backend/bin
-    rm -rf backend/lib
-    rm -rf backend/include
-    rm -rf backend/pyenv.cfg
+if [ -d "../backend/lib" ]; then
+    rm -rf ../backend/bin
+    rm -rf ../backend/lib
+    rm -rf ../backend/include
+    rm -rf ../backend/pyenv.cfg
     echo "Virtual environment removed."
 fi
 
