@@ -71,6 +71,14 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+
+# Hinzugefügte Scripts durch das Windows-Setup:
+# backend/Scripts/activate.bat
+# backend/Scripts/Activate.ps1
+# backend/Scripts/deactivate.bat
+# backend/Scripts/activate
+
+
 # PyBuilder
 .pybuilder/
 target/
@@ -179,7 +187,6 @@ frontend/coverage
 frontend/build
 
 # misc
-.vscode/
 .DS_Store
 frontend/.env.local
 frontend/.env.development.local
@@ -191,5 +198,6 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 
-
-.idea
+# Entwicklungsumgebung
+.idea/
+.vscode/
