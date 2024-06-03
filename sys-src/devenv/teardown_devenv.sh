@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Stop and remove Docker containers
-docker-compose -f devenv/docker-compose.yml down
+docker-compose -f ./docker-compose.yml down
 
 echo ""
 echo "----------------------------------------"
