@@ -22,7 +22,7 @@ jobs:
 
     - name: Deploy to Hetzner
       run: |
-        ssh user@49.13.173.130 "
+        ssh root@49.13.173.130 "
           cd BCN-2024SS-TeamWeiss-InfluenzaConnect/ &&
           git pull &&
           cd sys-src/devenv/ &&
