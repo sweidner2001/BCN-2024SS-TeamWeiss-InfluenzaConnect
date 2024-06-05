@@ -3,3 +3,7 @@
 # Entwicklungsumgebung
 .idea/
 .vscode/
+sys-src/backend/Scripts/activate
+sys-src/backend/Scripts/activate.bat
+sys-src/backend/Scripts/deactivate.bat
+sys-src/backend/Scripts/Activate.ps1
