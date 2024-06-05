@@ -1,0 +1,32 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 49.13.173.130 >> ~/.ssh/known_hosts
+
+    - name: Deploy to Hetzner
+      run: |
+        ssh user@<YOUR_HETZNER_SERVER_IP> "
+          cd BCN-2024SS-TeamWeiss-InfluenzaConnect/ &&
+          git pull &&
+          cd sys-src/devenv/ &&
+          docker-compose down &&
+          docker-compose build &&
+          docker-compose up -d
+        "
