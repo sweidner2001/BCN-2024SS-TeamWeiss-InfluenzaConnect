@@ -3,12 +3,16 @@ services:
     build: 
       context: ../frontend/
       dockerfile: docker/Dockerfile
+    volumes:
+      - ../frontend:/app
     ports:
       - 3000:3000
   backend:
     build: 
       context: ../backend/
       dockerfile: docker/Dockerfile
+    volumes:
+      - ../backend:/app
     ports:
       - 5001:5001
     depends_on:
