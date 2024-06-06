@@ -18,6 +18,13 @@ check_result "Failed to activate virtual environment"
 pip3 install -r backend/requirements.txt
 check_result "Failed to install requirements"
 
+# install frontend dependencies
+cd frontend
+npm install
+check_result "Failed to install frontend dependencies"
+
+cd ..
+
 # Docker-Compose Build
 docker-compose -f devenv/docker-compose.yml up
 check_result "Failed to start Docker Compose"

@@ -3,6 +3,8 @@ services:
     build: 
       context: ../frontend/
       dockerfile: docker/Dockerfile
+    volumes:
+      - ../frontend:/app
     ports:
       - 3000:3000
   backend:
