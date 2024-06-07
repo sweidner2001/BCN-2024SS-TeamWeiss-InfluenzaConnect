@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // Imports eigene components:
 import Button from './components/Button';
 import ButtonDB from './components/ButtonSend2DB';
+import Signup from "./components/Signup";
 
 
 //######################### Components ############################
@@ -28,7 +29,7 @@ export default function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/signup" element={<ButtonDB />} />
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Home />} />
             </Routes>
         </Router>
