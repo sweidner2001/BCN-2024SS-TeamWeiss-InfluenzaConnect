@@ -1,19 +1,36 @@
+// Imports React:
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+// Imports eigene components:
 import Button from './components/Button';
 import ButtonDB from './components/ButtonSend2DB';
 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-      <Button />
-      <ButtonDB />
-      <ButtonDB />
+//######################### Components ############################
+function Home() {
+    return (
 
-      </header>
-    </div>
-  );
+      <div className="App">
+        <header className="App-header">
+        <Button />
+        <ButtonDB />
+        <ButtonDB />
+
+        </header>
+      </div>
+    );
 }
 
-export default App;
+
+//__________________ Routing _____________________
+export default function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/signup" element={<ButtonDB />} />
+                <Route path="/" element={<Home />} />
+            </Routes>
+        </Router>
+    );
+}
