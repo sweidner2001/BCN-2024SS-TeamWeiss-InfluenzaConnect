@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import InputLabel from './InputLabel'
+
 /**
  * @interface InputFieldProps Datentyp
  * @author Sebastian Weidner
@@ -10,7 +12,7 @@ import axios from 'axios';
  * @member id ID des Input-Feldes
  * @member label Text über Input-Feld
  * @member type Input-Type
- * @member register Ist das Feld ein Pflichtfeld?
+ * @member required Ist das Feld ein Pflichtfeld / Eingabepflicht?
  * @member autoComplete Wert für die Auto-Vervollständigung {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete}
  * @member error anzuzeigende Fehlernachricht
  */
@@ -26,11 +28,7 @@ interface InputFieldProps {
 }
 
 
-const InputLabel: React.FC<{htmlFor:string, label:string}> = ({htmlFor, label}) => {
-    return (
-        <label htmlFor={htmlFor} className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
-    );
-};
+
 
 /**
  * @function InputField normales Input-Feld
@@ -40,8 +38,10 @@ const InputLabel: React.FC<{htmlFor:string, label:string}> = ({htmlFor, label}) 
  * @param InputFieldProps Eigenschaften
  */
 const InputField: React.FC<InputFieldProps> = ({...probs}) => {
+    let classNameWidth = "sm:col-span-" + probs.fieldWidth;
+
     return (
-        <div className={"sm:col-span-" + probs.fieldWidth}>
+        <div className={classNameWidth}>
             <InputLabel htmlFor={probs.id} label={probs.label}/>
             <div className="mt-2">
                 <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label} required={probs.required}
@@ -115,7 +115,21 @@ const InputSelect: React.FC<InputSelectProps> = ({...probs}) => {
 };
 
 
-interface TextFieldProps {
+/**
+ * @interface TextareaProps Datentyp
+ * @author Sebastian Weidner
+ * @version 1.0
+ *
+ * @member fieldWidth Breite des Elements, wird nichts übergeben, dann wird die volle Breite genutzt
+ * @member id ID der Textarea
+ * @member label Text über Textarea
+ * @member descr Beschreibung über der Textarea
+ * @member defaultValue Default-Value der Textarea
+ * @member textboxRows Wie viele Zeilen sollen angezeigt werden?
+ * @member required Ist das Feld ein Pflichtfeld / Eingabepflicht?
+ * @member error anzuzeigende Fehlernachricht
+ */
+interface TextareaProps {
     fieldWidth?: number;
     id: string;
     label: string;
@@ -127,7 +141,7 @@ interface TextFieldProps {
     error?: string;
 }
 
-const InputTextBox: React.FC<TextFieldProps> = ({...probs}) => {
+const InputTextBox: React.FC<TextareaProps> = ({...probs}) => {
     return (
         <div className={ probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full'}>
             <InputLabel htmlFor={probs.id} label={probs.label}/>
