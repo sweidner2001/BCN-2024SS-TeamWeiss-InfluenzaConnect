@@ -31,7 +31,7 @@ interface TextareaProps {
 
 
 /**
- * @function InputTextarea normales Input-Feld
+ * @function InputTextarea Textarea
  * @author Sebastian Weidner
  * @since 08.06.2024
  * @version 1.0
