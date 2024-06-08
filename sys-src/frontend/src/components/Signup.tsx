@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 
 
-import InputLabel from './InputLabel'
 import InputField from "./InputField";
 import InputTextarea from "./InputTextarea";
 import InputSelect from "./InputSelect";
@@ -16,7 +15,8 @@ import InputFieldWithFixedText from "./InputFieldWithFixedText";
 const Signup: React.FC = () => {
 
     let countries: Array<string> = ['Deutschland', 'Österreich', 'Schweiz'];
-
+    let bundesland: Array<string> = ['Bayern', 'Hessen', 'Sachsen'];
+    let sex = Array<string> = ['Herr', 'Frau', 'Divers']
 
     return (
         <div className="w-full h-screen flex items-start">
@@ -54,11 +54,28 @@ const Signup: React.FC = () => {
                         {/*Hier Abstand zwischen den Input-Feldern bestimmen*/}
                         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
 
-                            <InputField id="email" label="Email" type="text" required={true} fieldWidth={4}/>
-                            <InputFieldWithFixedText fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" required={true} fieldWidth={4}/>
-                            <InputSelect id="land" label="Land" required={true} fieldWidth={4} selectOptions={countries}/>
+                            {/*Registrierungsdaten*/}
+                            <InputField id="email" label="Email" type="text" required={true} autoComplete="email" fieldWidth={4}/>
+                            <InputField id="passwort" label="Passwort" type="password" required={true} autoComplete="current-password" fieldWidth={4}/>
+x
+                            {/*Persönliche Daten*/}
+                            <InputSelect id="anrede" label="Anrede" required={true} fieldWidth={4} selectOptions={sex} autoComplete="sex"/>
+                            <InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>
+                            <InputField id="nachname" label="Nachname" type="text" required={true} autoComplete="family-name" fieldWidth={4}/>
+
+                            <InputSelect id="land" label="Land" required={true} fieldWidth={4} selectOptions={countries} autoComplete="country-name"/>
+                            <InputSelect id="bundesland" label="Bundesland" required={false} fieldWidth={4} selectOptions={bundesland}/>
+                            <InputField id="telefonnr" label="Telefonnummer" type="tel" required={true} autoComplete="tel" fieldWidth={4}/>
+
+                            {/*Sprachen*/}
+                            <InputField id="sprache" label="Sprache" type="text" required={false} fieldWidth={4}/>
+
+
+
                             <InputTextarea id="ueberMich" label="Über mich" required={false} defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}/>
 
+                            {/*Social-Media-Accounts*/}
+                            <InputFieldWithFixedText fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" required={true} fieldWidth={4}/>
                         </div>
                     </form>
 
