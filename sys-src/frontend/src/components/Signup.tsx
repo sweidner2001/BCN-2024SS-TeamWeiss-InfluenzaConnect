@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 
+
 import InputLabel from './InputLabel'
+import InputField from "./InputField";
 
 /**
  * @interface InputFieldProps Datentyp
@@ -26,34 +28,6 @@ interface InputFieldProps {
     autoComplete?: string;
     error?: string;
 }
-
-
-
-
-/**
- * @function InputField normales Input-Feld
- * @author Sebastian Weidner
- * @version 1.0
- *
- * @param InputFieldProps Eigenschaften
- */
-const InputField: React.FC<InputFieldProps> = ({...probs}) => {
-    let classNameWidth = "sm:col-span-" + probs.fieldWidth;
-
-    return (
-        <div className={classNameWidth}>
-            <InputLabel htmlFor={probs.id} label={probs.label}/>
-            <div className="mt-2">
-                <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label} required={probs.required}
-                       className='px-4 py-2 rounded-lg block w-full
-                              text-gray-900 placeholder:text-gray-400
-                              border-0 shadow-sm ring-1 ring-inset ring-gray-300
-                              focus:outline-none focus:ring-1 focus:ring-indigo-700'/>
-            </div>
-        </div>
-    );
-};
-
 
 /**
  * @function InputFieldWithFixedText Input-Feld mit feststehenden Text am Anfang
@@ -94,9 +68,13 @@ interface InputSelectProps {
 }
 
 const InputSelect: React.FC<InputSelectProps> = ({...probs}) => {
-    return (
 
-        <div className={"sm:col-span-" + probs.fieldWidth}>
+    // Variablen:
+    let classNameWidth= probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
+
+    // HTML:
+    return (
+        <div className={classNameWidth}>
             <InputLabel htmlFor={probs.id} label={probs.label}/>
             <div className="mt-2">
                 <select id={probs.id} autoComplete={probs.autoComplete} required={probs.required}
