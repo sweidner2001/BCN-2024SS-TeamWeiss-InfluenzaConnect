@@ -2,10 +2,10 @@ import React from 'react';
 import axios from 'axios';
 
 
-import InputField from "./InputField";
-import InputTextarea from "./InputTextarea";
-import InputSelect from "./InputSelect";
-import InputFieldWithFixedText from "./InputFieldWithFixedText";
+import InputField from "../input/InputField";
+import InputTextarea from "../input/InputTextarea";
+import InputSelect from "../input/InputSelect";
+import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 
 
 
