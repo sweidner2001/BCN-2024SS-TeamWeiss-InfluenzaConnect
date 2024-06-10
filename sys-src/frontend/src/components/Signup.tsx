@@ -16,7 +16,7 @@ const Signup: React.FC = () => {
 
     let countries: Array<string> = ['Deutschland', 'Österreich', 'Schweiz'];
     let bundesland: Array<string> = ['Bayern', 'Hessen', 'Sachsen'];
-    let sex = Array<string> = ['Herr', 'Frau', 'Divers']
+    let sex : Array<string> = ['Herr', 'Frau', 'Divers'];
 
     return (
         <div className="w-full h-screen flex items-start">
@@ -38,7 +38,7 @@ const Signup: React.FC = () => {
             {/************* Rechte Seite ***************/}
             <div className='w-1/2 h-full flex flex-col items-center overflow-y-auto'>
                 {/*von der halben Seite soll nur 3/4 davon mit unseren Formular ausgefüllt werden*/}
-                <div className='w-3/4 mx-auto mt-10'>
+                <div className='w-3/4 mx-auto my-10'>
 
                     {/*--- Überschrift ---*/}
                     <div className="border-b-2 border-gray-900/10 pb-4">

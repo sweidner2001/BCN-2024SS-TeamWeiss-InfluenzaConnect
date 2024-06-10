@@ -41,8 +41,8 @@ interface InputFieldProps {
 const InputField: React.FC<InputFieldProps> = ({...probs}) => {
 
     // Variablen
-    let classNameWidth= probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
-
+    // let classNameWidth= probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
+    let classNameWidth = "sm:col-span-4";
     // HTML
     return (
         <div className={classNameWidth}>
