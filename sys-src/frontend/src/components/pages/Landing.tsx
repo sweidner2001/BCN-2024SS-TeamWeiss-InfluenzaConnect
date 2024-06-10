@@ -29,11 +29,11 @@ const LandingPage: React.FC = () => {
         
         {/* Cards */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 w-3/4">
-          <Link to="/homepage" className="bg-gradient-to-l from-blue-500 to-blue-900 shadow-lg rounded-lg p-8 text-center transform hover:scale-105 transition-transform">
+          <Link to="/homepage" className="bg-gradient-to-l from-blue-300 to-blue-600 shadow-lg rounded-lg p-8 text-center transform hover:scale-105 transition-transform">
             <h2 className="text-3xl font-bold mb-4">Spectator</h2>
             <p className="text-gray-700">Explore content and stay updated with the latest trends.</p>
           </Link>
-          <Link to="/signup" className="bg-gradient-to-r from-blue-600 to-blue-900 shadow-lg rounded-lg p-8 text-center transform hover:scale-105 transition-transform">
+          <Link to="/signup" className="bg-gradient-to-r from-blue-400 to-blue-600 shadow-lg rounded-lg p-8 text-center transform hover:scale-105 transition-transform">
             <h2 className="text-3xl font-bold mb-4">Influencer</h2>
             <p className="text-gray-700">Join our platform to showcase and analyze your influence.</p>
           </Link>
