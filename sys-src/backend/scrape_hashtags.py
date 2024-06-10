@@ -1,5 +1,6 @@
 import instaloader
 import re
+import pandas as pd
 
 def get_instagram_hashtags(username):
     L = instaloader.Instaloader()
@@ -16,7 +17,10 @@ def get_instagram_hashtags(username):
             post_hashtags = re.findall(r'#\w+', caption)
             hashtags.extend(post_hashtags)
         
-        if len(hashtags) >= 10:  # Limit auf 10 Posts
+        if len(hashtags) >= 1000:  # Limit auf 10 Posts
             break
 
     return hashtags
+
+print(get_instagram_hashtags("alexa_breit"))
+
