@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, make_response, request
 from flask_cors import CORS
 from pymongo import MongoClient, errors
+from bson.objectid import ObjectId
 
 
 # Initialize Flask app
@@ -10,7 +11,6 @@ CORS(app)
 # MongoDB client setup
 client = MongoClient('mongodb', 27017)  # Connect to MongoDB service
 db = client['InfluenzaDB']  # Select database
-
 test_collection = db['test']  # Collection for testing
 
 # Define routes
