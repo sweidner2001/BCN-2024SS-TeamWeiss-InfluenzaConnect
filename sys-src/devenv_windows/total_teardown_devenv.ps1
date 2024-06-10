@@ -6,8 +6,8 @@ if (Get-Command deactivate -ErrorAction SilentlyContinue) {
 }
 
 # Entferne venv
-if (Test-Path "backend/lib") {
-    Remove-Item -Recurse -Force "backend/bin", "backend/lib", "backend/include", "backend/pyenv.cfg"
+if (Test-Path "../backend/lib") {
+    Remove-Item -Recurse -Force "../backend/bin", "../backend/lib", "../backend/include", "../backend/pyenv.cfg", "../backend/Scripts", "../backend/pyvenv.cfg"
     Write-Host "Virtuelle Umgebung entfernt."
 }
 
