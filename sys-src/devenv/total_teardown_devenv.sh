@@ -10,7 +10,7 @@ if [ -d "../backend/lib" ]; then
     rm -rf ../backend/bin
     rm -rf ../backend/lib
     rm -rf ../backend/include
-    rm -f ../backend/pyvenv.cfg
+    rm -rf ../backend/pyvenv.cfg
     echo "Virtual environment removed."
 fi
 
