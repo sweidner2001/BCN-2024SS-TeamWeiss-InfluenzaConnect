@@ -9,6 +9,9 @@ function App() {
       <header className="App-header">
       <Button />
       <ButtonDB />
+      <ButtonDB />
+      <ButtonDB />
+
 
       </header>
     </div>

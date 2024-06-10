@@ -1,0 +1,26 @@
+
+Das CD wird mithilfe von SSH durchgeführt. Die GithubActions-VM wird sich via ssh auf den Hetzner Server verbinden oder dort Änderungen im repo auf dem branch prod pullen und die container neu bauen und starten
+
+Lokaler SSH-Schlüssel:
+	•	Wird verwendet, um von deinem lokalen System aus auf GitHub zuzugreifen.
+	•	Dieser Schlüssel ist bereits konfiguriert und funktioniert.
+Server-SSH-Schlüssel (Deploy Key):
+	•	Wurde zum GitHub-Repository als Deploy Key hinzugefügt, um von deinem Hetzner-Server aus auf das Repository zuzugreifen und den Code zu klonen.
+	•	Dieser Schlüssel ist ebenfalls bereits konfiguriert und funktioniert.
+
+
+Erstelle einen neuen SSH-Schlüssel für GitHub Actions:
+ssh-keygen -t rsa -b 4096 -C "github-actions@your-repo" -f github_actions_key -N ""
+
+Dann den erstellten private key als secret ins GitHub repo speichern. 
+
+Ich habe aus dem /.ssh Verzeichnis diesen Befehl ausgeführt um den pub key zu den authorized_keys file auf dem Hetzner Server hinzuzufügen:
+cat github_actions_key.pub | ssh user@hetzner-server-ip "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"
+
+Ich habe einen neuen branch ‘prod’ erstellt. Auf diesen ist die pipeline gerichtet, denn immer wenn auf diesen branch etwas gepushed wird, dann wird der GitHub workflow ausgeführt. 
+Den Hetzner Server habe ich auf diesen branch geswitched, damit er bei einem git pull command auch den richtigen branch pulled.
+
+Der Rest ist aus dem continuous.deployment.yml file zu entnehmen. Etwaige andere schritte sind dort beschrieben.
+
+Resultat:
+Immer wenn der main branch in den prod branch gemerged wird wird die CD pipeline getriggered, was dafür sorgt dass die Änderungen in dem Production environment sofort übernommen werden, sobald die Container auf dem Server neu gebaut und gestartet sind.

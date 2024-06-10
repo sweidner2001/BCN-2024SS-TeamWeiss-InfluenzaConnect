@@ -3,3 +3,6 @@
 # Entwicklungsumgebung
 .idea/
 .vscode/
+.ipynb_checkpoints/
+
+.github/workflows/learn_workflow.yml
