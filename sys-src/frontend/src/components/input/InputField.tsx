@@ -48,7 +48,8 @@ const InputField: React.FC<InputFieldProps> = ({...probs}) => {
         <div className={classNameWidth}>
             <InputLabel htmlFor={probs.id} label={probs.label}/>
             <div className="mt-2">
-                <input {...probs.register} type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label}
+                <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label}
+                       {...probs.register}
                        className='px-4 py-2 rounded-lg block w-full
                               text-gray-900 placeholder:text-gray-400
                               border-0 shadow-sm ring-1 ring-inset ring-gray-300

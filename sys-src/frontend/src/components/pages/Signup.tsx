@@ -16,11 +16,17 @@ import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 interface IFormInputs {
     email: string;
     passwort: string;
+    instaUsername: string;
+    land: string;
+    ueberMich: string;
 }
 
 const SignupSchema = yup.object({
     email: yup.string().required('Bitte Geben Sie eine Email an!'),
-    passwort: yup.string().required("Bitte Geben Sie ein Passwort an!")
+    passwort: yup.string().required("Bitte Geben Sie ein Passwort an!"),
+    instaUsername: yup.string().required("Bitte Geben Sie ein Username an!"),
+    land: yup.string().required("Bitte Geben Sie ein land an!"),
+    ueberMich: yup.string().required("Bitte Geben Sie ein Über Mich an!")
 });
 
 
@@ -98,7 +104,8 @@ const Signup: React.FC = () => {
                             {/*<InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>*/}
                             {/*<InputField id="nachname" label="Nachname" type="text" required={true} autoComplete="family-name" fieldWidth={4}/>*/}
 
-                            {/*<InputSelect id="land" label="Land" required={true} fieldWidth={4} selectOptions={countries} autoComplete="country-name"/>*/}
+                            <InputSelect id="land" label="Land" fieldWidth={4} selectOptions={countries} autoComplete="country-name"
+                                         register={register("land")} error={errors.land?.message}/>
                             {/*<InputSelect id="bundesland" label="Bundesland" required={false} fieldWidth={4} selectOptions={bundesland}/>*/}
                             {/*<InputField id="telefonnr" label="Telefonnummer" type="tel" required={true} autoComplete="tel" fieldWidth={4}/>*/}
 
@@ -106,10 +113,11 @@ const Signup: React.FC = () => {
                             {/*<InputField id="sprache" label="Sprache" type="text" required={false} fieldWidth={4}/>*/}
 
 
-                            {/*<InputTextarea id="ueberMich" label="Über mich" required={false} defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}/>*/}
+                            <InputTextarea id="ueberMich" label="Über mich" defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}
+                                           register={register("ueberMich")} error={errors.ueberMich?.message}/>
 
-                            {/*/!*Social-Media-Accounts*!/*/}
-                            {/*<InputFieldWithFixedText fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" required={true} fieldWidth={4}/>*/}
+                            {/*Social-Media-Accounts*/}
+                            <InputFieldWithFixedText register={register("instaUsername")} error={errors.instaUsername?.message} fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" fieldWidth={4}/>
                             <input type="submit"/>
                         </div>
                     </form>
