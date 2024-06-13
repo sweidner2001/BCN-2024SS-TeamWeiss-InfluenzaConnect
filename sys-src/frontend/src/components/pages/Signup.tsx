@@ -39,7 +39,7 @@ const maxFieldLengthText = "Eingabefeld ist auf 25 Zeichen begrenzt";
 const maxFieldLength = 25;
 
 const SignupSchema = yup.object({
-    email: yup.string().trim().email("Bitte geben Sie eine gültige Email-Adresse ein!").required('Bitte geben Sie eine Email an!').max(...getMaxFieldLength(25)),
+    email: yup.string().trim().email("Bitte geben Sie eine gültige Email-Adresse ein!").required('Bitte geben Sie eine Email an!').max(...getMaxFieldLength(40)),
     passwort: yup.string().required("Bitte geben Sie ein Passwort an!").min(10, "Das Passwort muss min. 10 Zeichen lang sein!").max(...getMaxFieldLength(25)),
     anrede: yup.string().required("Bitte geben Sie eine Anrede an!").max(maxFieldLength, maxFieldLengthText),
     vorname: yup.string().trim().required("Bitte geben Sie Ihren Vornamen an!").max(...getMaxFieldLength(25)),
@@ -54,6 +54,7 @@ const SignupSchema = yup.object({
 
 
 
+const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const Signup: React.FC = () => {
 
@@ -71,8 +72,24 @@ const Signup: React.FC = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(SignupSchema)
     });
-    const onSubmit = (data: IFormInputs) => {
+    const onSubmit = async (data: IFormInputs) => {
+
+        await sleep(2000);
         alert(JSON.stringify(data));
+
+
+        // axios.post(`https://jsonplaceholder.typicode.com/app`, JSON.stringify(data))
+        //     .then(res => {
+        //         console.log(res);
+        //         console.log(res.data);
+        //     })
+        //
+        //     try {
+        //         const response = await axios.get('http://localhost:5001/test');
+        //         console.log(response.data);
+        //     } catch (error) {
+        //         console.error('Error fetching data: ', error);
+        //     }
     };
 
 
@@ -160,7 +177,7 @@ const Signup: React.FC = () => {
 
                         <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
                             <CancelButton type="button" text="Abbrechen" linkTo="/landing"/>
-                            <FormularButton type="submit" text="Registrieren" linkTo="/landing"/>
+                            <FormularButton type="submit" text="Registrieren"/>
                         </div>
                     </form>
 
