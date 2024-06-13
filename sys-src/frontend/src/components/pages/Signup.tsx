@@ -12,10 +12,30 @@ import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 
 
 
+interface IFormInputs {
+    email: string;
+    passwort: string;
+}
 
+const SignupSchema = yup.object({
+    email: yup.string().required('Bitte Geben Sie eine Email an!'),
+    passwort: yup.string().required("Bitte Geben Sie ein Passwort an!")
+});
 
 
 const Signup: React.FC = () => {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<IFormInputs>({
+        resolver: yupResolver(SignupSchema)
+    });
+    const onSubmit = (data: IFormInputs) => {
+        alert(JSON.stringify(data));
+    };
+
 
     let countries: Array<string> = ['Deutschland', 'Österreich', 'Schweiz'];
     let bundesland: Array<string> = ['Bayern', 'Hessen', 'Sachsen'];
@@ -52,33 +72,37 @@ const Signup: React.FC = () => {
                     </div>
 
                     {/*--- Formular ---*/}
-                    <form className='flex flex-col space-y-4'>
+                    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-4'>
 
                         {/*Hier Abstand zwischen den Input-Feldern bestimmen*/}
                         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
 
                             {/*Registrierungsdaten*/}
-                            <InputField id="email" label="Email" type="text" required={true} autoComplete="email" fieldWidth={4}/>
-                            <InputField id="passwort" label="Passwort" type="password" required={true} autoComplete="current-password" fieldWidth={4}/>
+                            <InputField register={register("email")} id="email" label="Email" type="text" required={false}
+                                        autoComplete="email" fieldWidth={4} error={errors.email?.message}/>
+                            <InputField register={register("passwort")} id="passwort" label="Passwort" type="password"
+                                        required={false} autoComplete="current-password" fieldWidth={4}
+                                        error={errors.passwort?.message}/>
 
                             {/*Persönliche Daten*/}
-                            <InputSelect id="anrede" label="Anrede" required={true} fieldWidth={4} selectOptions={sex} autoComplete="sex"/>
-                            <InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>
-                            <InputField id="nachname" label="Nachname" type="text" required={true} autoComplete="family-name" fieldWidth={4}/>
+                            {/*<InputSelect id="anrede" label="Anrede" required={true} fieldWidth={4} selectOptions={sex}*/}
+                            {/*             autoComplete="sex"/>*/}
+                            {/*<InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>*/}
+                            {/*<InputField id="nachname" label="Nachname" type="text" required={true} autoComplete="family-name" fieldWidth={4}/>*/}
 
-                            <InputSelect id="land" label="Land" required={true} fieldWidth={4} selectOptions={countries} autoComplete="country-name"/>
-                            <InputSelect id="bundesland" label="Bundesland" required={false} fieldWidth={4} selectOptions={bundesland}/>
-                            <InputField id="telefonnr" label="Telefonnummer" type="tel" required={true} autoComplete="tel" fieldWidth={4}/>
+                            {/*<InputSelect id="land" label="Land" required={true} fieldWidth={4} selectOptions={countries} autoComplete="country-name"/>*/}
+                            {/*<InputSelect id="bundesland" label="Bundesland" required={false} fieldWidth={4} selectOptions={bundesland}/>*/}
+                            {/*<InputField id="telefonnr" label="Telefonnummer" type="tel" required={true} autoComplete="tel" fieldWidth={4}/>*/}
 
-                            {/*Sprachen*/}
-                            <InputField id="sprache" label="Sprache" type="text" required={false} fieldWidth={4}/>
+                            {/*/!*Sprachen*!/*/}
+                            {/*<InputField id="sprache" label="Sprache" type="text" required={false} fieldWidth={4}/>*/}
 
 
+                            {/*<InputTextarea id="ueberMich" label="Über mich" required={false} defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}/>*/}
 
-                            <InputTextarea id="ueberMich" label="Über mich" required={false} defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}/>
-
-                            {/*Social-Media-Accounts*/}
-                            <InputFieldWithFixedText fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" required={true} fieldWidth={4}/>
+                            {/*/!*Social-Media-Accounts*!/*/}
+                            {/*<InputFieldWithFixedText fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" required={true} fieldWidth={4}/>*/}
+                            <input type="submit"/>
                         </div>
                     </form>
 
