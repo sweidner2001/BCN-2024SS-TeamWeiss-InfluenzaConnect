@@ -57,7 +57,7 @@ const Signup: React.FC = () => {
                             {/*Registrierungsdaten*/}
                             <InputField id="email" label="Email" type="text" required={true} autoComplete="email" fieldWidth={4}/>
                             <InputField id="passwort" label="Passwort" type="password" required={true} autoComplete="current-password" fieldWidth={4}/>
-x
+
                             {/*Persönliche Daten*/}
                             <InputSelect id="anrede" label="Anrede" required={true} fieldWidth={4} selectOptions={sex} autoComplete="sex"/>
                             <InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>
