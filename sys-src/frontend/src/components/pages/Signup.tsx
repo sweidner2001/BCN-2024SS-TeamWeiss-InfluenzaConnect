@@ -12,6 +12,7 @@ import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 
 
 
+//___________________ Formular Validation  ________________
 interface IFormInputs {
     email: string;
     passwort: string;
@@ -23,8 +24,17 @@ const SignupSchema = yup.object({
 });
 
 
+
+
 const Signup: React.FC = () => {
 
+    //________________ Variablen: ________________
+    let countries: Array<string> = ['Deutschland', 'Österreich', 'Schweiz'];
+    let bundesland: Array<string> = ['Bayern', 'Hessen', 'Sachsen'];
+    let sex : Array<string> = ['Herr', 'Frau', 'Divers'];
+
+
+    //___________________ Formular Logik ________________
     const {
         register,
         handleSubmit,
@@ -37,10 +47,8 @@ const Signup: React.FC = () => {
     };
 
 
-    let countries: Array<string> = ['Deutschland', 'Österreich', 'Schweiz'];
-    let bundesland: Array<string> = ['Bayern', 'Hessen', 'Sachsen'];
-    let sex : Array<string> = ['Herr', 'Frau', 'Divers'];
 
+    //___________________ HTML: Formular ________________
     return (
         <div className="w-full h-screen flex items-start">
 
@@ -78,10 +86,10 @@ const Signup: React.FC = () => {
                         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
 
                             {/*Registrierungsdaten*/}
-                            <InputField register={register("email")} id="email" label="Email" type="text" required={false}
+                            <InputField register={register("email")} id="email" label="Email" type="text"
                                         autoComplete="email" fieldWidth={4} error={errors.email?.message}/>
                             <InputField register={register("passwort")} id="passwort" label="Passwort" type="password"
-                                        required={false} autoComplete="current-password" fieldWidth={4}
+                                        autoComplete="current-password" fieldWidth={4}
                                         error={errors.passwort?.message}/>
 
                             {/*Persönliche Daten*/}
