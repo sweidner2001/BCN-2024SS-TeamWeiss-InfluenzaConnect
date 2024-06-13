@@ -9,6 +9,7 @@ import InputField from "../input/InputField";
 import InputTextarea from "../input/InputTextarea";
 import InputSelect from "../input/InputSelect";
 import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
+import {FormularButton, CancelButton} from "../FormularButton";
 
 
 
@@ -47,7 +48,7 @@ const SignupSchema = yup.object({
     bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
     telefonnr: yup.string().trim().required("Bitte Geben Sie Ihre Telefonnummer an!").max(...getMaxFieldLength(25)),
     sprache: yup.string().trim().required("Bitte geben Sie Ihre Sprachen ein, die Sie beherrschen!").max(...getMaxFieldLength(25)),
-    ueberMich: yup.string().trim().defined(),
+    ueberMich: yup.string().trim().defined().max(...getMaxFieldLength(500)),
     instaUsername: yup.string().trim().required("Bitte Geben Sie Ihren Instagram-Usernamen an!").max(...getMaxFieldLength(25))
 });
 
@@ -85,7 +86,7 @@ const Signup: React.FC = () => {
                 {/*--- Text ---*/}
                 <div className='absolute top-[25%] left-[15%]'>
                     <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect</h1>
-                    <p className='text-lg font-medium text-slate-50'>#InfluecerMarketing #Werbepartner #Karriere</p>
+                    <p className='text-lg font-medium text-slate-50'>#InfluencerMarketing #Werbepartner #Karriere</p>
                 </div>
 
                 {/*--- Hintergrund ---*/}
@@ -111,7 +112,7 @@ const Signup: React.FC = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col space-y-4'>
 
                         {/*Hier Abstand zwischen den Input-Feldern bestimmen*/}
-                        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                        <div className="mt-6 mb-2 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
 
                             {/*Registrierungsdaten*/}
                             <InputField register={register("email")} id="email" label="Email" type="text"
@@ -121,18 +122,23 @@ const Signup: React.FC = () => {
                                         error={errors.passwort?.message}/>
 
                             {/*Persönliche Daten*/}
-                            <InputSelect id="anrede" label="Anrede" fieldWidth={4} selectOptions={sex} autoComplete="sex"
+                            <InputSelect id="anrede" label="Anrede" fieldWidth={4} selectOptions={sex}
+                                         autoComplete="sex"
                                          register={register("anrede")} error={errors.anrede?.message}/>
-                            <InputField id="vorname" label="Vorname" type="text" autoComplete="given-name" fieldWidth={4}
+                            <InputField id="vorname" label="Vorname" type="text" autoComplete="given-name"
+                                        fieldWidth={4}
                                         register={register("vorname")} error={errors.vorname?.message}/>
-                            <InputField id="nachname" label="Nachname" type="text" autoComplete="family-name" fieldWidth={4}
+                            <InputField id="nachname" label="Nachname" type="text" autoComplete="family-name"
+                                        fieldWidth={4}
                                         register={register("nachname")} error={errors.nachname?.message}/>
 
-                            <InputSelect id="land" label="Land" fieldWidth={4} selectOptions={countries} autoComplete="country-name"
+                            <InputSelect id="land" label="Land" fieldWidth={4} selectOptions={countries}
+                                         autoComplete="country-name"
                                          register={register("land")} error={errors.land?.message}/>
                             <InputSelect id="bundesland" label="Bundesland" fieldWidth={4} selectOptions={bundesland}
                                          register={register("bundesland")} error={errors.bundesland?.message}/>
-                            <InputField id="telefonnr" label="Telefonnummer" type="tel" autoComplete="tel" fieldWidth={4}
+                            <InputField id="telefonnr" label="Telefonnummer" type="tel" autoComplete="tel"
+                                        fieldWidth={4}
                                         register={register("telefonnr")} error={errors.telefonnr?.message}/>
 
                             {/*/!*Sprachen*!/*/}
@@ -140,12 +146,21 @@ const Signup: React.FC = () => {
                                         register={register("sprache")} error={errors.sprache?.message}/>
 
 
-                            <InputTextarea id="ueberMich" label="Über mich" defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}
+                            <InputTextarea id="ueberMich" label="Über mich" defaultValue="Ich heiße Sebastian"
+                                           descr="Schreibe ein paar Sätze über dich." textboxRows={5}
                                            register={register("ueberMich")} error={errors.ueberMich?.message}/>
 
                             {/*Social-Media-Accounts*/}
-                            <InputFieldWithFixedText register={register("instaUsername")} error={errors.instaUsername?.message} fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" fieldWidth={4}/>
-                            <input type="submit"/>
+                            <InputFieldWithFixedText register={register("instaUsername")}
+                                                     error={errors.instaUsername?.message} fixedText="instagram.com/"
+                                                     id="instaUsername" label="Instagram Username" type="text"
+                                                     fieldWidth={4}/>
+                        </div>
+
+
+                        <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
+                            <CancelButton type="button" text="Abbrechen" linkTo="/landing"/>
+                            <FormularButton type="submit" text="Registrieren" linkTo="/landing"/>
                         </div>
                     </form>
 
