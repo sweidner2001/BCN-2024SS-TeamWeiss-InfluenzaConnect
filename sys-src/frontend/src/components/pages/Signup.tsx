@@ -16,29 +16,39 @@ import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 interface IFormInputs {
     email: string;
     passwort: string;
-    instaUsername: string;
-    land: string;
-    ueberMich: string;
-    sprache: string;
-    telefonnr: string;
-    bundesland: string;
+    anrede: string;
     vorname: string;
     nachname: string;
-    anrede: string;
+    bundesland: string;
+    land: string;
+    telefonnr: string;
+    sprache: string;
+    ueberMich: string;
+    instaUsername: string;
 }
 
+
+const getMaxFieldLength = (maxLength: number): [number, string] => {
+    const maxFieldLengthText = `Eingabefeld ist auf ${maxLength} Zeichen begrenzt`;
+    return [maxLength, maxFieldLengthText];
+};
+
+
+const maxFieldLengthText = "Eingabefeld ist auf 25 Zeichen begrenzt";
+const maxFieldLength = 25;
+
 const SignupSchema = yup.object({
-    email: yup.string().required('Bitte Geben Sie eine Email an!'),
-    passwort: yup.string().required("Bitte Geben Sie ein Passwort an!"),
-    instaUsername: yup.string().required("Bitte Geben Sie ein Username an!"),
-    land: yup.string().required("Bitte Geben Sie ein land an!"),
-    ueberMich: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
-    sprache: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
-    telefonnr: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
-    bundesland: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
-    vorname: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
-    nachname: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
-    anrede: yup.string().required("Bitte Geben Sie ein Über Mich an!")
+    email: yup.string().trim().email("Bitte geben Sie eine gültige Email-Adresse ein!").required('Bitte geben Sie eine Email an!').max(...getMaxFieldLength(25)),
+    passwort: yup.string().required("Bitte geben Sie ein Passwort an!").min(10, "Das Passwort muss min. 10 Zeichen lang sein!").max(...getMaxFieldLength(25)),
+    anrede: yup.string().required("Bitte geben Sie eine Anrede an!").max(maxFieldLength, maxFieldLengthText),
+    vorname: yup.string().trim().required("Bitte geben Sie Ihren Vornamen an!").max(...getMaxFieldLength(25)),
+    nachname: yup.string().trim().required("Bitte geben Sie Ihren Nachnamen an!").max(maxFieldLength, maxFieldLengthText),
+    land: yup.string().trim().required("Bitte geben Sie Ihr Herkunftsland an!"),
+    bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
+    telefonnr: yup.string().trim().required("Bitte Geben Sie Ihre Telefonnummer an!").max(...getMaxFieldLength(25)),
+    sprache: yup.string().trim().required("Bitte geben Sie Ihre Sprachen ein, die Sie beherrschen!").max(...getMaxFieldLength(25)),
+    ueberMich: yup.string().trim().defined(),
+    instaUsername: yup.string().trim().required("Bitte Geben Sie Ihren Instagram-Usernamen an!").max(...getMaxFieldLength(25))
 });
 
 
