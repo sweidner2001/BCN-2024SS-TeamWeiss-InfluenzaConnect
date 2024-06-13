@@ -53,7 +53,6 @@ const InputField: React.FC<InputFieldProps> = ({...probs}) => {
                               text-gray-900 placeholder:text-gray-400
                               border-0 shadow-sm ring-1 ring-inset ring-gray-300
                               focus:outline-none focus:ring-1 focus:ring-indigo-700'/>
-                {/*Fehlermeldung*/}
                 <ErrorField errorMessage={probs.error}/>
             </div>
         </div>
