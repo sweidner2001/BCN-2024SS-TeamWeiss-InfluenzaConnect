@@ -19,6 +19,12 @@ interface IFormInputs {
     instaUsername: string;
     land: string;
     ueberMich: string;
+    sprache: string;
+    telefonnr: string;
+    bundesland: string;
+    vorname: string;
+    nachname: string;
+    anrede: string;
 }
 
 const SignupSchema = yup.object({
@@ -26,7 +32,13 @@ const SignupSchema = yup.object({
     passwort: yup.string().required("Bitte Geben Sie ein Passwort an!"),
     instaUsername: yup.string().required("Bitte Geben Sie ein Username an!"),
     land: yup.string().required("Bitte Geben Sie ein land an!"),
-    ueberMich: yup.string().required("Bitte Geben Sie ein Über Mich an!")
+    ueberMich: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
+    sprache: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
+    telefonnr: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
+    bundesland: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
+    vorname: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
+    nachname: yup.string().required("Bitte Geben Sie ein Über Mich an!"),
+    anrede: yup.string().required("Bitte Geben Sie ein Über Mich an!")
 });
 
 
@@ -99,18 +111,23 @@ const Signup: React.FC = () => {
                                         error={errors.passwort?.message}/>
 
                             {/*Persönliche Daten*/}
-                            {/*<InputSelect id="anrede" label="Anrede" required={true} fieldWidth={4} selectOptions={sex}*/}
-                            {/*             autoComplete="sex"/>*/}
-                            {/*<InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>*/}
-                            {/*<InputField id="nachname" label="Nachname" type="text" required={true} autoComplete="family-name" fieldWidth={4}/>*/}
+                            <InputSelect id="anrede" label="Anrede" fieldWidth={4} selectOptions={sex} autoComplete="sex"
+                                         register={register("anrede")} error={errors.anrede?.message}/>
+                            <InputField id="vorname" label="Vorname" type="text" autoComplete="given-name" fieldWidth={4}
+                                        register={register("vorname")} error={errors.vorname?.message}/>
+                            <InputField id="nachname" label="Nachname" type="text" autoComplete="family-name" fieldWidth={4}
+                                        register={register("nachname")} error={errors.nachname?.message}/>
 
                             <InputSelect id="land" label="Land" fieldWidth={4} selectOptions={countries} autoComplete="country-name"
                                          register={register("land")} error={errors.land?.message}/>
-                            {/*<InputSelect id="bundesland" label="Bundesland" required={false} fieldWidth={4} selectOptions={bundesland}/>*/}
-                            {/*<InputField id="telefonnr" label="Telefonnummer" type="tel" required={true} autoComplete="tel" fieldWidth={4}/>*/}
+                            <InputSelect id="bundesland" label="Bundesland" fieldWidth={4} selectOptions={bundesland}
+                                         register={register("bundesland")} error={errors.bundesland?.message}/>
+                            <InputField id="telefonnr" label="Telefonnummer" type="tel" autoComplete="tel" fieldWidth={4}
+                                        register={register("telefonnr")} error={errors.telefonnr?.message}/>
 
                             {/*/!*Sprachen*!/*/}
-                            {/*<InputField id="sprache" label="Sprache" type="text" required={false} fieldWidth={4}/>*/}
+                            <InputField id="sprache" label="Sprache" type="text" fieldWidth={4}
+                                        register={register("sprache")} error={errors.sprache?.message}/>
 
 
                             <InputTextarea id="ueberMich" label="Über mich" defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}
