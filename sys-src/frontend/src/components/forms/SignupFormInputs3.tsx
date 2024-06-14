@@ -1,8 +1,11 @@
+// React Imports:
 import React, {useState} from 'react';
 import * as yup from "yup";
 
-
+// Imports eigene Componenten:
 import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
+
+
 
 
 //___________________ Datentypen  ________________

@@ -1,9 +1,10 @@
+// React Imports:
 import React, {useState} from 'react';
 import * as yup from "yup";
 
-
+// Imports eigene Componenten:
 import InputField from "../input/InputField";
-
+import InputMultiSelectDropdown from "../input/InputMultiSelectDropdown";
 
 //___________________ Datentypen  ________________
 interface ISignupForm1 {
@@ -40,7 +41,13 @@ const SignupSchema1 = yup.object({
 });
 
 
-
+const options: string[] = [
+    'Deutsch',
+    'Englisch',
+    'Französisch',
+    'Italienisch',
+    'Spanisch',
+];
 
 
 /**
@@ -72,11 +79,13 @@ const SignupFormInputs1: React.FC<ISignupForm1> = ({form1}) => {
                 <InputField id="passwort" label="Passwort" type="password"
                             autoComplete="current-password" fieldWidth={4}
                             register={form1.register("passwort")} error={form1.formState.errors.passwort?.message}/>
+
+
+                <InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" fieldWidth={4} selectOptions={options}/>
             </div>
         </>
     );
 };
-
 
 
 //__________ Exporte: ___________

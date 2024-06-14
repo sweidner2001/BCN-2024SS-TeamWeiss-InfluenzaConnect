@@ -22,11 +22,10 @@ interface InputSelectProps {
     id: string;
     label: string;
     register: any;
-    selectOptions:Array<string>
+    selectOptions: Array<string>
     autoComplete?: string;
     error?: string;
 }
-
 
 
 /**
@@ -40,7 +39,7 @@ interface InputSelectProps {
 const InputSelect: React.FC<InputSelectProps> = ({...probs}) => {
 
     // Variablen:
-    let classNameWidth= probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
+    let classNameWidth = probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
 
     // HTML:
     return (
@@ -63,6 +62,5 @@ const InputSelect: React.FC<InputSelectProps> = ({...probs}) => {
         </div>
     );
 };
-
 
 export default InputSelect;

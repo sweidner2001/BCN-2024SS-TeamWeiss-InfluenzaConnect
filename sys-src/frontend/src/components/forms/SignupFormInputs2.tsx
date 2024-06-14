@@ -1,11 +1,12 @@
+// React Imports:
 import React, {useState} from 'react';
 import * as yup from "yup";
 
-
+// Imports eigene Componenten:
 import InputField from "../input/InputField";
 import InputSelect from "../input/InputSelect";
 import InputTextarea from "../input/InputTextarea";
-
+import InputMultiSelectDropdown from "../input/InputMultiSelectDropdown";
 
 
 //___________________ Datentypen  ________________
@@ -52,7 +53,13 @@ const SignupSchema2 = yup.object({
 });
 
 
-
+const languages: string[] = [
+    'Deutsch',
+    'Englisch',
+    'Französisch',
+    'Italienisch',
+    'Spanisch',
+];
 
 
 /**
@@ -105,6 +112,7 @@ const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
                 <InputField id="sprache" label="Sprache" type="text" fieldWidth={4}
                             register={form2.register("sprache")} error={form2.formState.errors.sprache?.message}/>
 
+                <InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" selectOptions={languages} fieldWidth={4}/>
                 <InputTextarea id="ueberMich" label="Über mich" defaultValue=""
                                descr="Schreibe ein paar Sätze über dich." textboxRows={5}
                                register={form2.register("ueberMich")} error={form2.formState.errors.ueberMich?.message}/>

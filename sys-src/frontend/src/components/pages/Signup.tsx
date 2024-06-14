@@ -1,10 +1,10 @@
+// React Imports:
 import React, {useState} from 'react';
 import axios from 'axios';
 import {SubmitHandler, useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-
-
+// Imports eigene Componenten:
 import {FormularButton, CancelButton} from "../FormularButton";
 import {SignupFormInputs1, SignupSchema1} from "../forms/SignupFormInputs1";
 import type {IFormInputs1} from "../forms/SignupFormInputs1";
