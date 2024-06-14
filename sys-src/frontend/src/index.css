@@ -20,7 +20,7 @@ code {
 
 
 
-
+/* Signup-Formular Übergänge*/
 .transition-transform {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
