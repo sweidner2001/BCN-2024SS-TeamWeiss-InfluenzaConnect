@@ -8,14 +8,12 @@ import InputTextarea from "../input/InputTextarea";
 
 
 
+//___________________ Datentypen  ________________
 interface ISignupForm2 {
     form2: any;
 }
 
 
-
-
-//___________________ Formular Validation  ________________
 interface IFormInputs2 {
     anrede: string;
     vorname: string;
@@ -28,6 +26,15 @@ interface IFormInputs2 {
 }
 
 
+//___________________ Formular Validation  ________________
+/**
+ * @function getMaxFieldLength Gibt die max. Länge zurück und einen Fehlertext für die Formulardaten-Validation
+ * @author Sebastian Weidner
+ * @since 13.06.2024
+ * @version 1.0
+ *
+ * @param maxLength Maximale Textlänge des input-Feldes
+ */
 const getMaxFieldLength = (maxLength: number): [number, string] => {
     const maxFieldLengthText = `Eingabefeld ist auf ${maxLength} Zeichen begrenzt`;
     return [maxLength, maxFieldLengthText];
@@ -46,6 +53,16 @@ const SignupSchema2 = yup.object({
 
 
 
+
+
+/**
+ * @function SignupFormInputs2 Formular-Input-Felder für die Persönlichen Daten
+ * @author Sebastian Weidner
+ * @since 14.06.2024
+ * @version 1.0
+ *
+ * @param ISignupForm2 "react-hook-form" Daten
+ */
 const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
 
     const countries = ['Deutschland', 'Österreich', 'Schweiz'];
@@ -60,7 +77,7 @@ const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
             <div className="border-b-2 border-gray-900/10 pb-4">
                 <h3 className='text-xl font-bold mt-6 mb-0 text-gray-900 '>Persönliche Daten</h3>
                 <p className="mt-1 pt-0 text-sm leading-6 text-gray-500">
-                    This information will be displayed publicly so be careful what you share.
+                    Diese Informationen sind öffentlich sichtbar. Seien Sie vorsichtig, was Sie teilen.
                 </p>
             </div>
             <div className="mt-6 mb-2 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
@@ -99,7 +116,7 @@ const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
 
 
 
-
+//__________ Exporte: ___________
 export {
     SignupFormInputs2,
     SignupSchema2

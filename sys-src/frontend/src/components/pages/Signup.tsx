@@ -20,30 +20,46 @@ const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const Signup: React.FC = () => {
 
+    //___________________ Hooks: ___________________
     const [currentForm, setCurrentForm] = useState(1);
     const [formData, setFormData] = useState<any>({});
     const [transition, setTransition] = useState(false);
     const [direction, setDirection] = useState<'left' | 'right'>('left');
 
+
+    //___________________ Variablen ________________
     const form1 = useForm<IFormInputs1>({
         resolver: yupResolver(SignupSchema1),
+
+        // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form1 || {}
     });
 
     const form2 = useForm<IFormInputs2>({
         resolver: yupResolver(SignupSchema2),
+
+        // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form2 || {}
     });
 
     const form3 = useForm<IFormInputs3>({
         resolver: yupResolver(SignupSchema3),
+
+        // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form3 || {}
     });
 
+
+    //___________________ Event-Handler ________________
     const handleNext = (formNumber: number) => {
+        // Übergang zum nächsten Formular
         setDirection('left');
         setTransition(true);
+
+
         setTimeout(() => {
+            // Formulardaten zwischenspeichern, um Sie beim zurückgehen
+            // im Formular nicht zu verlieren
             let data = {};
             if (formNumber === 1) {
                 data = form1.getValues();
@@ -54,16 +70,24 @@ const Signup: React.FC = () => {
                 ...prevData,
                 [`form${formNumber}`]: data
             }));
+
+            // Formular wechseln:
             setCurrentForm(formNumber + 1);
+
             setTransition(false);
         }, 500);
     };
 
     const handleBack = (formNumber: number) => {
+        // Übergang zum nächsten Formular
         setDirection('left');
         setTransition(true);
+
         setTimeout(() => {
+
+            // Formular wechseln:
             setCurrentForm(formNumber);
+
             setTransition(false);
         }, 500);
     };
@@ -120,7 +144,7 @@ const Signup: React.FC = () => {
                             <SignupFormInputs2 form2={form2} />
 
                             <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
-                                <button type="button" onClick={() => handleBack(1)} className="text-orange-700 font-medium text-lg text-center shadow-lg rounded-lg px-5 py-2.5 transform hover:scale-105 transition-transform ring-1 ring-orange-700 hover:bg-slate-100">Zurück</button>
+                                <CancelButton type="button" text="Zurück" onClick={() => handleBack(1)} />
                                 <FormularButton type="submit" text="Weiter"/>
                             </div>
                         </form>
@@ -133,7 +157,7 @@ const Signup: React.FC = () => {
                             <SignupFormInputs3 form3={form3} />
 
                             <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
-                                <button type="button" onClick={() => handleBack(2)} className="text-orange-700 font-medium text-lg text-center shadow-lg rounded-lg px-5 py-2.5 transform hover:scale-105 transition-transform ring-1 ring-orange-700 hover:bg-slate-100">Zurück</button>
+                                <CancelButton type="button" text="Zurück" onClick={() => handleBack(2)} />
                                 <FormularButton type="submit" text="Registrieren"/>
                             </div>
                         </form>
