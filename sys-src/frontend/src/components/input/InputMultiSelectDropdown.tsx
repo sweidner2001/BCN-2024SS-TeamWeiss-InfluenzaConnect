@@ -29,18 +29,24 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({...p
 
 
     //_________________ Events: _________________
+    // Event-Handler, wenn auf ein List-Element geklickt wird
     const handleSelectOption = (option: string) => {
+
+        // Wenn das Element schon selektiert wurde, dann Auwahl wieder aufheben:
         if (selectedOptions.includes(option)) {
             setSelectedOptions(selectedOptions.filter(selected => selected !== option));
         } else {
+            // Element in die Auswahlliste mit aufnehmen:
             setSelectedOptions([...selectedOptions, option]);
         }
     };
 
+    // Event-Handler, wenn auf einen Cancel-Button von einen ausgewählten Eintrag geklickt wurde:
     const handleRemoveOption = (option: string) => {
         setSelectedOptions(selectedOptions.filter(selected => selected !== option));
     };
 
+    // Event-Handler, damit sich das Dropdown schließt, wenn außerhalb des Elements geklickt wurde:
     const handleClickOutside = (event: MouseEvent) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setIsDropdownOpen(false);
@@ -49,19 +55,21 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({...p
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
+
+        // Wir returnen eine Parameterlose Funktion:
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
 
 
+    //______________________ HTML: ________________________
     return (
         <div className={classNameWidth}>
             <InputLabel htmlFor={probs.id} label={probs.label}/>
-            <div className="mt-2">
+            <div ref={dropdownRef} className="mt-2 relative">
 
 
-                <div ref={dropdownRef} className="relative w-64">
                     <div className="border border-gray-300 rounded p-2 cursor-pointer"
                          onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                         {selectedOptions.length === 0 ? (
@@ -101,7 +109,6 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({...p
                             </ul>
                         </div>
                     )}
-                </div>
 
                 <ErrorField errorMessage={probs.error}/>
             </div>
