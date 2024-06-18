@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-def validate_registration_data(email, password, title, first_name, last_name, birthdate, country, state, phone, language, about_me, instagram_username):
+def validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username):
     if not email or not password or not title or not first_name or not last_name or not country or not state or not language or not instagram_username:
         return False, "Alle Felder außer Telefonnummer und Über mich sind erforderlich."
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
@@ -12,8 +12,6 @@ def validate_registration_data(email, password, title, first_name, last_name, bi
         return False, "Passwort muss mindestens 10 Zeichen lang sein."
     if phone and not re.match(r"^\+?[0-9\s\-]+$", phone):
         return False, "Ungültige Telefonnummer."
-    if not validate_age(birthdate):
-        return False, "Der Benutzer muss mindestens 18 Jahre alt sein."
     if instagram_username and not validate_instagram_username(instagram_username):
         return False, "Ungültiger oder nicht existierender Instagram-Username."
     return True, ""

@@ -99,6 +99,21 @@ const Signup: React.FC = () => {
         };
         await new Promise(resolve => setTimeout(resolve, 1000));
         alert(JSON.stringify(finalData));
+        fetch('http://localhost:5001/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(finalData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Weiterverarbeitung der Antwort
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     };
 
 
@@ -110,7 +125,7 @@ const Signup: React.FC = () => {
             <div className='relative w-1/2 h-full flex flex-col'>
                 {/*--- Text ---*/}
                 <div className='absolute top-[25%] left-[15%]'>
-                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect</h1>
+                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect </h1>
                     <p className='text-lg font-medium text-slate-50'>#InfluencerMarketing #Werbepartner #Karriere</p>
                 </div>
 

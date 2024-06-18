@@ -2,38 +2,47 @@ from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import save_user, find_user_by_email
 from validation import validate_registration_data, validate_login_data
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Registrierungshandler
 @app.route('/signup', methods=['POST'])
-def register():
+def signup():
     data = request.json
-    email = data.get('email')
-    password = data.get('passwort')
-    title = data.get('anrede')
-    first_name = data.get('vorname')
-    last_name = data.get('nachname')
-    birthdate = data.get('geburtsdatum')
-    country = data.get('land')
-    state = data.get('bundesland')
-    phone = data.get('telefonnr')
-    language = data.get('sprache')
-    about_me = data.get('ueberMich')
-    instagram_username = data.get('instaUsername')
+
+    form1 = data.get('form1')
+    form2 = data.get('form2')
+    form3 = data.get('form3')
+
+    email    = form1.get('email')
+    password = form1.get('passwort')
+
+    title      = form2.get('anrede')
+    first_name = form2.get('vorname')
+    last_name  = form2.get('nachname')
+    #birthdate = data.get('geburtsdatum')
+    country    = form2.get('land')
+    state      = form2.get('bundesland')
+    phone      = form2.get('telefonnr')
+    language   = form2.get('sprache')
+    about_me   = form2.get('ueberMich')
+
+    instagram_username = form3.get('instaUsername')
 
     # Eingabedaten validieren
     is_valid, message = validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username)
     if not is_valid:
         return jsonify({"error": message}), 400
 
-    user = find_user_by_email(email)
+    user = find_user_by_email(app, email)
 
     if user:
         return jsonify({"error": "E-Mail-Adresse bereits registriert."}), 400
 
     # Passwort hashen
-    hashed_password = generate_password_hash(password, method='sha256')
+    hashed_password = generate_password_hash(password, method='scrypt')
 
     # Benutzer in der Datenbank speichern
     new_user = {
@@ -42,7 +51,7 @@ def register():
         'title': title,
         'first_name': first_name,
         'last_name': last_name,
-        'birthdate': birthdate,
+#        'birthdate': birthdate,
         'country': country,
         'state': state,
         'phone': phone,
@@ -50,7 +59,7 @@ def register():
         'about_me': about_me,
         'instagram_username': instagram_username
     }
-    save_user(new_user)
+    save_user(app, new_user)
 
     return jsonify({"message": "Registrierung erfolgreich."}), 201
 
@@ -66,7 +75,7 @@ def login():
     if not is_valid:
         return jsonify({"error": message}), 400
 
-    user = find_user_by_email(email)
+    user = find_user_by_email(app, email)
 
     if not user or not check_password_hash(user['password'], password):
         return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
