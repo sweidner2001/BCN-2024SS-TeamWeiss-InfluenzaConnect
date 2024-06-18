@@ -14,6 +14,7 @@ def register():
     title = data.get('title')
     first_name = data.get('first_name')
     last_name = data.get('last_name')
+    birthdate = data.get('birthdate')
     country = data.get('country')
     state = data.get('state')
     phone = data.get('phone')
@@ -41,6 +42,7 @@ def register():
         'title': title,
         'first_name': first_name,
         'last_name': last_name,
+        'birthdate': birthdate,
         'country': country,
         'state': state,
         'phone': phone,
