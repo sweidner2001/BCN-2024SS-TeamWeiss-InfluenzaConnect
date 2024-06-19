@@ -85,8 +85,8 @@ def login():
         JSON-Antwort mit Erfolgs- oder Fehlermeldung.
     """
     data = request.json
-    email = data.get('Email')
-    password = data.get('Password')
+    email = data.get('email')
+    password = data.get('password')
 
     # Eingabedaten validieren
     is_valid, message = validate_login_data(email, password)
