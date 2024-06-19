@@ -23,7 +23,7 @@ const LoginDropDownMenu: React.FC<DropDownMenuProps> = ({ name, direction = 'bot
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('http://localhost:5001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,8 +73,8 @@ const LoginDropDownMenu: React.FC<DropDownMenuProps> = ({ name, direction = 'bot
           >
             <LoginDropdown>
               <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="text" placeholder="Email" value={email} />
-              <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="password" placeholder="Password" />
-              <button className="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => handleLogin}>Login</button>
+              <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="password" placeholder="Password" value={password}/>
+              <button className="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={handleLogin}>Login</button>
             </LoginDropdown>
           </motion.div>
         )}
