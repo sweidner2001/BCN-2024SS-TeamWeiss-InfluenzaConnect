@@ -51,6 +51,10 @@ const Signup: React.FC = () => {
 
 
     //___________________ Event-Handler ________________
+    /**
+     * @event function Event-Handler-Funktion wenn auf den Weiter-Button gedrückt wird
+     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
+     */
     const handleNext = (formNumber: number) => {
         // Übergang zum nächsten Formular
         setDirection('left');
@@ -74,10 +78,15 @@ const Signup: React.FC = () => {
             // Formular wechseln:
             setCurrentForm(formNumber + 1);
 
+            // Übergang zum nächsten Formular
             setTransition(false);
         }, 500);
     };
 
+    /**
+     * @function handleBack Event-Handler-Funktion für den Zurückbutton
+     * @param formNumber Nummer des Formulars, auf das zurückgewechselt werden soll
+     */
     const handleBack = (formNumber: number) => {
         // Übergang zum nächsten Formular
         setDirection('left');
@@ -88,17 +97,41 @@ const Signup: React.FC = () => {
             // Formular wechseln:
             setCurrentForm(formNumber);
 
+            // Übergang zum nächsten Formular
             setTransition(false);
         }, 500);
     };
 
+
+    /**
+     * @event function Event-Handler-Funktion wenn auf den Registrierungs-Button gedrückt wird
+     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
+     */
     const onSubmitForm3: SubmitHandler<any> = async data => {
         const finalData = {
             ...formData,
             form3: data
         };
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        alert(JSON.stringify(finalData));
+
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // alert(JSON.stringify(finalData));
+
+        // Daten ans Backend senden:
+        fetch('http://localhost:5001/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(finalData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Weiterverarbeitung der Antwort
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     };
 
 
@@ -110,7 +143,7 @@ const Signup: React.FC = () => {
             <div className='relative w-1/2 h-full flex flex-col'>
                 {/*--- Text ---*/}
                 <div className='absolute top-[25%] left-[15%]'>
-                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect</h1>
+                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect </h1>
                     <p className='text-lg font-medium text-slate-50'>#InfluencerMarketing #Werbepartner #Karriere</p>
                 </div>
 
