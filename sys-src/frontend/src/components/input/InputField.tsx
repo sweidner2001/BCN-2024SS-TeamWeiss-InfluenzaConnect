@@ -1,5 +1,6 @@
 import React from 'react';
 import InputLabel from './InputLabel'
+import ErrorField from "./ErrorField";
 
 
 /**
@@ -21,8 +22,7 @@ interface InputFieldProps {
     id: string;
     label: string;
     type: string;
-    // register: any;
-    required: boolean;
+    register: any;
     autoComplete?: string;
     error?: string;
 }
@@ -48,14 +48,18 @@ const InputField: React.FC<InputFieldProps> = ({...probs}) => {
         <div className={classNameWidth}>
             <InputLabel htmlFor={probs.id} label={probs.label}/>
             <div className="mt-2">
-                <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label} required={probs.required}
+                <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label}
+                       {...probs.register}
                        className='px-4 py-2 rounded-lg block w-full
                               text-gray-900 placeholder:text-gray-400
                               border-0 shadow-sm ring-1 ring-inset ring-gray-300
                               focus:outline-none focus:ring-1 focus:ring-indigo-700'/>
+                <ErrorField errorMessage={probs.error}/>
             </div>
         </div>
     );
 };
+
+
 
 export default InputField;

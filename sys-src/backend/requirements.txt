@@ -10,3 +10,5 @@ pymongo==4.7.2
 Werkzeug==3.0.3
 pytest==7.1.2
 pytest-flask==1.2.0
+beautifulsoup4==4.10.0
+requests==2.26.0

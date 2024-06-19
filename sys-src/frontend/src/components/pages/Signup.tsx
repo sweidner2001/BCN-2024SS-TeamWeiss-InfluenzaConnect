@@ -1,89 +1,207 @@
-import React from 'react';
+// React Imports:
+import React, {useState} from 'react';
 import axios from 'axios';
+import {SubmitHandler, useForm} from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// Imports eigene Componenten:
+import {FormularButton, CancelButton} from "../FormularButton";
+import {SignupFormInputs1, SignupSchema1} from "../forms/SignupFormInputs1";
+import type {IFormInputs1} from "../forms/SignupFormInputs1";
+import {SignupFormInputs2, SignupSchema2} from "../forms/SignupFormInputs2";
+import type {IFormInputs2} from "../forms/SignupFormInputs2";
+import {SignupFormInputs3, SignupSchema3} from "../forms/SignupFormInputs3";
+import type {IFormInputs3} from "../forms/SignupFormInputs3";
 
 
-import InputField from "../input/InputField";
-import InputTextarea from "../input/InputTextarea";
-import InputSelect from "../input/InputSelect";
-import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 
-
-
-
-
+//___________________ Formular Validation  ________________
+const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const Signup: React.FC = () => {
 
-    let countries: Array<string> = ['Deutschland', 'Österreich', 'Schweiz'];
-    let bundesland: Array<string> = ['Bayern', 'Hessen', 'Sachsen'];
-    let sex : Array<string> = ['Herr', 'Frau', 'Divers'];
+    //___________________ Hooks: ___________________
+    const [currentForm, setCurrentForm] = useState(1);
+    const [formData, setFormData] = useState<any>({});
+    const [transition, setTransition] = useState(false);
+    const [direction, setDirection] = useState<'left' | 'right'>('left');
 
+
+    //___________________ Variablen ________________
+    const form1 = useForm<IFormInputs1>({
+        resolver: yupResolver(SignupSchema1),
+
+        // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
+        defaultValues: formData.form1 || {}
+    });
+
+    const form2 = useForm<IFormInputs2>({
+        resolver: yupResolver(SignupSchema2),
+
+        // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
+        defaultValues: formData.form2 || {}
+    });
+
+    const form3 = useForm<IFormInputs3>({
+        resolver: yupResolver(SignupSchema3),
+
+        // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
+        defaultValues: formData.form3 || {}
+    });
+
+
+    //___________________ Event-Handler ________________
+    /**
+     * @event function Event-Handler-Funktion wenn auf den Weiter-Button gedrückt wird
+     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
+     */
+    const handleNext = (formNumber: number) => {
+        // Übergang zum nächsten Formular
+        setDirection('left');
+        setTransition(true);
+
+
+        setTimeout(() => {
+            // Formulardaten zwischenspeichern, um Sie beim zurückgehen
+            // im Formular nicht zu verlieren
+            let data = {};
+            if (formNumber === 1) {
+                data = form1.getValues();
+            } else if (formNumber === 2) {
+                data = form2.getValues();
+            }
+            setFormData((prevData: any) => ({
+                ...prevData,
+                [`form${formNumber}`]: data
+            }));
+
+            // Formular wechseln:
+            setCurrentForm(formNumber + 1);
+
+            // Übergang zum nächsten Formular
+            setTransition(false);
+        }, 500);
+    };
+
+    /**
+     * @function handleBack Event-Handler-Funktion für den Zurückbutton
+     * @param formNumber Nummer des Formulars, auf das zurückgewechselt werden soll
+     */
+    const handleBack = (formNumber: number) => {
+        // Übergang zum nächsten Formular
+        setDirection('left');
+        setTransition(true);
+
+        setTimeout(() => {
+
+            // Formular wechseln:
+            setCurrentForm(formNumber);
+
+            // Übergang zum nächsten Formular
+            setTransition(false);
+        }, 500);
+    };
+
+
+    /**
+     * @event function Event-Handler-Funktion wenn auf den Registrierungs-Button gedrückt wird
+     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
+     */
+    const onSubmitForm3: SubmitHandler<any> = async data => {
+        const finalData = {
+            ...formData,
+            form3: data
+        };
+
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // alert(JSON.stringify(finalData));
+
+        // Daten ans Backend senden:
+        fetch('http://localhost:5001/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(finalData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Weiterverarbeitung der Antwort
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
+
+
+
+    //___________________ HTML: Formular ________________
     return (
         <div className="w-full h-screen flex items-start">
-
             {/************* Linke Seite ***************/}
             <div className='relative w-1/2 h-full flex flex-col'>
                 {/*--- Text ---*/}
                 <div className='absolute top-[25%] left-[15%]'>
-                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect</h1>
-                    <p className='text-lg font-medium text-slate-50'>#InfluecerMarketing #Werbepartner #Karriere</p>
+                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect </h1>
+                    <p className='text-lg font-medium text-slate-50'>#InfluencerMarketing #Werbepartner #Karriere</p>
                 </div>
 
                 {/*--- Hintergrund ---*/}
-                {/*<img src={} className='w-full h-full object-cover'/>*/}
                 <div className="flex-1 bg-gradient-to-r from-gray-900 from-5% to-sky-900 to-90%"></div>
             </div>
 
-
             {/************* Rechte Seite ***************/}
-            <div className='w-1/2 h-full flex flex-col items-center overflow-y-auto'>
-                {/*von der halben Seite soll nur 3/4 davon mit unseren Formular ausgefüllt werden*/}
+            {/*<div className='w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500'>*/}
+            <div className={`w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500 ${transition ? 'opacity-0 transform scale-95' : 'opacity-100 transform scale-100'}`}>
+            {/*<div className={`w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500 ${transition ? (direction === 'left' ? 'translate-x-full' : '-translate-x-full') : 'translate-x-0'}`}>*/}
+
                 <div className='w-3/4 mx-auto my-10'>
+                    {currentForm === 1 && (
+                        <form onSubmit={form1.handleSubmit(() => handleNext(1))} className='flex flex-col space-y-4'>
 
-                    {/*--- Überschrift ---*/}
-                    <div className="border-b-2 border-gray-900/10 pb-4">
-                        <h3 className='text-xl font-bold mt-6 mb-0 text-gray-900 '>Username & Passwort</h3>
-                        <p className="mt-1 pt-0 text-sm leading-6 text-gray-500">
-                            This information will be displayed publicly so be careful what you share.
-                        </p>
+                            <SignupFormInputs1 form1={form1} />
+
+                            <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
+                                <CancelButton type="button" text="Abbrechen" linkTo="/landing"/>
+                                <FormularButton type="submit" text="Weiter"/>
+                            </div>
+                        </form>
+                    )}
+
+                    {currentForm === 2 && (
+                    <div className={`transition-transform duration-500 ${currentForm == 2 ? 'translate-x-0' : '-translate-x-full'}`}>
+
+                        <form onSubmit={form2.handleSubmit(() => handleNext(2))} className='flex flex-col space-y-4'>
+
+                            <SignupFormInputs2 form2={form2} />
+
+                            <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
+                                <CancelButton type="button" text="Zurück" onClick={() => handleBack(1)} />
+                                <FormularButton type="submit" text="Weiter"/>
+                            </div>
+                        </form>
                     </div>
+                    )}
 
-                    {/*--- Formular ---*/}
-                    <form className='flex flex-col space-y-4'>
+                    {currentForm === 3 && (
+                        <form onSubmit={form3.handleSubmit(onSubmitForm3)} className='flex flex-col space-y-4'>
 
-                        {/*Hier Abstand zwischen den Input-Feldern bestimmen*/}
-                        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                            <SignupFormInputs3 form3={form3} />
 
-                            {/*Registrierungsdaten*/}
-                            <InputField id="email" label="Email" type="text" required={true} autoComplete="email" fieldWidth={4}/>
-                            <InputField id="passwort" label="Passwort" type="password" required={true} autoComplete="current-password" fieldWidth={4}/>
-x
-                            {/*Persönliche Daten*/}
-                            <InputSelect id="anrede" label="Anrede" required={true} fieldWidth={4} selectOptions={sex} autoComplete="sex"/>
-                            <InputField id="vorname" label="Vorname" type="text" required={true} autoComplete="given-name" fieldWidth={4}/>
-                            <InputField id="nachname" label="Nachname" type="text" required={true} autoComplete="family-name" fieldWidth={4}/>
-
-                            <InputSelect id="land" label="Land" required={true} fieldWidth={4} selectOptions={countries} autoComplete="country-name"/>
-                            <InputSelect id="bundesland" label="Bundesland" required={false} fieldWidth={4} selectOptions={bundesland}/>
-                            <InputField id="telefonnr" label="Telefonnummer" type="tel" required={true} autoComplete="tel" fieldWidth={4}/>
-
-                            {/*Sprachen*/}
-                            <InputField id="sprache" label="Sprache" type="text" required={false} fieldWidth={4}/>
-
-
-
-                            <InputTextarea id="ueberMich" label="Über mich" required={false} defaultValue="Ich heiße Sebastian" descr="Schreibe ein paar Sätze über dich." textboxRows={5}/>
-
-                            {/*Social-Media-Accounts*/}
-                            <InputFieldWithFixedText fixedText="instagram.com/" id="instaUsername" label="Instagram Username" type="text" required={true} fieldWidth={4}/>
-                        </div>
-                    </form>
-
+                            <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
+                                <CancelButton type="button" text="Zurück" onClick={() => handleBack(2)} />
+                                <FormularButton type="submit" text="Registrieren"/>
+                            </div>
+                        </form>
+                    )}
                 </div>
             </div>
         </div>
     );
-}
+};
+
+
 
 
 export default Signup;

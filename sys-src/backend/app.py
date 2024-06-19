@@ -1,55 +1,105 @@
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, request, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
+from database import save_user, find_user_by_email
+from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
-from pymongo import MongoClient, errors
-from bson.objectid import ObjectId
 
-
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB client setup
-client = MongoClient('mongodb', 27017)  # Connect to MongoDB service
-db = client['InfluenzaDB']  # Select database
-test_collection = db['test']  # Collection for testing
-
-# Define routes
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/test', methods=['GET'])
-def your_endpoint():
-    return jsonify({"message": "Hello from backend!"})
-
-
-@app.route('/testdb', methods=['GET'])
-def test_db():
-    try:
-        result = test_collection.insert_one({"message": "Hello from MongoDB!"})
-        return jsonify({"message": "Data inserted successfully!", "id": str(result.inserted_id)})
-    except errors.PyMongoError as e:
-        app.logger.error(f"Error inserting data into MongoDB: {str(e)}")
-        return make_response(jsonify({"error": str(e)}), 500)
+# Registrierungshandler 
+@app.route('/signup', methods=['POST'])
+def signup():
+    """
+    Verarbeitet die Registrierung eines neuen Benutzers.
     
+    Erwartet JSON-Daten im Anfrage-Body, die in drei Formen aufgeteilt sind (form1, form2, form3).
+    Validiert die Eingabedaten und speichert den neuen Benutzer in der Datenbank, falls gültig.
+    
+    Returns:
+        JSON-Antwort mit Erfolgs- oder Fehlermeldung.
+    """
+    data = request.json
 
-users = {}
+    form1 = data.get('form1')
+    form2 = data.get('form2')
+    form3 = data.get('form3')
 
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    username = data.get('username')
+
+    email    = form1.get('email')
+    password = form1.get('passwort')
+
+    title      = form2.get('anrede')
+    first_name = form2.get('vorname')
+    last_name  = form2.get('nachname')
+    # birthdate = data.get('geburtsdatum')
+    country    = form2.get('land')
+    state      = form2.get('bundesland')
+    phone      = form2.get('telefonnr')
+    language   = form2.get('sprache')
+    about_me   = form2.get('ueberMich')
+
+    instagram_username = form3.get('instaUsername')
+
+    # Eingabedaten validieren
+    is_valid, message = validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username)
+    if not is_valid:
+        return jsonify({"error": message}), 400
+
+    user = find_user_by_email(app, email)
+
+    if user:
+        return jsonify({"error": "E-Mail-Adresse bereits registriert."}), 400
+
+    # Passwort hashen
+    hashed_password = generate_password_hash(password, method='scrypt')
+
+    # Benutzer in der Datenbank speichern
+    new_user = {
+        'email': email,
+        'password': hashed_password,
+        'title': title,
+        'first_name': first_name,
+        'last_name': last_name,
+        # 'birthdate': birthdate,
+        'country': country,
+        'state': state,
+        'phone': phone,
+        'language': language,
+        'about_me': about_me,
+        'instagram_username': instagram_username
+    }
+    save_user(app, new_user)
+
+    return jsonify({"message": "Registrierung erfolgreich."}), 201
+
+# Anmeldehandler
+@app.route('/login', methods=['POST'])
+def login():
+    """
+    Verarbeitet die Anmeldung eines Benutzers.
+    
+    Erwartet JSON-Daten im Anfrage-Body mit 'Email' und 'Password'.
+    Überprüft die Eingabedaten und authentifiziert den Benutzer, falls gültig.
+    
+    Returns:
+        JSON-Antwort mit Erfolgs- oder Fehlermeldung.
+    """
+    data = request.json
+    email = data.get('email')
     password = data.get('password')
 
-    if not username or not password:
-        return jsonify(message='Benutzername und Passwort sind erforderlich'), 400
+    # Eingabedaten validieren
+    is_valid, message = validate_login_data(email, password)
+    if not is_valid:
+        return jsonify({"error": message}), 400
 
-    if username in users:
-        return jsonify(message='Benutzer existiert bereits'), 409
+    user = find_user_by_email(app, email)
 
-    users[username] = password
-    return jsonify(message='Benutzer erfolgreich registriert'), 201
+    if not user or not check_password_hash(user['password'], password):
+        return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
 
+    return jsonify({"message": "Anmeldung erfolgreich."}), 200
 
 # Run the app
 if __name__ == '__main__':
