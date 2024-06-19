@@ -8,8 +8,8 @@ from IPython.display import display, Image  # Diese Zeile wird nicht benötigt
 app = Flask(__name__)
 CORS(app)  # Erlaubt Cross-Origin-Requests
 
-# Definiere eine Route für den Endpunkt /process, der POST-Anfragen akzeptiert
-@app.route('/process', methods=['POST'])
+# Definiere eine Route für den Endpunkt /, der POST/GET-Anfragen akzeptiert
+@app.route('/process', methods=['POST', 'GET'])
 def process():
     # Erhalte die JSON-Daten aus der Anfrage
     data = request.json
@@ -29,7 +29,7 @@ def process():
 
         # Erhalte die URL des Profilbildes
         profile_pic_url = profile.profile_pic_url
-        print(f"Profilbild URL: {profile_pic_url}")
+        print(str(jsonify({'Profile_Picture': profile_pic_url})))#f"Profilbild URL: {profile_pic_url}"
 
         # Erhalte die Profilbeschreibung (Bio)
         profile_bio = profile.biography
@@ -38,7 +38,7 @@ def process():
         # Erhalte die letzten drei Posts
         posts = []
         for post in profile.get_posts():
-            if len(posts) < 3:
+            if len(posts) < 10:
                 posts.append(post)
             else:
                 break
@@ -52,7 +52,7 @@ def process():
         return jsonify({'error': 'Profile not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+# Starte die Flask-Anwendung im Debug-Modus 
 
-# Starte die Flask-Anwendung im Debug-Modus
 if __name__ == '__main__':
     app.run(debug=True)
