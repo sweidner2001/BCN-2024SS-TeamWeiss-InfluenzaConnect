@@ -7,9 +7,25 @@ db = client[DATABASE_NAME]
 registration_collection = db[COLLECTION_NAME]
 
 def get_db_connection():
+    """
+    Stellt eine Verbindung zur MongoDB her und gibt die Collection zurück.
+
+    Returns:
+        Collection: Die Registrierungssammlung der Datenbank.
+    """
     return registration_collection
 
 def save_user(app, user_data):
+    """
+    Speichert die Benutzerdaten in der MongoDB.
+
+    Args:
+        app (Flask): Die Flask-App-Instanz zum Protokollieren von Fehlern.
+        user_data (dict): Ein Wörterbuch mit den Benutzerdaten.
+
+    Raises:
+        Exception: Wenn beim Speichern des Benutzers ein Fehler auftritt.
+    """
     try:
         # Ein Standardformat für den Benutzerdatensatz definieren
         standard_user_data = {
@@ -24,14 +40,26 @@ def save_user(app, user_data):
             'language': user_data.get('language', ''),
             'about_me': user_data.get('about_me', ''),
             'instagram_username': user_data.get('instagram_username', '')
-            }
+        }
         registration_collection.insert_one(standard_user_data)
     except Exception as e:
         app.logger.error(f"Error saving user: {e}")
         raise e
-    
 
 def find_user_by_email(app, email):
+    """
+    Findet einen Benutzer in der MongoDB anhand der E-Mail-Adresse.
+
+    Args:
+        app (Flask): Die Flask-App-Instanz zum Protokollieren von Fehlern.
+        email (str): Die E-Mail-Adresse des Benutzers.
+
+    Returns:
+        dict: Die Benutzerdaten im Standardformat oder None, wenn der Benutzer nicht gefunden wird.
+
+    Raises:
+        Exception: Wenn beim Finden des Benutzers ein Fehler auftritt.
+    """
     try:
         user = registration_collection.find_one({'email': email})
         if user:
