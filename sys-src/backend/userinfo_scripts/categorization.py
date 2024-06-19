@@ -74,10 +74,9 @@ def hashtagGPT(hashtags):
     # Reduce GPT-Response to Content (only need Chat Response)
     return chat_completion.choices[0].message.content
 
-
-# hashtags = get_instagram_hashtags("alexa_breit")
+# ### EXAMPLE ###
+# hashtags = get_instagram_hashtags("cristiano")
 # subject = hashtagGPT(hashtags)
-
 # print(subject)
 
 # print(get_instagram_comments("alexa_breit"))

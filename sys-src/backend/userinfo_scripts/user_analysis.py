@@ -1,6 +1,6 @@
 import instaloader
 
-
+# Scrape average number of comments on a post
 def get_instagram_comments(username):
     L = instaloader.Instaloader()
 
@@ -9,7 +9,7 @@ def get_instagram_comments(username):
 
     for post in profile.get_posts():
         comments_by_posts.append(post.comments)
-        # limit to 100 posts, adjust if needed
+        # Limit to 100 posts, adjust if needed
         if len(comments_by_posts) >= 100:
             break
     
@@ -22,6 +22,7 @@ def get_instagram_comments(username):
     return comment_counter / len(comments_by_posts)
 
 
+# Scrape average number of likes on a post
 def get_instagram_likes(username):
     L = instaloader.Instaloader()
 
@@ -62,3 +63,45 @@ def download_instagram_pictures_jpg(username, amount):
         except Exception as e:
             print(f"Fehler beim Herunterladen des Beitrags: {e}")
 
+# Scraping number of followers
+def get_instagram_followers(username):
+    L = instaloader.Instaloader()
+    profile = instaloader.Profile.from_username(L.context, username)
+
+    return profile.followers
+
+
+def engagement_rate(username):
+    L = instaloader.Instaloader()
+    profile = instaloader.Profile.from_username(L.context, username)
+
+    followers = get_instagram_followers(username)
+    comments = get_instagram_comments(username)
+    likes = get_instagram_likes(username)
+
+    likes_weight = 0.7
+    comments_weight = 0.3
+
+    # Calculate Engagement-Rate
+    return (likes * likes_weight + comments * comments_weight / followers)
+
+def time_since_last_post(username):
+    L = instaloader.Instaloader()
+    profile = instaloader.Profile.from_username(L.context, username)
+
+    for post in profile.get_posts():
+        timestamp = post.date
+        break
+
+    return timestamp
+
+def most_popular_posts(username):
+    pass
+
+
+# username = "addisonraee"
+# L = instaloader.Instaloader()
+# profile = instaloader.Profile.from_username(L.context, username)
+
+
+#print(last_user_interaction(username))
