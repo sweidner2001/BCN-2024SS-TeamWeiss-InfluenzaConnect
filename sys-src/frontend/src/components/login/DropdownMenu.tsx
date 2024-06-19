@@ -124,7 +124,7 @@ const LoginDropDownMenu: React.FC<DropDownMenuProps> = ({ name, direction = 'bot
 
   const dropdownClasses = direction === 'right'
     ? 'absolute right-full top-0 bg-gray-800 text-white py-2 mt-2 rounded-md w-64 transition ease-in duration-200 transform origin-top-right'
-    : 'absolute right-0 bg-gray-900 text-white py-2 mt-2 rounded-md w-64 transition ease-in duration-200 transform origin-top-right';
+    : 'absolute right-0 bg-gray-800 text-white py-2 mt-2 rounded-md w-64 transition ease-in duration-200 transform origin-top-right';
 
   const variants = {
     open: { opacity: 1, scale: 1 },

@@ -25,6 +25,7 @@ def signup():
     form2 = data.get('form2')
     form3 = data.get('form3')
 
+
     email    = form1.get('email')
     password = form1.get('passwort')
 
