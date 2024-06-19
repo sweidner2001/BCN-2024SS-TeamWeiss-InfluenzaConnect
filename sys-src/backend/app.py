@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from database import save_user, find_user_by_email
+from database import save_user, find_user_by_email, fetch_all_users
 from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
 
@@ -100,6 +100,34 @@ def login():
         return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
 
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
+
+
+@app.route('/collectData', methods=['POST'])
+def collectData():
+    """"
+    Sammelt alle Daten für die Anzeige aller Instagramm Profile zusammen und gibt alle Daten zurück
+
+    Returns:
+        JSON-Antwort mit gesammelten Userdaten.
+    """
+    # Userdaten aus der Registrierungsdatenbank 
+    users = fetch_all_users(); 
+
+    # zusätzliche Daten vom Webscraping
+    # ToDo Domi
+    webscraping_data = []
+
+    # Profilbilder der Instagram Profile 
+    # ToDo Timon
+    profilepictures = []
+
+    user_data = {
+        "users": users,
+        "webscraping_data":webscraping_data,
+        "profilepictures": profilepictures
+    }
+
+    return user_data
 
 # Run the app
 if __name__ == '__main__':
