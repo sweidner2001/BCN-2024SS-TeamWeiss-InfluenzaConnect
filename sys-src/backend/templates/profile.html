@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.Name }}'s Instagram Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="{{ profile.profile_pic_url }}" alt="Profile" class="profile-pic">
+            <h1>{{ profile.Name }}</h1>
+            <p>{{ profile.profile_bio }}</p>
+        </div>
+        <div class="profile-posts">
+            {% for url, caption in zip(profile.posts_url, profile.posts_caption) %}
+            <div class="post">
+                <a href="{{ url }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ url }}" alt="Post">
+                </a>
+                <p>{{ caption }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

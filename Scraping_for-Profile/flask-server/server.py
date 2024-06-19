@@ -14,7 +14,7 @@ def process():
     # Erhalte die JSON-Daten aus der Anfrage
     data = request.json
     # Hole den Parameter 'param' aus den JSON-Daten
-    param = "alexa_breit"#data.get('param')
+    param = data.get('param')
     
     # Überprüfen, ob der Parameter existiert
     if not param:
