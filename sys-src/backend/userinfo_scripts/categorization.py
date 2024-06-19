@@ -30,26 +30,6 @@ def get_instagram_hashtags(username):
     return hashtags
 
 
-def get_instagram_comments(username):
-    L = instaloader.Instaloader()
-
-    profile = instaloader.Profile.from_username(L.context, "alexa_breit")
-    comments_by_posts = []
-
-    for post in profile.get_posts():
-        comments_by_posts.append(post.comments)
-        # limit to 100 posts, adjust if needed
-        if len(comments_by_posts) >= 100:
-            break
-    
-    # Calculate total sum of comments
-    comment_counter = 0
-    for comments in comments_by_posts:
-        comment_counter += comments
-
-    # Return mean comments
-    return comment_counter / len(comments_by_posts)
-
 # Categorization of scraped hashtags to a specific genre
 # Input: Hashtags
 # Output: Categories (atm. 4, might be adjusted)
