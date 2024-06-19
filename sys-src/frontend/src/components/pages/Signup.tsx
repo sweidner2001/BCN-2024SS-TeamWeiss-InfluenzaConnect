@@ -51,6 +51,10 @@ const Signup: React.FC = () => {
 
 
     //___________________ Event-Handler ________________
+    /**
+     * @event function Event-Handler-Funktion wenn auf den Weiter-Button gedrückt wird
+     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
+     */
     const handleNext = (formNumber: number) => {
         // Übergang zum nächsten Formular
         setDirection('left');
@@ -74,10 +78,15 @@ const Signup: React.FC = () => {
             // Formular wechseln:
             setCurrentForm(formNumber + 1);
 
+            // Übergang zum nächsten Formular
             setTransition(false);
         }, 500);
     };
 
+    /**
+     * @function handleBack Event-Handler-Funktion für den Zurückbutton
+     * @param formNumber Nummer des Formulars, auf das zurückgewechselt werden soll
+     */
     const handleBack = (formNumber: number) => {
         // Übergang zum nächsten Formular
         setDirection('left');
@@ -88,17 +97,26 @@ const Signup: React.FC = () => {
             // Formular wechseln:
             setCurrentForm(formNumber);
 
+            // Übergang zum nächsten Formular
             setTransition(false);
         }, 500);
     };
 
+
+    /**
+     * @event function Event-Handler-Funktion wenn auf den Registrierungs-Button gedrückt wird
+     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
+     */
     const onSubmitForm3: SubmitHandler<any> = async data => {
         const finalData = {
             ...formData,
             form3: data
         };
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        alert(JSON.stringify(finalData));
+
+        // await new Promise(resolve => setTimeout(resolve, 1000));
+        // alert(JSON.stringify(finalData));
+
+        // Daten ans Backend senden:
         fetch('http://localhost:5001/signup', {
             method: 'POST',
             headers: {
@@ -108,8 +126,8 @@ const Signup: React.FC = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             // Weiterverarbeitung der Antwort
+            console.log(data);
         })
         .catch(error => {
             console.error('Error:', error);
