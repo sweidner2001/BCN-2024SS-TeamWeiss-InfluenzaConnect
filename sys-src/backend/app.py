@@ -7,9 +7,18 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Registrierungshandler
+# Registrierungshandler 
 @app.route('/signup', methods=['POST'])
 def signup():
+    """
+    Verarbeitet die Registrierung eines neuen Benutzers.
+    
+    Erwartet JSON-Daten im Anfrage-Body, die in drei Formen aufgeteilt sind (form1, form2, form3).
+    Validiert die Eingabedaten und speichert den neuen Benutzer in der Datenbank, falls gültig.
+    
+    Returns:
+        JSON-Antwort mit Erfolgs- oder Fehlermeldung.
+    """
     data = request.json
 
     form1 = data.get('form1')
@@ -22,7 +31,7 @@ def signup():
     title      = form2.get('anrede')
     first_name = form2.get('vorname')
     last_name  = form2.get('nachname')
-    #birthdate = data.get('geburtsdatum')
+    # birthdate = data.get('geburtsdatum')
     country    = form2.get('land')
     state      = form2.get('bundesland')
     phone      = form2.get('telefonnr')
@@ -51,7 +60,7 @@ def signup():
         'title': title,
         'first_name': first_name,
         'last_name': last_name,
-#        'birthdate': birthdate,
+        # 'birthdate': birthdate,
         'country': country,
         'state': state,
         'phone': phone,
@@ -66,6 +75,15 @@ def signup():
 # Anmeldehandler
 @app.route('/login', methods=['POST'])
 def login():
+    """
+    Verarbeitet die Anmeldung eines Benutzers.
+    
+    Erwartet JSON-Daten im Anfrage-Body mit 'Email' und 'Password'.
+    Überprüft die Eingabedaten und authentifiziert den Benutzer, falls gültig.
+    
+    Returns:
+        JSON-Antwort mit Erfolgs- oder Fehlermeldung.
+    """
     data = request.json
     email = data.get('Email')
     password = data.get('Password')
@@ -81,6 +99,7 @@ def login():
         return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
 
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
+
 # Run the app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5001)
