@@ -14,7 +14,7 @@ const LandingPage: React.FC = () => {
         </div>
         <div className="flex items-center">
           <LoginDropDownMenu name="Login">
-            <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="text" placeholder="Username" />
+            <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="text" placeholder="Email" />
             <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="password" placeholder="Password" />
             <button className="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => console.log('Login button clicked')}>Login</button>
           </LoginDropDownMenu>

@@ -10,6 +10,8 @@ interface DropDownMenuProps {
 
 const LoginDropDownMenu: React.FC<DropDownMenuProps> = ({ name, direction = 'bottom' }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleMouseEnter = () => {
     setIsOpen(true);
@@ -17,6 +19,32 @@ const LoginDropDownMenu: React.FC<DropDownMenuProps> = ({ name, direction = 'bot
 
   const handleMouseLeave = () => {
     setIsOpen(false);
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Email: email,
+          Password: password
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      if (response.status === 200) {
+        alert('Anmeldung erfolgreich');
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error('Fehler bei der Anmeldung:', error);
+    }
   };
 
   const dropdownClasses = direction === 'right'
@@ -44,9 +72,9 @@ const LoginDropDownMenu: React.FC<DropDownMenuProps> = ({ name, direction = 'bot
             variants={variants}
           >
             <LoginDropdown>
-              <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="text" placeholder="Email" />
+              <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="text" placeholder="Email" value={email} />
               <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="password" placeholder="Password" />
-              <button className="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => console.log('Login button clicked')}>Login</button>
+              <button className="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => handleLogin}>Login</button>
             </LoginDropdown>
           </motion.div>
         )}

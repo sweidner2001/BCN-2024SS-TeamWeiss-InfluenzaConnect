@@ -67,8 +67,8 @@ def signup():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
-    email = data.get('email')
-    password = data.get('password')
+    email = data.get('Email')
+    password = data.get('Password')
 
     # Eingabedaten validieren
     is_valid, message = validate_login_data(email, password)
