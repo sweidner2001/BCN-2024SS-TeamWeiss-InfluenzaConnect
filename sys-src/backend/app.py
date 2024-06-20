@@ -101,6 +101,39 @@ def login():
 
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
 
+
+# Datenbeschaffung für Profilansicht 
+@app.route('/profileView', methods=['POST'])
+def get_profile_data():
+    """
+    Selektiert alle User Daten zu einem bestimmten User.
+    
+    Erwartet JSON-Daten im Anfrage-Body mit 'Email'.
+    Überprüft die Eingabedaten und authentifiziert den Benutzer, falls gültig.
+    
+    Returns:
+        JSON-Antwort mit Userdaten.
+    """
+    data  = request.json
+    email = data.get('email')
+
+    user = find_user_by_email(app, email)
+
+    if not user:
+        return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
+    
+    # zusätzliche webscraping Daten 
+    webscraping_data = []
+
+    #Daten zusammenführen
+    user_data ={
+        'user': user,
+        'webscraping': webscraping_data
+    }
+
+    return jsonify(user_data), 200
+
+
 # Run the app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5001)
