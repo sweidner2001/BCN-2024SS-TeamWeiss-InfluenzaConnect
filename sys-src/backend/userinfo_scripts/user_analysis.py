@@ -1,7 +1,19 @@
 import instaloader
 
-# Scrape average number of comments on a post
-def get_instagram_comments(username):
+
+def load_instagram_profile(username):
+    """
+    Attempts to load an Instagram profile using the provided
+    username and handling various exceptions.
+
+    Parameters:
+    username (str): Instagram username to load.
+
+    Returns: 
+    instaloader.Profile: The loaded User Profile if successful.
+    str: Error message if profile can not be loaded
+    """
+
     L = instaloader.Instaloader()
 
     try:
@@ -13,126 +25,126 @@ def get_instagram_comments(username):
     # connectivity issues
     except instaloader.exceptions.ConnectionException:
         return "Error: Connection error. Please check your internet connection."
-    # different errors
+    # various errors
     except Exception as e:
         return f"Error: {e}"
     
-    comments_by_posts = []
+    return profile
 
-    try:
-        # Limit to 100 posts, adjust if needed
-        comments_by_posts = [post.comments for post in profile.get_posts()][:100]
+def get_instagram_comments(username):
+    """
+    Calculates the average number of comments on a post for an Instagram profile.
+
+    Parameters: 
+    username (str): The username of the influencer whose comments are to be fetched
+
+    Returns:
+    float: average number of comments per post
+    """
+    profile = load_instagram_profile(username)
+    comments_by_posts = []
     
-    # connectivity issues
-    except instaloader.exceptions.ConnectionException:
-        return "Error: Connection error while fetching posts. Please try again."
-    # different errors
-    except Exception as e:
-        return f"Error: {e}"
+    # limit to 100 posts, adjust if needed
+    comments_by_posts = [post.comments for post in profile.get_posts()][:100]
     
+    # Error handling
     if not comments_by_posts:
-        return "Error: No posts or user found or unable to fetch comments."
+        return "Error: No comments or user found or unable to fetch comments."
     
     comment_counter = sum(comments_by_posts)
     return comment_counter / len(comments_by_posts)
 
-
-# Scrape average number of likes on a post
 def get_instagram_likes(username):
-    L = instaloader.Instaloader()
-    
-    try:
-        profile = instaloader.Profile.from_username(L.context, username)
+    """
+    Calculate the average number of likes per post for an Instagram profile.
 
-    # wrong username
-    except instaloader.exceptions.ProfileNotExistsException:
-        return "Error: Profile does not exist."
-    # connectivity issues
-    except instaloader.exceptions.ConnectionException:
-        return "Error: Connection error. Please check your internet connection."
-    # different errors
-    except Exception as e:
-        return f"Error: {e}"
+    Parameters:
+    username (str): The Instagram username whose likes are to be fetched.
+
+    Returns:
+    float: The average number of likes per post.
+    str: Error message if no posts can be found or if likes cannot be fetched.
+    """
+    profile = load_instagram_profile(username)
     
     likes_by_post = []
     
-    try:
-        likes_by_post = [post.likes for post in profile.get_posts()][:100]
-    # connectivity issues
-    except instaloader.exceptions.ConnectionException:
-        return "Error: Connection error while fetching posts. Please try again."
-    except Exception as e:
-        return f"Error: {e}"
+    likes_by_post = [post.likes for post in profile.get_posts()][:100]
     
+    # Error handling
     if not likes_by_post:
         return "Error: No posts found or unable to fetch likes."
     
     like_counter = sum(likes_by_post)
     return like_counter / len(likes_by_post)
 
-# Download an Amount of Instagram-Pictures
 def download_instagram_pictures_jpg(username, amount):
-    L = instaloader.Instaloader()
-    try:
-        profile = instaloader.Profile.from_username(L.context, username)
-    except instaloader.exceptions.ProfileNotExistsException:
-        return "Error: Profile does not exist."
-    except instaloader.exceptions.ConnectionException:
-        return "Error: Connection error. Please check your internet connection."
-    except Exception as e:
-        return f"Error: {e}"
-
-    counter = 0
-    for post in profile.get_posts():
-        try:
-            L.download_post(post, target=profile.username)
-            counter += 1
-            if counter >= amount:
-                break
-        except Exception as e:
-            print(f"Fehler beim Herunterladen des Beitrags: {e}")
-
-# Scraping number of followers
-def get_instagram_followers(username):
-    L = instaloader.Instaloader()
+    """
+    Downloads an amount of the latest Instagram pictures for an Instagram profile. 
+    """
+    profile = load_instagram_profile(username)
     
     try:
-        profile = instaloader.Profile.from_username(L.context, username)
-    except instaloader.exceptions.ProfileNotExistsException:
-        return "Error: Profile does not exist."
-    except instaloader.exceptions.ConnectionException:
-        return "Error: Connection error. Please check your internet connection."
-    except Exception as e:
-        return f"Error: {e}"
+        L = instaloader.Instaloader()
+        counter = 0
 
+        for post in profile.get_posts():
+                L.download_post(post, target=profile.username)
+                counter += 1
+                if counter >= amount:
+                    break
+    except Exception as e:
+        print(f"Can not download Picture: {e}")
+
+def get_instagram_followers(username):
+    """
+    Retrieves the number of followers for a given Instagram username.
+
+    Parameters:
+    username (str): The Instagram username whose followers count are to be retrieved.
+
+    Returns:
+    int: The total number of followers.
+    """
+    profile = load_instagram_profile(username)
     return profile.followers
 
-
 def engagement_rate(username):
-    L = instaloader.Instaloader()
-    
-    try:
-        profile = instaloader.Profile.from_username(L.context, username)
-    except instaloader.exceptions.ProfileNotExistsException:
-        return "Error: Profile does not exist."
-    except instaloader.exceptions.ConnectionException:
-        return "Error: Connection error. Please check your internet connection."
-    except Exception as e:
-        return f"Error: {e}"
+    """
+    Calculates the engagement rate for an Instagram Influencer based on likes and comments.
 
+    Parameters:
+    username (str): The Instagram username of the influencer.
+
+    Returns:
+    float: The calculated engagement rate. 
+
+    Notes: 
+    Comments are weighted more heavily than likes in this calculation, because they cost more effort.
+    """
     followers = get_instagram_followers(username)
     comments = get_instagram_comments(username)
     likes = get_instagram_likes(username)
 
-    likes_weight = 0.7
-    comments_weight = 0.3
+    # comments require more effort than a like
+    likes_weight = 0.3
+    comments_weight = 0.7
 
-    # Calculate Engagement-Rate
-    return (likes * likes_weight + comments * comments_weight / followers)
+    # calculate engagement-rate
+    engagement_rate = (likes * likes_weight + comments * comments_weight / followers)
+
+    return engagement_rate
+
 
 def time_since_last_post(username):
-    L = instaloader.Instaloader()
-    profile = instaloader.Profile.from_username(L.context, username)
+    """
+    Retrieves the timestamp of the latest Instagram post on the Instagram profile.
+
+    Parameters:
+    username (str): The Instagram username whose latest post timestamp is to be retrieved.
+    datetime.datetime: The timestamp of the latest post as datetime object.
+    """
+    profile = load_instagram_profile(username)
 
     for post in profile.get_posts():
         timestamp = post.date
@@ -148,4 +160,4 @@ def most_popular_posts(username):
 # profile = instaloader.Profile.from_username(L.context, username)
 
 
-print(get_instagram_comments("celina"))
+print(load_instagram_profile("addisonraee"))

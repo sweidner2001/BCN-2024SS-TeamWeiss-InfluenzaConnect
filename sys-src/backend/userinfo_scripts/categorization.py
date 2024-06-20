@@ -1,19 +1,25 @@
-import instaloader
+from user_analysis import load_instagram_profile
 import re
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
 
 
-# Scraping Users Instagram-Posts for Hashtags
-# Input: Instagram-Username
-# Output: Array of Hashtags
 
 def get_instagram_hashtags(username):
-    L = instaloader.Instaloader()
-    
-    # Load Instagram-Profile
-    profile = instaloader.Profile.from_username(L.context, username)
+    """
+    Scrapes Instagram posts for hashtags associated with a given username.
+
+    Parameters:
+    username (str): The Instagram username whose posts' hashtags are to be scraped.
+
+    Returns:
+    list: A list of hashtags (strings) found in captions of the user's Instagram posts.
+
+    Notes:
+    Only the 100 latest posts' captions are scraped for hashtags.
+    """
+    profile = load_instagram_profile
     
     hashtags = []
 
@@ -32,12 +38,20 @@ def get_instagram_hashtags(username):
     return hashtags
 
 
-# Categorization of scraped hashtags to a specific genre
-# Input: Hashtags
-# Output: Categories (atm. 4, might be adjusted)
 def hashtagGPT(hashtags):
+    """
+    Categorizes a list of hashtags into specific genres using OpenAI's GPT-3.5-turbo models.
 
-    # Load .env (Configuration of OpenAI-Api-Key)
+    Parameters:
+    hashtags (list): A list of hashtags (strings) scraped from Instagram posts
+
+    Returns: 
+    list:   A list containing two categories (strings) that best match the hashtags according to GPT.
+
+    Notes:
+    The primary category is listed first.
+    """
+    # Load .env (OpenAI-Api-Key)
     load_dotenv()
     openai_api_key = os.getenv('OPENAI_API_KEY')
 
@@ -67,20 +81,21 @@ def hashtagGPT(hashtags):
                 Spirituelles und Esoterik, Immobilien und Architektur, Event- und Partymanagement. \
                 Hauptaufgabe: \
                 Gib mir eine Zeichenkette zurück, die eine primäre und eine sekundäre der folgenden Sparten durch Komma getrennt enthält. \
-                Gib mir ausschließlich diese Sparten mit Komma getrennt zurück und sonst keinen weiteren Text."
+                Gib mir ausschließlich diese Sparten mit Komma getrennt zurück und sonst keinen weiteren Text.
+                Nenne die primäre Sparte zuerst und als zweites die sekundäre Sparte."
             }
         ],
         model="gpt-3.5-turbo"
     )
 
-    # Reduce GPT-Response to Content (only need Chat Response)
+    # Extract the primary and secondary category
     category = chat_completion.choices[0].message.content.split(", ")
     return category
     
 
 # ### EXAMPLE ###
-hashtags = get_instagram_hashtags("therealmoneyboy")
-subject = hashtagGPT(hashtags)
-print(subject)
+# hashtags = get_instagram_hashtags("therealmoneyboy")
+# subject = hashtagGPT(hashtags)
+# print(subject)
 
 # print(get_instagram_comments("alexa_breit"))
