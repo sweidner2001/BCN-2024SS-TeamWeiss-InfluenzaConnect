@@ -42,14 +42,14 @@ def signup():
     instagram_username = form3.get('instaUsername')
 
     # Eingabedaten validieren
-    is_valid, message = validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username)
+    is_valid, errors = validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username)
     if not is_valid:
-        return jsonify({"error": message}), 400
+        return jsonify(errors), 400
 
     user = find_user_by_email(app, email)
 
     if user:
-        return jsonify({"error": "E-Mail-Adresse bereits registriert."}), 400
+        return jsonify({"email": "E-Mail-Adresse bereits registriert."}), 400
 
     # Passwort hashen
     hashed_password = generate_password_hash(password, method='scrypt')
@@ -90,14 +90,14 @@ def login():
     password = data.get('password')
 
     # Eingabedaten validieren
-    is_valid, message = validate_login_data(email, password)
+    is_valid, error = validate_login_data(email, password)
     if not is_valid:
-        return jsonify({"error": message}), 400
+        return jsonify(error), 400
 
     user = find_user_by_email(app, email)
 
     if not user or not check_password_hash(user['password'], password):
-        return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
+        return jsonify({"passwort": "Ungültige E-Mail oder ungültiges Passwort."}), 401
 
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
 
