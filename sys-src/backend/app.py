@@ -125,10 +125,14 @@ def get_profile_data():
     # zusätzliche webscraping Daten 
     webscraping_data = []
 
+    # Profilbilder
+    profile_picture = []
+
     #Daten zusammenführen
     user_data ={
         'user': user,
-        'webscraping': webscraping_data
+        'webscraping': webscraping_data,
+        'profilPicture': profile_picture
     }
 
     return jsonify(user_data), 200
