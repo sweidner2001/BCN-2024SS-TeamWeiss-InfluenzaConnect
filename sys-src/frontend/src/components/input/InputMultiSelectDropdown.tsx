@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import InputLabel from "./InputLabel";
 import ErrorField from "./ErrorField";
+import {useController, UseControllerProps} from "react-hook-form";
 
 
 
@@ -9,22 +10,40 @@ interface InputMultiSelectDropdownProps {
     id: string;
     label: string;
     register?: any;
-    selectOptions: Array<string>
+    // selectOptions: Array<string>
     autoComplete?: string;
     error?: string;
 }
 
 
+interface MultiSelectDropdownProps extends UseControllerProps {
+    options: string[];
+}
 
+const InputMultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({options, control, name }) => {
 
-const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({...probs}) => {
+    const { field } = useController({
+        control,
+        name
+    });
+
     //_________________ Hooks: ______________
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>(field.value || []);
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
 
+
     // Variablen:
+
+    const probs: InputMultiSelectDropdownProps = {
+        fieldWidth: 4,
+        id: 'sprache',
+        label: 'Example Label',
+        register: () => {},  // Hier könnte eine tatsächliche Register-Funktion von z.B. react-hook-form stehen
+        // selectOptions: ['Option 1', 'Option 2', 'Option 3'],
+    };
+
     let classNameWidth = probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
 
 
@@ -39,6 +58,8 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({...p
             // Element in die Auswahlliste mit aufnehmen:
             setSelectedOptions([...selectedOptions, option]);
         }
+
+        field.onChange([...selectedOptions, option]);
     };
 
     // Event-Handler, wenn auf einen Cancel-Button von einen ausgewählten Eintrag geklickt wurde:
@@ -92,7 +113,7 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({...p
                         <div
                             className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
                             <ul>
-                                {probs.selectOptions.map((option, index) => (
+                                {options.map((option, index) => (
                                     <li key={index} className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center 
                                     ${ selectedOptions.includes(option) ? 'bg-blue-100 text-blue-700' : ''}`}
                                         onClick={() => handleSelectOption(option)}>

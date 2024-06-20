@@ -15,6 +15,7 @@ interface ISignupForm1 {
 interface IFormInputs1 {
     email: string;
     passwort: string;
+    sprache: string[];
 }
 
 
@@ -81,8 +82,9 @@ const SignupFormInputs1: React.FC<ISignupForm1> = ({form1}) => {
                             register={form1.register("passwort")} error={form1.formState.errors.passwort?.message}/>
 
 
-                <InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" fieldWidth={4} selectOptions={options}
-                                          error={form1.formState.errors.email?.message}/>
+                <InputMultiSelectDropdown options={["a", "b", "c"]}
+                                          control={form1.control}
+                                          name="controlled"/>
             </div>
         </>
     );

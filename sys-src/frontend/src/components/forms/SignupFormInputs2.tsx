@@ -22,7 +22,7 @@ interface IFormInputs2 {
     land: string;
     bundesland: string;
     telefonnr: string;
-    sprache: string;
+    // sprache: string;
     ueberMich: string;
 }
 
@@ -48,7 +48,7 @@ const SignupSchema2 = yup.object({
     land: yup.string().trim().required("Bitte geben Sie Ihr Herkunftsland an!"),
     bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
     telefonnr: yup.string().trim().required("Bitte Geben Sie Ihre Telefonnummer an!").max(...getMaxFieldLength(25)),
-    sprache: yup.string().trim().required("Bitte geben Sie Ihre Sprachen ein, die Sie beherrschen!").max(...getMaxFieldLength(25)),
+    // sprache: yup.string().trim().required("Bitte geben Sie Ihre Sprachen ein, die Sie beherrschen!").max(...getMaxFieldLength(25)),
     ueberMich: yup.string().trim().defined().max(...getMaxFieldLength(500))
 });
 
@@ -109,10 +109,10 @@ const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
                             fieldWidth={4}
                             register={form2.register("telefonnr")} error={form2.formState.errors.telefonnr?.message}/>
 
-                <InputField id="sprache" label="Sprache" type="text" fieldWidth={4}
-                            register={form2.register("sprache")} error={form2.formState.errors.sprache?.message}/>
+                {/*<InputField id="sprache" label="Sprache" type="text" fieldWidth={4}*/}
+                {/*            register={form2.register("sprache")} error={form2.formState.errors.sprache?.message}/>*/}
 
-                <InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" selectOptions={languages} fieldWidth={4}/>
+                {/*<InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" selectOptions={languages} fieldWidth={4}/>*/}
                 <InputTextarea id="ueberMich" label="Über mich" defaultValue=""
                                descr="Schreibe ein paar Sätze über dich." textboxRows={5}
                                register={form2.register("ueberMich")} error={form2.formState.errors.ueberMich?.message}/>

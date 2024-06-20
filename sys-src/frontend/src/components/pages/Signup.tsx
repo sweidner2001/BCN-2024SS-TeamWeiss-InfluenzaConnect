@@ -29,7 +29,7 @@ const Signup: React.FC = () => {
 
     //___________________ Variablen ________________
     const form1 = useForm<IFormInputs1>({
-        resolver: yupResolver(SignupSchema1),
+        // resolver: yupResolver(SignupSchema1),
 
         // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form1 || {}
@@ -114,7 +114,7 @@ const Signup: React.FC = () => {
         };
 
         // await new Promise(resolve => setTimeout(resolve, 1000));
-        // alert(JSON.stringify(finalData));
+        alert(JSON.stringify(finalData));
 
         // Daten ans Backend senden:
         fetch('http://localhost:5001/signup', {
