@@ -1,11 +1,42 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import save_user, find_user_by_email
 from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
+from datetime import timedelta
 
 app = Flask(__name__)
+# Session handling 
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.secret_key                           = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96' # Starken geheimen Schlüssel einfügen
+app.config['SESSION_COOKIE_SECURE']      = True
+app.config['SESSION_COOKIE_SAMESITE']    = 'Lax'
+session(app)
+
 CORS(app)
+
+@app.route('/set_session', methods=['POST'])
+def set_session():
+    email = request.form.get('email')
+    if email:
+        session['email'] = email
+        return f'Session-Daten für {email} gesetzt!'
+    return 'Bitte eine E-Mail-Adresse angeben.', 400
+
+@app.route('/get_session')
+def get_session():
+    email = session.get('email', 'Nicht eingeloggt')
+    return f'Eingeloggt als {email}'
+
+@app.route('/remove_session')
+def remove_session():
+    session.pop('email', None)
+    return 'Session-Daten entfernt!'
+
+@app.route('/clear_session')
+def clear_session():
+    session.clear()
+    return 'Alle Session-Daten gelöscht!'
 
 # Registrierungshandler 
 @app.route('/signup', methods=['POST'])
