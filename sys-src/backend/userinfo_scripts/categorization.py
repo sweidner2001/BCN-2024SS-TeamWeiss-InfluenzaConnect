@@ -19,9 +19,11 @@ def get_instagram_hashtags(username):
 
     # Scraping posts for hashtags (100 posts, change if needed)
     for post in profile.get_posts():
-        caption = post.caption
-        post_hashtags = re.findall(r'#\w+', caption)
-        hashtags.extend(post_hashtags)
+        if post.caption:
+            caption = post.caption
+            post_hashtags = re.findall(r'#\w+', caption)
+            if len(post_hashtags) > 0:
+                hashtags.extend(post_hashtags)
 
         # limit to 100 posts
         if len(hashtags) >= 100:  
@@ -64,7 +66,7 @@ def hashtagGPT(hashtags):
                 Outdoor und Abenteuer, Wellness und Selbstpflege, Politik und Gesellschaft, Humor und Unterhaltung, \
                 Spirituelles und Esoterik, Immobilien und Architektur, Event- und Partymanagement. \
                 Hauptaufgabe: \
-                Gib mir eine Zeichenkette zurück, die maximal 5 der folgenden Sparten durch Komma getrennt enthält. \
+                Gib mir eine Zeichenkette zurück, die eine primäre und eine sekundäre der folgenden Sparten durch Komma getrennt enthält. \
                 Gib mir ausschließlich diese Sparten mit Komma getrennt zurück und sonst keinen weiteren Text."
             }
         ],
@@ -72,11 +74,13 @@ def hashtagGPT(hashtags):
     )
 
     # Reduce GPT-Response to Content (only need Chat Response)
-    return chat_completion.choices[0].message.content
+    category = chat_completion.choices[0].message.content.split(", ")
+    return category
+    
 
 # ### EXAMPLE ###
-# hashtags = get_instagram_hashtags("cristiano")
-# subject = hashtagGPT(hashtags)
-# print(subject)
+hashtags = get_instagram_hashtags("therealmoneyboy")
+subject = hashtagGPT(hashtags)
+print(subject)
 
 # print(get_instagram_comments("alexa_breit"))
