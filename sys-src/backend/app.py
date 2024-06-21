@@ -34,7 +34,7 @@ def signup():
     last_name  = form2.get('nachname')
     # birthdate = data.get('geburtsdatum')
     country    = form2.get('land')
-    state      = form2.get('bundesland')
+#     state      = form2.get('bundesland')
     phone      = form2.get('telefonnr')
     language   = form2.get('sprache')
     about_me   = form2.get('ueberMich')
@@ -63,7 +63,7 @@ def signup():
         'last_name': last_name,
         # 'birthdate': birthdate,
         'country': country,
-        'state': state,
+        # 'state': state,
         'phone': phone,
         'language': language,
         'about_me': about_me,
