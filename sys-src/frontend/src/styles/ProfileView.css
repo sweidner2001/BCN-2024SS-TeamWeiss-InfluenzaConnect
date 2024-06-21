@@ -1,0 +1,32 @@
+.custom-menu-bar {
+    background: linear-gradient(to right, #1f2937, #3b82f6);
+    padding: 0.5rem 1rem;
+    border-radius: 0 0 50% 50%;
+    position: relative;
+    height: 80px; /* Adjusted to be thinner */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .custom-menu-bar .profile-image {
+    position: absolute;
+    left: 1rem;
+    top: 15px;
+  }
+  
+  .custom-menu-bar-buttons {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .custom-menu-bar-buttons button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .custom-menu-bar-buttons button:hover {
+    background-color: #2563eb; /* Lighter blue on hover */
+    color: #fff;
+  }
+  

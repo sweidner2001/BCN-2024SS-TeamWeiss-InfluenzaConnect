@@ -5,7 +5,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 // Imports eigene Componenten:
-import {FormularButton, CancelButton} from "../FormularButton";
+import {FormularButton, CancelButton} from "../buttons/FormularButton";
 import {SignupFormInputs1, SignupSchema1} from "../forms/SignupFormInputs1";
 import type {IFormInputs1} from "../forms/SignupFormInputs1";
 import {SignupFormInputs2, SignupSchema2} from "../forms/SignupFormInputs2";
