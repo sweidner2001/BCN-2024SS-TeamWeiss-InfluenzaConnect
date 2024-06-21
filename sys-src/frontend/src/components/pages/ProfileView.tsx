@@ -3,14 +3,12 @@ import ProfileImage from '../ProfileImage';
 import MenuBar from '../ProfileMenu';
 import PrivateDataCard from '../cards/PrivateDataCard';
 import PublicDataCard from '../cards/PublicDataCard';
-import PasswordChangeDialog from '../ChangePasswordDialog';
-import '../../styles/ProfileView.css'; 
+import '../../styles/ProfileView.css';
 
 const ProfileView: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('personalData');
   const [selectedDataCard, setSelectedDataCard] = useState('private');
   const [userData, setUserData] = useState(null);
-  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -41,7 +39,6 @@ const ProfileView: React.FC = () => {
       });
   };
 
-
   if (!userData) {
     return <div>Loading...</div>;
   }
@@ -58,41 +55,40 @@ const ProfileView: React.FC = () => {
   };
 
   return (
-      <div className="min-h-screen flex flex-col bg-gray-50">
-        <div className="relative flex items-center custom-menu-bar text-white p-4">
-          <ProfileImage />
-          <MenuBar selectedTab={selectedTab} onSelectTab={setSelectedTab} />
-        </div>
-        <div className="flex flex-grow p-4 mt-4">
-          {selectedTab === 'personalData' && (
-            <div className="flex flex-grow">
-              <div className="flex flex-col w-1/4 p-4">
-                <button
-                  onClick={() => setSelectedDataCard('private')}
-                  className={`py-2 px-4 rounded-lg mb-2 ${selectedDataCard === 'private' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                >
-                  Private
-                </button>
-                <button
-                  onClick={() => setSelectedDataCard('public')}
-                  className={`py-2 px-4 rounded-lg ${selectedDataCard === 'public' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                >
-                  Public
-                </button>
-              </div>
-              <div className="flex flex-col w-3/4 p-4 bg-white shadow-lg rounded-lg">
-                {renderDataCard()}
-              </div>
-            </div>
-          )}
-          {selectedTab === 'analytics' && (
-            <div className="flex flex-grow justify-center items-center">
-              <h2 className="text-2xl font-bold">Analytics View Placeholder</h2>
-            </div>
-          )}
-        </div>
-
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="relative flex flex-col sm:flex-row items-center custom-menu-bar text-white p-4">
+        <ProfileImage />
+        <MenuBar selectedTab={selectedTab} onSelectTab={setSelectedTab} />
       </div>
+      <div className="flex flex-grow flex-col sm:flex-row p-4 mt-4">
+        {selectedTab === 'personalData' && (
+          <div className="flex flex-col sm:flex-row flex-grow">
+            <div className="flex flex-col w-full sm:w-1/4 p-4">
+              <button
+                onClick={() => setSelectedDataCard('private')}
+                className={`py-2 px-4 rounded-lg mb-2 ${selectedDataCard === 'private' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+              >
+                Private
+              </button>
+              <button
+                onClick={() => setSelectedDataCard('public')}
+                className={`py-2 px-4 rounded-lg ${selectedDataCard === 'public' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+              >
+                Public
+              </button>
+            </div>
+            <div className="flex flex-col w-full sm:w-3/4 p-4 bg-white shadow-lg rounded-lg">
+              {renderDataCard()}
+            </div>
+          </div>
+        )}
+        {selectedTab === 'analytics' && (
+          <div className="flex flex-grow justify-center items-center">
+            <h2 className="text-2xl font-bold">Analytics View Placeholder</h2>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
