@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 
 interface MultiSelectDropdownProps {
     options: string[];
+    label: string;
+    onChange: (selectedOptions: string[]) => void; // Callback für Änderungen hinzufügen
 }
 
-const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options }) => {
+const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options, label, onChange }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
@@ -13,11 +15,14 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options }) =>
     };
 
     const handleOptionToggle = (option: string) => {
-        if (selectedOptions.includes(option)) {
-            setSelectedOptions(selectedOptions.filter(item => item !== option));
-        } else {
-            setSelectedOptions([...selectedOptions, option]);
-        }
+        // Neuen Zustand ermitteln
+        const newSelectedOptions = selectedOptions.includes(option)
+            ? selectedOptions.filter(item => item !== option)
+            : [...selectedOptions, option];
+
+        // Zustand setzen und dann die Änderung an onChange übergeben
+        setSelectedOptions(newSelectedOptions);
+        onChange(newSelectedOptions);
     };
 
     return (
@@ -27,7 +32,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options }) =>
                     <button
                         type="button"
                         onClick={toggleDropdown}
-                        className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm
+                        className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-medium
                         items-center
                         font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         id="options-menu"
@@ -40,7 +45,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options }) =>
                                       d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
                                       clip-rule="evenodd"/>
                             </svg>
-                        Options
+                        Filter
                         <svg className="-mr-1 ml-1.5 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                              xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clip-rule="evenodd" fill-rule="evenodd"
@@ -52,21 +57,28 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options }) =>
             </div>
 
             {isOpen && (
-                <div
-                    className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        {options.map(option => (
-                            <label key={option} className="flex items-center justify-between px-4 py-2">
+                // <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
+
+                <div className="absolute  mt-2 right-0  bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
+                    <ul>
+                        {options.map((option, index) => (
+                            <li
+                                key={index}
+                                className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center text-sm ${
+                                    selectedOptions.includes(option) ? 'bg-blue-100 text-blue-700' : ''
+                                }`}
+                                onClick={() => handleOptionToggle(option)}
+                            >
                                 <input
                                     type="checkbox"
-                                    className="form-checkbox h-5 w-5 text-indigo-600 mr-2"
+                                    className="form-checkbox h-4 w-4 text-indigo-600 mr-3"
                                     onChange={() => handleOptionToggle(option)}
                                     checked={selectedOptions.includes(option)}
                                 />
-                                <span className="text-sm">{option}</span>
-                            </label>
+                                {option}
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 </div>
             )}
         </div>

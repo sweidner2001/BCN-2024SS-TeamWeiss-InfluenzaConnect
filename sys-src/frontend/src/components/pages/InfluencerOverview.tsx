@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import InputMultiCheckboxDropdown from "../input/InputMultiCheckboxDropdown";
+import {useForm} from "react-hook-form";
 
 
 interface DataItem {
@@ -450,6 +451,19 @@ const InfluencerOverview2: React.FC = () => {
         item.productName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+    // Funktion zum Behandeln von Änderungen der ausgewählten Optionen
+    const handleDropdownChange = (selectedOptions: string[]) => {
+        setSelectedOptions(selectedOptions);
+        // Hier können Sie die ausgewählten Optionen verwenden, wenn sich etwas ändert
+        console.log(selectedOptions);
+    };
+
+    // Optionen für das Dropdown
+    const options = ['Option 1', 'Option 2', 'Option 3', 'Optionasdfasdfasdf4'];
+
+
     return (
         <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between mb-4">
@@ -463,7 +477,13 @@ const InfluencerOverview2: React.FC = () => {
                     />
                 </div>
 
-                <InputMultiCheckboxDropdown options={["Spalte 1", "Spalte 2"]}/>
+                <InputMultiCheckboxDropdown
+                    options={options}
+                    label="Select Options"
+                    onChange={handleDropdownChange}
+                />
+
+                {/*<InputMultiCheckboxDropdown options={["Spalte 1", "Spalte 2"]}/>*/}
             </div>
             
             
