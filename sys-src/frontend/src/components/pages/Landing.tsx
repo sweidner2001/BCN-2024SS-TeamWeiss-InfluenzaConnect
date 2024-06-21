@@ -1,16 +1,17 @@
-// LandingPage.tsx
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import LoginDropDownMenu from '../login/DropdownMenu';
+import LoginDialog from '../login/LoginDialog';
 import Logo from '../../logo.svg';
 
 const LandingPage: React.FC = () => {
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+
     const logoVariants = {
         hidden: { scale: 1 },
         visible: { scale: [1, 1.3, 1], transition: { duration: 2, repeat: Infinity } },
     };
+
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
             {/* Navbar */}
@@ -25,15 +26,16 @@ const LandingPage: React.FC = () => {
                     <Link to="/about" className="ml-4 text-white hover:text-gray-400">About Us</Link>
                 </div>
                 <div className="flex items-center mt-4 md:mt-0">
-                    <LoginDropDownMenu name="Login">
-                        <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="text" placeholder="Username" />
-                        <input className="w-full px-2 py-1 mb-2 bg-gray-700 rounded-md hover:bg-gray-600" type="password" placeholder="Password" />
-                        <button className="w-full px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={() => console.log('Login button clicked')}>Login</button>
-                    </LoginDropDownMenu>
+                    <button 
+                        onClick={() => setIsLoginOpen(true)} 
+                        className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    >
+                        Login
+                    </button>
                     <Link to="/signup" className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sign Up</Link>
                 </div>
             </nav>
-            
+
             {/* Description Text */}
             <div className="flex-grow flex flex-col items-center justify-center py-16 px-4">
                 <motion.img 
@@ -72,6 +74,8 @@ const LandingPage: React.FC = () => {
                     </motion.div>
                 </div>
             </div>
+
+            <LoginDialog isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
         </div>
     );
 }
