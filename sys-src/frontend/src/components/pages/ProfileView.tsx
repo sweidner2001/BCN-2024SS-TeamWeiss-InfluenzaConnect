@@ -3,7 +3,6 @@ import ProfileImage from '../ProfileImage';
 import MenuBar from '../ProfileMenu';
 import PrivateDataCard from '../cards/PrivateDataCard';
 import PublicDataCard from '../cards/PublicDataCard';
-import NeutralDataCard from '../cards/NeutralDataCard';
 import '../../styles/ProfileView.css'; 
 
 const ProfileView: React.FC = () => {
@@ -50,8 +49,6 @@ const ProfileView: React.FC = () => {
         return <PrivateDataCard userData={userData} onSave={handleSave} />;
       case 'public':
         return <PublicDataCard userData={userData} onSave={handleSave} />;
-      case 'neutral':
-        return <NeutralDataCard userData={userData} onSave={handleSave} />;
       default:
         return null;
     }
@@ -72,12 +69,6 @@ const ProfileView: React.FC = () => {
                 className={`py-2 px-4 rounded-lg mb-2 ${selectedDataCard === 'private' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
               >
                 Private
-              </button>
-              <button
-                onClick={() => setSelectedDataCard('neutral')}
-                className={`py-2 px-4 rounded-lg mb-2 ${selectedDataCard === 'neutral' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-              >
-                Neutral
               </button>
               <button
                 onClick={() => setSelectedDataCard('public')}

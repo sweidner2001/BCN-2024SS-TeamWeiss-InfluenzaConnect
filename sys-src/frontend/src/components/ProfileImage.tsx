@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/ProfileImage.css'; // Import the custom CSS file
+import '../styles/ProfileImage.css'; 
 
 interface ProfileImageProps {
   imageUrl?: string;
