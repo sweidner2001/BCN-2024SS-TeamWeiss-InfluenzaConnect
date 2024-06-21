@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import EditableInputField from '../input/EditableInputField';
 import { FormularButton, CancelButton } from '../buttons/FormularButton';
+import PasswordChangeDialog from '../ChangePasswordDialog';
 
 interface PrivateDataCardProps {
   userData: any;
@@ -14,6 +15,7 @@ const PrivateDataCard: React.FC<PrivateDataCardProps> = ({ userData, onSave }) =
     email: userData.email,
     password: ''
   });
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,6 +25,10 @@ const PrivateDataCard: React.FC<PrivateDataCardProps> = ({ userData, onSave }) =
   const handleSave = () => {
     onSave(formData);
     setIsEditing(false);
+  };
+
+  const handleChangePassword = (currentPassword: string, newPassword: string) => {
+    // ... existing code ...
   };
 
   return (
@@ -36,7 +42,12 @@ const PrivateDataCard: React.FC<PrivateDataCardProps> = ({ userData, onSave }) =
       <div className="grid grid-cols-1 gap-6 mt-4">
         <EditableInputField id="phone" label="Phone" type="tel" value={formData.phone} disabled={!isEditing} onChange={handleInputChange} />
         <EditableInputField id="email" label="Email" type="email" value={formData.email} disabled={!isEditing} onChange={handleInputChange} />
-        <EditableInputField id="password" label="Password" type="password" value={formData.password} disabled={!isEditing} onChange={handleInputChange} />
+        <button
+          onClick={() => setIsPasswordDialogOpen(true)}
+          className="py-2 px-4 rounded-lg mt-4 border-blue-500 text-blue-500 hover:bg-blue-100"
+        >
+          Change Password
+        </button>
       </div>
       {isEditing && (
         <div className="flex justify-end space-x-4 mt-4">
@@ -44,6 +55,11 @@ const PrivateDataCard: React.FC<PrivateDataCardProps> = ({ userData, onSave }) =
           <FormularButton type="button" text="Save" onClick={handleSave} />
         </div>
       )}
+      <PasswordChangeDialog 
+        isOpen={isPasswordDialogOpen}
+        onClose={() => setIsPasswordDialogOpen(false)}
+        onSubmit={handleChangePassword}
+      />
     </div>
   );
 };
