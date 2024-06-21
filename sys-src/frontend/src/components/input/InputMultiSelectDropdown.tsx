@@ -94,51 +94,53 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({cont
             <InputLabel label={probs.label} onClick={() => setIsDropdownOpen(!isDropdownOpen)}/>
 
             {/* MultiSelect-Dropdown - Input-Field */}
-            <div ref={dropdownRef} className="mt-2 relative" >
-                    <div className="border border-gray-300 rounded p-2 cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+            <div ref={dropdownRef} className="mt-2 relative">
+                 <div onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      className={`px-4 py-2 rounded-lg block w-full cursor-pointer 
+                                  border-0 shadow-sm ring-1 ring-inset ${isDropdownOpen ? 'ring-indigo-700' : 'ring-gray-300'}`}>
 
-                        {/* Wenn keine Einträge ausgewählt wurden, dann Hintergrund-Text anzeigen */}
-                        {selectedOptions.length === 0 ? (
-                            <span className="text-gray-400">{probs.backgroundText}</span>
-                        ) : (
-                            // Ansonsten ausgewählte Einträge auswählen
-                            selectedOptions.map((option, index) => (
-                                <span key={index} className="inline-flex items-center px-2 py-1 text-sm mr-2
+                    {/* Wenn keine Einträge ausgewählt wurden, dann Hintergrund-Text anzeigen */}
+                    {selectedOptions.length === 0 ? (
+                        <span className="text-gray-400">{probs.backgroundText}</span>
+                    ) : (
+                        // Ansonsten ausgewählte Einträge auswählen
+                        selectedOptions.map((option, index) => (
+                            <span key={index} className="inline-flex items-center px-2 py-1 text-sm mr-2
                                                              bg-blue-100 text-blue-700 rounded-full ">
                                 {option}
-                                    {/*Löschen Button im ausgewählten Eintrag*/}
-                                    <button className="ml-2 text-red-500 hover:text-red-700"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleSelectOption(option);
-                                            }}>&times;</button>
+                                {/*Löschen Button im ausgewählten Eintrag*/}
+                                <button className="ml-2 text-red-500 hover:text-red-700"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleSelectOption(option);
+                                        }}>&times;</button>
                             </span>
-                            ))
-                        )}
-                    </div>
-
-                    {/* MultiSelect-Dropdown - Dropdown-Liste */}
-                    {isDropdownOpen && (
-                        <div
-                            className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
-                            <ul>
-                                {probs.selectOptions.map((option, index) => (
-                                    <li key={index} className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center 
-                                    ${ selectedOptions.includes(option) ? 'bg-blue-100 text-blue-700' : ''}`}
-                                        onClick={() => handleSelectOption(option)}>
-                                        {option}
-                                        {selectedOptions.includes(option) && (
-                                            <span className="ml-2 text-red-500 hover:text-red-700"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleSelectOption(option);
-                                                }}>&times;</span>
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                        ))
                     )}
+                </div>
+
+                {/* MultiSelect-Dropdown - Dropdown-Liste */}
+                {isDropdownOpen && (
+                    <div
+                        className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
+                        <ul>
+                            {probs.selectOptions.map((option, index) => (
+                                <li key={index} className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center 
+                                    ${selectedOptions.includes(option) ? 'bg-blue-100 text-blue-700' : ''}`}
+                                    onClick={() => handleSelectOption(option)}>
+                                    {option}
+                                    {selectedOptions.includes(option) && (
+                                        <span className="ml-2 text-red-500 hover:text-red-700"
+                                              onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  handleSelectOption(option);
+                                              }}>&times;</span>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
                 <ErrorField errorMessage={probs.error}/>
             </div>
