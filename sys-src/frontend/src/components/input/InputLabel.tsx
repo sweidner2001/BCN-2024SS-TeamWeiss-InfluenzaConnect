@@ -9,10 +9,11 @@ import React from "react";
  *
  * @param htmlFor Id des Input-Feldes, um das Label damit zu verknüpfen
  * @param label Anzuzeigender Text
+ * @param onClick eigener onClick-Eventhandler-Funktion
  */
-export default function InputLabel({htmlFor, label} : {htmlFor:string, label:string}) {
+export default function InputLabel({htmlFor, label, onClick} : {htmlFor?:string, label:string, onClick?:(...args: any[]) => void}) {
     return (
-        <label htmlFor={htmlFor} className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
+        <label htmlFor={htmlFor} onClick={onClick} className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
     );
 };
 

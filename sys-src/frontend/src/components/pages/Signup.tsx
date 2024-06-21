@@ -29,7 +29,7 @@ const Signup: React.FC = () => {
 
     //___________________ Variablen ________________
     const form1 = useForm<IFormInputs1>({
-        // resolver: yupResolver(SignupSchema1),
+        resolver: yupResolver(SignupSchema1),
 
         // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form1 || {}

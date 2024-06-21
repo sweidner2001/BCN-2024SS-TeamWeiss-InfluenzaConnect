@@ -4,28 +4,39 @@ import ErrorField from "./ErrorField";
 import {useController, UseControllerProps} from "react-hook-form";
 
 
-
-interface InputMultiSelectDropdownProps {
+/**
+ * @interface InputMultiSelectDropdownProps Datentyp
+ * @extends UseControllerProps
+ * @author Sebastian Weidner
+ * @since 21.06.2024
+ * @version 1.0
+ *
+ * @member fieldWidth Breite des Elements
+ * @member label Text über Input-Feld
+ * @member selectOptions Input-Optionen die zur Eingabe zur Verfügung stehen
+ * @member error anzuzeigende Fehlernachricht
+ *
+ * @member name Name, unter dem das Element im Formular registriert wird
+ * @member control Verknüpfung zum Formular
+ */
+interface InputMultiSelectDropdownProps extends UseControllerProps{
     fieldWidth: number;
-    id: string;
     label: string;
-    register?: any;
-    // selectOptions: Array<string>
-    autoComplete?: string;
+    backgroundText: string;
+    selectOptions: string[]
     error?: string;
 }
 
 
-interface MultiSelectDropdownProps extends UseControllerProps {
-    options: string[];
-}
+const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({control, name, ...probs }) => {
 
-const InputMultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({options, control, name }) => {
-
+    //__________________ Variablen: __________________
     const { field } = useController({
         control,
         name
     });
+    let classNameWidth = probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
+
 
     //_________________ Hooks: ______________
     const [selectedOptions, setSelectedOptions] = useState<string[]>(field.value || []);
@@ -34,38 +45,27 @@ const InputMultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({options, 
 
 
 
-    // Variablen:
-
-    const probs: InputMultiSelectDropdownProps = {
-        fieldWidth: 4,
-        id: 'sprache',
-        label: 'Example Label',
-        register: () => {},  // Hier könnte eine tatsächliche Register-Funktion von z.B. react-hook-form stehen
-        // selectOptions: ['Option 1', 'Option 2', 'Option 3'],
-    };
-
-    let classNameWidth = probs.fieldWidth ? 'sm:col-span-' + probs.fieldWidth : 'col-span-full';
-
-
     //_________________ Events: _________________
     // Event-Handler, wenn auf ein List-Element geklickt wird
     const handleSelectOption = (option: string) => {
 
-        // Wenn das Element schon selektiert wurde, dann Auwahl wieder aufheben:
+        let newSelectedOptions :string[] = [];
+
+        // Wenn das Element schon selektiert wurde, dann Auswahl wieder aufheben:
         if (selectedOptions.includes(option)) {
-            setSelectedOptions(selectedOptions.filter(selected => selected !== option));
+            newSelectedOptions = selectedOptions.filter(selected => selected !== option);
+            setSelectedOptions(newSelectedOptions);
         } else {
             // Element in die Auswahlliste mit aufnehmen:
-            setSelectedOptions([...selectedOptions, option]);
+            newSelectedOptions =[...selectedOptions, option];
+            setSelectedOptions(newSelectedOptions);
         }
 
-        field.onChange([...selectedOptions, option]);
+        field.onChange(newSelectedOptions);
     };
 
-    // Event-Handler, wenn auf einen Cancel-Button von einen ausgewählten Eintrag geklickt wurde:
-    const handleRemoveOption = (option: string) => {
-        setSelectedOptions(selectedOptions.filter(selected => selected !== option));
-    };
+
+
 
     // Event-Handler, damit sich das Dropdown schließt, wenn außerhalb des Elements geklickt wurde:
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,6 +74,7 @@ const InputMultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({options, 
         }
     };
 
+    // Eventhandler, dass sich das Dropdown schließt muss registriert werden:
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
 
@@ -84,36 +85,44 @@ const InputMultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({options, 
     }, []);
 
 
+
+
+
     //______________________ HTML: ________________________
     return (
-        <div className={classNameWidth}>
-            <InputLabel htmlFor={probs.id} label={probs.label}/>
-            <div ref={dropdownRef} className="mt-2 relative">
+        <div className={classNameWidth} >
+            <InputLabel label={probs.label} onClick={() => setIsDropdownOpen(!isDropdownOpen)}/>
 
+            {/* MultiSelect-Dropdown - Input-Field */}
+            <div ref={dropdownRef} className="mt-2 relative" >
+                    <div className="border border-gray-300 rounded p-2 cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
 
-                    <div className="border border-gray-300 rounded p-2 cursor-pointer"
-                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        {/* Wenn keine Einträge ausgewählt wurden, dann Hintergrund-Text anzeigen */}
                         {selectedOptions.length === 0 ? (
-                            <span className="text-gray-400">Sprachen auswählen...</span>
+                            <span className="text-gray-400">{probs.backgroundText}</span>
                         ) : (
+                            // Ansonsten ausgewählte Einträge auswählen
                             selectedOptions.map((option, index) => (
-                                <span key={index}
-                                      className="inline-flex items-center bg-blue-100 text-blue-700 rounded-full px-2 py-1 text-sm mr-2">
+                                <span key={index} className="inline-flex items-center px-2 py-1 text-sm mr-2
+                                                             bg-blue-100 text-blue-700 rounded-full ">
                                 {option}
+                                    {/*Löschen Button im ausgewählten Eintrag*/}
                                     <button className="ml-2 text-red-500 hover:text-red-700"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleRemoveOption(option);
+                                                handleSelectOption(option);
                                             }}>&times;</button>
                             </span>
                             ))
                         )}
                     </div>
+
+                    {/* MultiSelect-Dropdown - Dropdown-Liste */}
                     {isDropdownOpen && (
                         <div
                             className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded shadow-lg z-10">
                             <ul>
-                                {options.map((option, index) => (
+                                {probs.selectOptions.map((option, index) => (
                                     <li key={index} className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex justify-between items-center 
                                     ${ selectedOptions.includes(option) ? 'bg-blue-100 text-blue-700' : ''}`}
                                         onClick={() => handleSelectOption(option)}>
@@ -122,7 +131,7 @@ const InputMultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({options, 
                                             <span className="ml-2 text-red-500 hover:text-red-700"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    handleRemoveOption(option);
+                                                    handleSelectOption(option);
                                                 }}>&times;</span>
                                         )}
                                     </li>
