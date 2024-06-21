@@ -42,7 +42,7 @@ def signup():
     instagram_username = form3.get('instaUsername')
 
     # Eingabedaten validieren
-    is_valid, errors = validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username)
+    is_valid, errors = validate_registration_data(email, password, title, first_name, last_name, country, phone, language, about_me, instagram_username)
     if not is_valid:
         return jsonify(errors), 400
 

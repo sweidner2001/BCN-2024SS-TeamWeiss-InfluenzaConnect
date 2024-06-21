@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-def validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username):
+def validate_registration_data(email, password, title, first_name, last_name, country, phone, language, about_me, instagram_username):
     """
     Validiert die Registrierungsdaten für einen neuen Benutzer.
 
@@ -49,8 +49,8 @@ def validate_registration_data(email, password, title, first_name, last_name, co
     if not country:
         errors["country"] = "Land ist erforderlich."
 
-    if not state:
-        errors["state"] = "Bundesstaat/Region ist erforderlich."
+    # if not state:
+    #     errors["state"] = "Bundesstaat/Region ist erforderlich."
 
     if not language:
         errors["language"] = "Sprache ist erforderlich."
