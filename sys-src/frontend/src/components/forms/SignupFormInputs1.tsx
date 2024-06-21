@@ -1,10 +1,10 @@
 // React Imports:
 import React, {useState} from 'react';
 import * as yup from "yup";
+import {SubmitHandler, useForm} from "react-hook-form";
 
 // Imports eigene Componenten:
 import InputField from "../input/InputField";
-import InputMultiSelectDropdown from "../input/InputMultiSelectDropdown";
 
 //___________________ Datentypen  ________________
 interface ISignupForm1 {

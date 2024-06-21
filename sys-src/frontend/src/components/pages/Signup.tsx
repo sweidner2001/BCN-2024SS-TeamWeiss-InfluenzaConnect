@@ -40,6 +40,7 @@ const Signup: React.FC = () => {
 
         // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form2 || {}
+
     });
 
     const form3 = useForm<IFormInputs3>({
@@ -48,6 +49,19 @@ const Signup: React.FC = () => {
         // Default-Werte, um beim Zurückgehen die Daten nicht zu verlieren
         defaultValues: formData.form3 || {}
     });
+
+    // Error-Messages vom Backend anzeigen:
+    // const errorMessages = {
+    //     email: {
+    //         message: "Dont Forget Your Username Should Be Cool!",
+    //     },
+    //     passwort:{
+    //         message: "Username Should Be Cool!",
+    //     }
+    // }
+    // // form1.formState.errors.email = test.email;
+    // // form1.formState.errors.passwort = test.passwort;
+    // Object.assign(form1.formState.errors, errorMessages);
 
 
     //___________________ Event-Handler ________________
@@ -59,6 +73,7 @@ const Signup: React.FC = () => {
         // Übergang zum nächsten Formular
         setDirection('left');
         setTransition(true);
+
 
 
         setTimeout(() => {
