@@ -15,7 +15,6 @@ interface ISignupForm1 {
 interface IFormInputs1 {
     email: string;
     passwort: string;
-    sprache: string[];
 }
 
 
@@ -38,18 +37,9 @@ const getMaxFieldLength = (maxLength: number): [number, string] => {
 
 const SignupSchema1 = yup.object({
     email: yup.string().trim().email("Bitte geben Sie eine gültige Email-Adresse ein!").required('Bitte geben Sie eine Email an!').max(...getMaxFieldLength(40)),
-    passwort: yup.string().required("Bitte geben Sie ein Passwort an!").min(10, "Das Passwort muss min. 10 Zeichen lang sein!").max(...getMaxFieldLength(25)),
-    sprache: yup.array().min(1, "Bitte wählen Sie Ihre gesprochenen Sprachen aus!").required( "Bitte wählen Sie Ihre gesprochenen Sprachen aus!")
+    passwort: yup.string().required("Bitte geben Sie ein Passwort an!").min(10, "Das Passwort muss min. 10 Zeichen lang sein!").max(...getMaxFieldLength(25))
 });
 
-
-const options: string[] = [
-    'Deutsch',
-    'Englisch',
-    'Französisch',
-    'Italienisch',
-    'Spanisch',
-];
 
 
 /**
@@ -83,9 +73,7 @@ const SignupFormInputs1: React.FC<ISignupForm1> = ({form1}) => {
                             register={form1.register("passwort")} error={form1.formState.errors.passwort?.message}/>
 
 
-                <InputMultiSelectDropdown label="Welche Sprachen sprechen Sie?" backgroundText="Sprachen auswählen..." selectOptions={options} fieldWidth={4}
-                                          control={form1.control} name="sprache" error={form1.formState.errors.sprache?.message}/>
-            </div>
+             </div>
         </>
     );
 };

@@ -97,7 +97,7 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({cont
             <div ref={dropdownRef} className="mt-2 relative">
                  <div onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                       className={`px-4 py-2 rounded-lg block w-full cursor-pointer 
-                                  border-0 shadow-sm ring-1 ring-inset ${isDropdownOpen ? 'ring-indigo-700' : 'ring-gray-300'}`}>
+                                  border-0 shadow-sm ring-1 ring-inset outline-none ${isDropdownOpen ? 'ring-indigo-700' : 'ring-gray-300'}`}>
 
                     {/* Wenn keine Einträge ausgewählt wurden, dann Hintergrund-Text anzeigen */}
                     {selectedOptions.length === 0 ? (
