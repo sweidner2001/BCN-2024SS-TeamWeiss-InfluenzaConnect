@@ -7,6 +7,7 @@ import Button from './components/Button';
 import ButtonDB from './components/ButtonSend2DB';
 import Signup from "./components/pages/Signup";
 import Landing from "./components/pages/Landing";
+import InfluencerOverview from "./components/pages/InfluencerOverview";
 
 
 //######################### Components ############################
@@ -33,6 +34,7 @@ export default function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/landing" element={<Landing />} />
+                <Route path="/findInfluencer" element={<InfluencerOverview />} />
             </Routes>
         </Router>
     );
