@@ -53,7 +53,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose }) => {
       .then(data => {
         // Weiterverarbeitung der Antwort
         console.log(data);
-        alert('Anmeldung erfolgreich');
+        alert('Anmeldung erfolgreich gesendet!');
       })
       .catch(error => {
         console.error('Error:', error);
