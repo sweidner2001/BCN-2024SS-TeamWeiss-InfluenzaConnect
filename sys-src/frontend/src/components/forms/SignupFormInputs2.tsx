@@ -1,5 +1,5 @@
 // React Imports:
-import React, {useState} from 'react';
+import React from 'react';
 import * as yup from "yup";
 
 // Imports eigene Componenten:
@@ -20,7 +20,7 @@ interface IFormInputs2 {
     vorname: string;
     nachname: string;
     land: string;
-    bundesland: string;
+    // bundesland: string;
     telefonnr: string;
     sprache: string[];
     ueberMich: string;
@@ -46,7 +46,7 @@ const SignupSchema2 = yup.object({
     vorname: yup.string().trim().required("Bitte geben Sie Ihren Vornamen an!").max(...getMaxFieldLength(30)),
     nachname: yup.string().trim().required("Bitte geben Sie Ihren Nachnamen an!").max(...getMaxFieldLength(25)),
     land: yup.string().trim().required("Bitte geben Sie Ihr Herkunftsland an!"),
-    bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
+    // bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
     telefonnr: yup.string().trim().required("Bitte Geben Sie Ihre Telefonnummer an!").max(...getMaxFieldLength(25)),
     sprache: yup.array().min(1, "Bitte wählen Sie Ihre gesprochenen Sprachen aus!").required( "Bitte wählen Sie Ihre gesprochenen Sprachen aus!"),
     ueberMich: yup.string().trim().defined().max(...getMaxFieldLength(500))
@@ -61,6 +61,10 @@ const languages: string[] = [
     'Spanisch',
 ];
 
+const countries = ['Deutschland', 'Österreich', 'England', 'USA', 'Frankreich', 'Italien', 'Spanien'];
+// const bundesland = ['Bayern', 'Hessen', 'Sachsen'];
+const sex = ['Herr', 'Frau', 'Divers'];
+
 
 /**
  * @function SignupFormInputs2 Formular-Input-Felder für die Persönlichen Daten
@@ -71,11 +75,6 @@ const languages: string[] = [
  * @param ISignupForm2 "react-hook-form" Daten
  */
 const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
-
-    const countries = ['Deutschland', 'Österreich', 'Schweiz'];
-    const bundesland = ['Bayern', 'Hessen', 'Sachsen'];
-    const sex = ['Herr', 'Frau', 'Divers'];
-
 
     //___________________ HTML: Formular ________________
     return (
@@ -99,11 +98,11 @@ const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
                             register={form2.register("nachname")} error={form2.formState.errors.nachname?.message}/>
 
 
-                <InputSelect id="land" label="Land" fieldWidth={4} selectOptions={countries}
+                <InputSelect id="land" label="In welchem Land leben Sie?" fieldWidth={4} selectOptions={countries}
                              autoComplete="country-name"
                              register={form2.register("land")} error={form2.formState.errors.land?.message}/>
-                <InputSelect id="bundesland" label="Bundesland" fieldWidth={4} selectOptions={bundesland}
-                             register={form2.register("bundesland")} error={form2.formState.errors.bundesland?.message}/>
+                {/*<InputSelect id="bundesland" label="Bundesland" fieldWidth={4} selectOptions={bundesland}*/}
+                {/*             register={form2.register("bundesland")} error={form2.formState.errors.bundesland?.message}/>*/}
 
                 <InputField id="telefonnr" label="Telefonnummer" type="tel" autoComplete="tel"
                             fieldWidth={4}

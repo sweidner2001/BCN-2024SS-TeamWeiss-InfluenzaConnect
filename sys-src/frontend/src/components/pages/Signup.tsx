@@ -105,7 +105,6 @@ const Signup: React.FC = () => {
 
     /**
      * @event function Event-Handler-Funktion wenn auf den Registrierungs-Button gedrückt wird
-     * @param formNumber Nummer des Formulars, auf das auf nächstes aufgerufen werden soll
      */
     const onSubmitForm3: SubmitHandler<any> = async data => {
         const finalData = {
@@ -114,7 +113,7 @@ const Signup: React.FC = () => {
         };
 
         // await new Promise(resolve => setTimeout(resolve, 1000));
-        alert(JSON.stringify(finalData));
+        // alert(JSON.stringify(finalData));
 
         // Daten ans Backend senden:
         fetch('http://localhost:5001/signup', {
