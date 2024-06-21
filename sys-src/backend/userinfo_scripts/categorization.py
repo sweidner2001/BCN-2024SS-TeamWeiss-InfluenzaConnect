@@ -3,6 +3,7 @@ import re
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
+import instaloader
 
 
 
@@ -19,11 +20,11 @@ def get_instagram_hashtags(username):
     Notes:
     Only the 100 latest posts' captions are scraped for hashtags.
     """
-    profile = load_instagram_profile
+    L = instaloader.Instaloader()
+    profile = instaloader.Profile.from_username(L.context, username)
     
     hashtags = []
 
-    # Scraping posts for hashtags (100 posts, change if needed)
     for post in profile.get_posts():
         if post.caption:
             caption = post.caption
@@ -81,7 +82,7 @@ def hashtagGPT(hashtags):
                 Spirituelles und Esoterik, Immobilien und Architektur, Event- und Partymanagement. \
                 Hauptaufgabe: \
                 Gib mir eine Zeichenkette zurück, die eine primäre und eine sekundäre der folgenden Sparten durch Komma getrennt enthält. \
-                Gib mir ausschließlich diese Sparten mit Komma getrennt zurück und sonst keinen weiteren Text.
+                Gib mir ausschließlich diese Sparten mit Komma getrennt zurück und sonst keinen weiteren Text. \
                 Nenne die primäre Sparte zuerst und als zweites die sekundäre Sparte."
             }
         ],
@@ -91,11 +92,9 @@ def hashtagGPT(hashtags):
     # Extract the primary and secondary category
     category = chat_completion.choices[0].message.content.split(", ")
     return category
-    
+
 
 # ### EXAMPLE ###
-# hashtags = get_instagram_hashtags("therealmoneyboy")
-# subject = hashtagGPT(hashtags)
-# print(subject)
-
-# print(get_instagram_comments("alexa_breit"))
+hashtags = get_instagram_hashtags("bellapoarch")
+#category = hashtagGPT(hashtags)
+print(hashtags)

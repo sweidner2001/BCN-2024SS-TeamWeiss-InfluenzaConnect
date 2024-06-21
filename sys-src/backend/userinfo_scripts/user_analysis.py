@@ -78,12 +78,17 @@ def get_instagram_likes(username):
     like_counter = sum(likes_by_post)
     return like_counter / len(likes_by_post)
 
-def download_instagram_pictures_jpg(username, amount):
+def download_instagram_pic_jpg(username, amount):
     """
     Downloads an amount of the latest Instagram pictures for an Instagram profile. 
+
+    Parameters:
+    username (str): The Instagram username of the profile whose pictures you want to download.
+
+    Returns:
+    None
     """
     profile = load_instagram_profile(username)
-    
     try:
         L = instaloader.Instaloader()
         counter = 0
@@ -135,13 +140,14 @@ def engagement_rate(username):
 
     return engagement_rate
 
-
 def time_since_last_post(username):
     """
     Retrieves the timestamp of the latest Instagram post on the Instagram profile.
 
     Parameters:
     username (str): The Instagram username whose latest post timestamp is to be retrieved.
+
+    Returns:
     datetime.datetime: The timestamp of the latest post as datetime object.
     """
     profile = load_instagram_profile(username)
@@ -155,9 +161,15 @@ def time_since_last_post(username):
 def most_popular_posts(username):
     pass
 
-# username = "addisonraee"
-# L = instaloader.Instaloader()
-# profile = instaloader.Profile.from_username(L.context, username)
+def get_instagram_profile_pic(username):
+    """
+    Download the profile picture of a specified Instagram user.
 
+    Parameters:
+    username (str): The Instagram username of the profile whose profile picture you want to download.
 
-print(load_instagram_profile("addisonraee"))
+    Returns:
+    None
+    """
+    L = instaloader.Instaloader()
+    L.download_profile(username, profile_pic_only=True)
