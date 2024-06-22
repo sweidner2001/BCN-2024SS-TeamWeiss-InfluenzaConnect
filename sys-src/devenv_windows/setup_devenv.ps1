@@ -15,7 +15,7 @@ function check_result {
 Set-Location -Path ..
 
 # Create virtual environment
-python -m venv backend
+py -m venv backend
 check_result "Failed to create virtual environment"
 
 # Activate virtual environment
