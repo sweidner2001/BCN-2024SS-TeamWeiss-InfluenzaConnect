@@ -6,7 +6,6 @@ from openai import OpenAI
 import instaloader
 
 
-
 def get_instagram_hashtags(username):
     """
     Scrapes Instagram posts for hashtags associated with a given username.
@@ -38,7 +37,6 @@ def get_instagram_hashtags(username):
 
     return hashtags
 
-
 def hashtagGPT(hashtags):
     """
     Categorizes a list of hashtags into specific genres using OpenAI's GPT-3.5-turbo models.
@@ -51,6 +49,7 @@ def hashtagGPT(hashtags):
 
     Notes:
     The primary category is listed first.
+    Don't forget to configure api-key in .env file before usage.
     """
     # Load .env (OpenAI-Api-Key)
     load_dotenv()
@@ -95,6 +94,6 @@ def hashtagGPT(hashtags):
 
 
 # ### EXAMPLE ###
-hashtags = get_instagram_hashtags("bellapoarch")
-#category = hashtagGPT(hashtags)
-print(hashtags)
+# hashtags = get_instagram_hashtags("bellapoarch")
+# category = hashtagGPT(hashtags)
+# print(category)
