@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import InputLabel from "./InputLabel";
 import ErrorField from "./ErrorField";
 import {useController, UseControllerProps} from "react-hook-form";
@@ -50,7 +50,7 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({cont
     // Event-Handler, wenn auf ein List-Element geklickt wird
     const handleSelectOption = (option: string) => {
 
-        let newSelectedOptions :string[] = [];
+        let newSelectedOptions :string[];
 
         // Wenn das Element schon selektiert wurde, dann Auswahl wieder aufheben:
         if (selectedOptions.includes(option)) {

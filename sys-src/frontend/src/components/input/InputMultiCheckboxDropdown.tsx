@@ -3,16 +3,17 @@ import useHandleClickOutside from "../../functions/useHandleClickOutside";
 
 
 interface MultiSelectDropdownProps {
-    options: string[];
+    selectOptions: string[];
     label: string;
     onChange: (selectedOptions: string[]) => void; // Callback für Änderungen hinzufügen
+    initialSelectedOptions?: string[];
 }
 
-const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options, label, onChange }) => {
+const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ selectOptions, label, onChange , initialSelectedOptions = []}) => {
 
     //_____________________ React-Hooks: _______________________
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<string[]>(initialSelectedOptions);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
 
@@ -73,10 +74,10 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options, labe
                 // <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
                 <div className="absolute  mt-2 right-0  bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
                     <ul>
-                        {options.map((option, index) => (
+                        {selectOptions.map((option) => (
 
                             // Eintrag einfärben, wenn er ausgewählt wurde
-                            <li key={index} onClick={() => handleOptionToggle(option)}
+                            <li key={option} onClick={() => handleOptionToggle(option)}
                                 className={`px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center text-sm 
                                             ${selectedOptions.includes(option) ? 'bg-blue-100 text-blue-700' : ''}`}>
                                 {/* Checkbox */}

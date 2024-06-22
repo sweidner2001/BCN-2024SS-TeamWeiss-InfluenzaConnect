@@ -422,68 +422,49 @@ const InfluencerOverview2: React.FC = () => {
             categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
         },
     ];
+
+
+
+    //___________________ Suchleiste ___________________
     const [data, setData] = useState(initialData);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedColumns, setSelectedColumns] = useState({
-        productName: true,
-        position: true,
-        status: true,
-        categories: true,
-    });
-    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
-    };
-
-    const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
-
-    const handleColumnToggle = (column: string) => {
-        setSelectedColumns(prevState => ({
-            ...prevState,
-            // [column]: !prevState[column],
-        }));
     };
 
     const filteredData = data.filter(item =>
         item.productName.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+
+    //__________________ Filterung der Spalten ___________________
+    const options = ['productName', 'position', 'status', 'categories'];
+    const initialSelectedOptions = ['productName', 'position', 'status'];
+    const [selectedColumns, setSelectedColumns] = useState<string[]>(initialSelectedOptions);
 
     // Funktion zum Behandeln von Änderungen der ausgewählten Optionen
     const handleDropdownChange = (selectedOptions: string[]) => {
-        setSelectedOptions(selectedOptions);
-        // Hier können Sie die ausgewählten Optionen verwenden, wenn sich etwas ändert
-        console.log(selectedOptions);
+        setSelectedColumns(selectedOptions);
     };
 
-    // Optionen für das Dropdown
-    const options = ['Option 1', 'Option 2', 'Option 3', 'Optionasdfasdfasdf4'];
+
 
 
     return (
         <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between mb-4">
+
+                {/* Suchfunktion */}
                 <div className="w-1/3">
-                    <input
-                        type="text"
-                        placeholder="Search by name..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                    />
+                    <input type="text" placeholder="Search by name..." className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        value={searchTerm} onChange={handleSearchChange} />
                 </div>
 
-                <InputMultiCheckboxDropdown
-                    options={options}
-                    label="Filter"
-                    onChange={handleDropdownChange}
-                />
+                {/* Spaltenfilter */}
+                <InputMultiCheckboxDropdown selectOptions={options} label="Filter" onChange={handleDropdownChange} initialSelectedOptions={initialSelectedOptions}/>
 
-                {/*<InputMultiCheckboxDropdown options={["Spalte 1", "Spalte 2"]}/>*/}
             </div>
             
             
@@ -492,22 +473,22 @@ const InfluencerOverview2: React.FC = () => {
                     <table className="w-full text-sm text-left text-gray-700">
                         <thead className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900">
                         <tr>
-                            {selectedColumns.productName && (
+                            {selectedColumns.includes('productName') && (
                                 <th scope="col" className="px-6 py-3">
                                     Name
                                 </th>
                             )}
-                            {selectedColumns.position && (
+                            {selectedColumns.includes('position') && (
                                 <th scope="col" className="px-6 py-3">
                                     Position
                                 </th>
                             )}
-                            {selectedColumns.status && (
+                            {selectedColumns.includes('status') && (
                                 <th scope="col" className="px-6 py-3">
                                     Status
                                 </th>
                             )}
-                            {selectedColumns.categories && (
+                            {selectedColumns.includes('categories') && (
                                 <th scope="col" className="px-6 py-3">
                                     Category
                                 </th>
@@ -523,7 +504,7 @@ const InfluencerOverview2: React.FC = () => {
                                 key={index}
                                 className="bg-white border-b hover:bg-gray-50"
                             >
-                                {selectedColumns.productName && (
+                                {selectedColumns.includes('productName') && (
                                     <th
                                         scope="row"
                                         className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
@@ -543,12 +524,12 @@ const InfluencerOverview2: React.FC = () => {
                                         </div>
                                     </th>
                                 )}
-                                {selectedColumns.position && (
+                                {selectedColumns.includes('position') && (
                                     <td className="px-6 py-4">
                                         {item.position}
                                     </td>
                                 )}
-                                {selectedColumns.status && (
+                                {selectedColumns.includes('status') && (
                                     <td className="px-6 py-4">
                                         <div className="flex items-center">
                                             <div
@@ -558,7 +539,7 @@ const InfluencerOverview2: React.FC = () => {
                                         </div>
                                     </td>
                                 )}
-                                {selectedColumns.categories && (
+                                {selectedColumns.includes('categories') && (
                                     <td className="px-6 py-4">
                                         {item.categories.map(
                                             (category, i) => (
