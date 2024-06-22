@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import InputLabel from "./InputLabel";
 import ErrorField from "./ErrorField";
 import {useController, UseControllerProps} from "react-hook-form";
+import useHandleClickOutside from "../../functions/useHandleClickOutside";
 
 
 /**
@@ -68,21 +69,7 @@ const InputMultiSelectDropdown: React.FC<InputMultiSelectDropdownProps> = ({cont
 
 
     // Event-Handler, damit sich das Dropdown schließt, wenn außerhalb des Elements geklickt wurde:
-    const handleClickOutside = (event: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setIsDropdownOpen(false);
-        }
-    };
-
-    // Eventhandler, dass sich das Dropdown schließt muss registriert werden:
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-
-        // Wir returnen eine Parameterlose Funktion:
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+    useHandleClickOutside(dropdownRef, () => setIsDropdownOpen(false));
 
 
 
