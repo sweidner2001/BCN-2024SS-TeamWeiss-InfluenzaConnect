@@ -421,6 +421,90 @@ const InfluencerOverview2: React.FC = () => {
             statusColor: 'bg-green-500',
             categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
         },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+            productName: 'Neil Sims',
+            productEmail: 'neil.sims@flowbite.com',
+            position: 'React Developer',
+            status: 'Online',
+            statusColor: 'bg-green-500',
+            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+
+            productName: 'John Doe',
+            productEmail: 'john.doe@example.com',
+            position: 'Frontend Developer',
+            status: 'Offline',
+            statusColor: 'bg-red-500',
+            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+            productName: 'Jane Smith',
+            productEmail: 'jane.smith@example.com',
+            position: 'UX Designer',
+            status: 'Online',
+            statusColor: 'bg-green-500',
+            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+            productName: 'Neil Sims',
+            productEmail: 'neil.sims@flowbite.com',
+            position: 'React Developer',
+            status: 'Online',
+            statusColor: 'bg-green-500',
+            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+
+            productName: 'John Doe',
+            productEmail: 'john.doe@example.com',
+            position: 'Frontend Developer',
+            status: 'Offline',
+            statusColor: 'bg-red-500',
+            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+            productName: 'Jane Smith',
+            productEmail: 'jane.smith@example.com',
+            position: 'UX Designer',
+            status: 'Online',
+            statusColor: 'bg-green-500',
+            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+            productName: 'Neil Sims',
+            productEmail: 'neil.sims@flowbite.com',
+            position: 'React Developer',
+            status: 'Online',
+            statusColor: 'bg-green-500',
+            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+
+            productName: 'John Doe',
+            productEmail: 'john.doe@example.com',
+            position: 'Frontend Developer',
+            status: 'Offline',
+            statusColor: 'bg-red-500',
+            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+        },
+        {
+            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+            productName: 'Jane Smith',
+            productEmail: 'jane.smith@example.com',
+            position: 'UX Designer',
+            status: 'Online',
+            statusColor: 'bg-green-500',
+            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+        },
     ];
 
 
@@ -441,7 +525,7 @@ const InfluencerOverview2: React.FC = () => {
 
     //__________________ Filterung der Spalten ___________________
     const options = ['productName', 'position', 'status', 'categories'];
-    const initialSelectedOptions = ['productName', 'position', 'status'];
+    const initialSelectedOptions = ['productName', 'position', 'status', 'categories'];
     const [selectedColumns, setSelectedColumns] = useState<string[]>(initialSelectedOptions);
 
     // Funktion zum Behandeln von Änderungen der ausgewählten Optionen
@@ -456,124 +540,152 @@ const InfluencerOverview2: React.FC = () => {
         <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between mb-4">
 
+                {/* Anzahl Tabelleneinträge */}
+                <div className="flex items-center space-x-4">
+                    <div className="text-gray-700 font-medium">
+                        Einträge: {filteredData.length}
+                    </div>
+                </div>
+
+
                 {/* Suchfunktion */}
                 <div className="w-1/3">
-                    <input type="text" placeholder="Search by name..." className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        value={searchTerm} onChange={handleSearchChange} />
+                    <input type="text" placeholder="Search by name..."
+                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                           value={searchTerm} onChange={handleSearchChange}/>
                 </div>
 
                 {/* Spaltenfilter */}
-                <InputMultiCheckboxDropdown selectOptions={options} label="Filter" onChange={handleDropdownChange} initialSelectedOptions={initialSelectedOptions}/>
+                <InputMultiCheckboxDropdown selectOptions={options} label="Filter" onChange={handleDropdownChange}
+                                            initialSelectedOptions={initialSelectedOptions}/>
 
             </div>
-            
-            
+
+
             <div className="bg-white overflow-hidden shadow-md sm:rounded-lg">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left text-gray-700">
-                        <thead className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900">
-                        <tr>
-                            {selectedColumns.includes('productName') && (
-                                <th scope="col" className="px-6 py-3">
-                                    Name
+
+
+                        <table className="w-full text-sm text-left text-gray-700">
+
+
+                            <thead
+                                className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900 px-6 py-3 xl:py-4 xl:px-6 ">
+                            <tr>
+                                <th scope="col" className="pl-6 pr-3 py-3 xl:py-4 sticky left-0 bg-blue-700 z-10">
+                                    #
                                 </th>
-                            )}
-                            {selectedColumns.includes('position') && (
-                                <th scope="col" className="px-6 py-3">
-                                    Position
-                                </th>
-                            )}
-                            {selectedColumns.includes('status') && (
-                                <th scope="col" className="px-6 py-3">
-                                    Status
-                                </th>
-                            )}
-                            {selectedColumns.includes('categories') && (
-                                <th scope="col" className="px-6 py-3">
-                                    Category
-                                </th>
-                            )}
-                            <th scope="col" className="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {filteredData.map((item, index) => (
-                            <tr
-                                key={index}
-                                className="bg-white border-b hover:bg-gray-50"
-                            >
                                 {selectedColumns.includes('productName') && (
-                                    <th
-                                        scope="row"
-                                        className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap"
-                                    >
-                                        <img
-                                            className="w-10 h-10 rounded-full"
-                                            src={item.productImage}
-                                            alt={item.productName}
-                                        />
-                                        <div className="pl-3">
-                                            <div className="text-base font-semibold">
-                                                {item.productName}
-                                            </div>
-                                            <div className="font-normal text-gray-500">
-                                                {item.productEmail}
-                                            </div>
-                                        </div>
+                                    <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">
+                                        Name
                                     </th>
                                 )}
                                 {selectedColumns.includes('position') && (
-                                    <td className="px-6 py-4">
-                                        {item.position}
-                                    </td>
+                                    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                        Position
+                                    </th>
                                 )}
                                 {selectedColumns.includes('status') && (
-                                    <td className="px-6 py-4">
-                                        <div className="flex items-center">
-                                            <div
-                                                className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
-                                            ></div>{' '}
-                                            {item.status}
-                                        </div>
-                                    </td>
+                                    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                        Status
+                                    </th>
                                 )}
                                 {selectedColumns.includes('categories') && (
-                                    <td className="px-6 py-4">
-                                        {item.categories.map(
-                                            (category, i) => (
-                                                <span
-                                                    key={i}
-                                                    className="text-xs font-medium px-2 py-1 m-0.5 rounded-md"
-                                                    style={{
-                                                        backgroundColor: stringToColor(
-                                                            category
-                                                        ),
-                                                    }}
-                                                >
-                                                        {category}
-                                                    </span>
-                                            )
-                                        )}
-                                    </td>
+                                    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                        Category
+                                    </th>
                                 )}
-                                <td className="px-6 py-4">
-                                    <a
-                                        href="#"
-                                        className="font-medium text-blue-600 hover:underline"
-                                    >
-                                        Edit user
-                                    </a>
-                                </td>
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Action
+                                </th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {filteredData.map((item, index) => (
+                                <tr
+                                    key={index}
+                                    className="bg-white border-b hover:bg-gray-50"
+                                >
+                                    <th className="pl-6 pr-3 py-4 text-blue-700 sticky left-0 bg-white">
+                                        {index + 1}
+                                    </th>
+                                    {selectedColumns.includes('productName') && (
+                                        <th
+                                            scope="row"
+                                            className="pl-3 pr-6 py-4 text-gray-900 whitespace-nowrap"
+                                        >
+                                            <div className="flex items-center">
+                                                <img
+                                                    className="w-10 h-10 rounded-full"
+                                                    src={item.productImage}
+                                                    alt={item.productName}
+                                                />
+                                                <div className="pl-3">
+                                                    <div className="text-base font-semibold">
+                                                        {item.productName}
+                                                    </div>
+                                                    <div className="font-normal text-gray-500">
+                                                        {item.productEmail}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </th>
+
+                                    )}
+                                    {selectedColumns.includes('position') && (
+                                        <td className="px-6 py-4">
+                                            {item.position}
+                                        </td>
+                                    )}
+
+                                    {selectedColumns.includes('status') && (
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center">
+                                                <div
+                                                    className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
+                                                ></div>
+                                                {' '}
+                                                {item.status}
+                                            </div>
+                                        </td>
+                                    )}
+                                    {selectedColumns.includes('categories') && (
+                                        <td className="px-2 sm:px-4 py-4">
+                                            <div className="flex flex-wrap gap-0.5">
+                                                {item.categories.map(
+                                                    (category, i) => (
+                                                        <span
+                                                            key={i}
+                                                            className="text-xs font-medium px-2 py-1 m-0.5 rounded-md whitespace-nowrap"
+                                                            style={{
+                                                                backgroundColor: stringToColor(
+                                                                    category
+                                                                ),
+                                                            }}
+                                                        >
+                                                            {category}
+                                                        </span>
+                                                    )
+                                                )}
+                                            </div>
+                                        </td>
+                                    )}
+                                    <td className="px-6 py-4">
+                                        <a
+                                            href="#"
+                                            className="font-medium text-blue-600 hover:underline whitespace-nowrap"
+                                        >
+                                            Edit user
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
                 </div>
             </div>
         </div>
-    );
+);
 };
 
 export default InfluencerOverview2;
