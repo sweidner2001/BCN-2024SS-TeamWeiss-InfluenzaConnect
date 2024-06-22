@@ -479,7 +479,7 @@ const InfluencerOverview2: React.FC = () => {
 
                 <InputMultiCheckboxDropdown
                     options={options}
-                    label="Select Options"
+                    label="Filter"
                     onChange={handleDropdownChange}
                 />
 
