@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 interface MultiSelectDropdownProps {
     options: string[];
@@ -9,15 +9,16 @@ interface MultiSelectDropdownProps {
 const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options, label, onChange }) => {
 
     //_____________________ React-Hooks: _______________________
-    const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
 
 
     //_____________________ Eventhandler: _______________________
     // Dropdown öffnen / schließen:
     const toggleDropdown = () => {
-        setIsOpen(!isOpen);
+        setIsDropdownOpen(!isDropdownOpen);
     };
 
     const handleOptionToggle = (option: string) => {
@@ -32,9 +33,28 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options, labe
     };
 
 
+
+    // Event-Handler, damit sich das Dropdown schließt, wenn außerhalb des Elements geklickt wurde:
+    const handleClickOutside = (event: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setIsDropdownOpen(false);
+        }
+    };
+
+    // Eventhandler, dass sich das Dropdown schließt muss registriert werden:
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Wir returnen eine Parameterlose Funktion:
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+
     //_____________________ HTML: _______________________
     return (
-        <div className="relative inline-block text-left">
+        <div className="relative inline-block text-left" ref={dropdownRef}>
 
             {/* Button */}
             <div>
@@ -62,7 +82,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ options, labe
             </div>
 
             {/* Dropdown mit Checkboxes */}
-            {isOpen && (
+            {isDropdownOpen && (
                 // <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
                 <div className="absolute  mt-2 right-0  bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
                     <ul>
