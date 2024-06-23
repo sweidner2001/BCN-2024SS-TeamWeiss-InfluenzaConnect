@@ -3,7 +3,7 @@ import useHandleClickOutside from "../../functions/useHandleClickOutside";
 
 
 interface MultiSelectDropdownProps {
-    selectOptions: string[];
+    selectOptions: { [key: string]: string };
     label: string;
     onChange: (selectedOptions: string[]) => void; // Callback für Änderungen hinzufügen
     initialSelectedOptions?: string[];
@@ -74,7 +74,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ selectOptions
                 // <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
                 <div className="absolute  mt-2 right-0  bg-white border border-gray-300 rounded shadow-lg z-10 min-w-min">
                     <ul>
-                        {selectOptions.map((option) => (
+                        {Object.keys(selectOptions).map((option) => (
 
                             // Eintrag einfärben, wenn er ausgewählt wurde
                             <li key={option} onClick={() => handleOptionToggle(option)}
@@ -84,7 +84,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ selectOptions
                                 <input type="checkbox" onChange={() => handleOptionToggle(option)} checked={selectedOptions.includes(option)}
                                         className="form-checkbox h-4 w-4 text-indigo-600 mr-3"/>
                                 {/* Label */}
-                                {option}
+                                {selectOptions[option]}
                             </li>
 
                         ))}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import InputMultiCheckboxDropdown from "../input/InputMultiCheckboxDropdown";
 import {useForm} from "react-hook-form";
@@ -35,6 +35,10 @@ const InfluencerOverview: React.FC = () => {
     // if (error) {
     //     return <div>Error: {error}</div>;
     // }
+
+
+
+
 
     return (
         <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
@@ -166,7 +170,7 @@ const InfluencerOverview: React.FC = () => {
                                 </td>
                             </tr>
                             <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                     <th scope="row"
+                                <th scope="row"
                                     className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <img
                                         src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png"
@@ -230,7 +234,6 @@ const InfluencerOverview: React.FC = () => {
                                     week
                                 </td>
                             </tr>
-
 
 
                             <tr className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -366,6 +369,124 @@ const InfluencerOverview: React.FC = () => {
 
 
 
+// const initialData = [
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+//         productName: 'Neil Sims',
+//         productEmail: 'neil.sims@flowbite.com',
+//         position: 'React Developer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+//
+//         productName: 'John Doe',
+//         productEmail: 'john.doe@example.com',
+//         position: 'Frontend Developer',
+//         status: 'Offline',
+//         statusColor: 'bg-red-500',
+//         categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+//         productName: 'Jane Smith',
+//         productEmail: 'jane.smith@example.com',
+//         position: 'UX Designer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+//         productName: 'Neil Sims',
+//         productEmail: 'neil.sims@flowbite.com',
+//         position: 'React Developer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+//
+//         productName: 'John Doe',
+//         productEmail: 'john.doe@example.com',
+//         position: 'Frontend Developer',
+//         status: 'Offline',
+//         statusColor: 'bg-red-500',
+//         categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+//         productName: 'Jane Smith',
+//         productEmail: 'jane.smith@example.com',
+//         position: 'UX Designer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+//         productName: 'Neil Sims',
+//         productEmail: 'neil.sims@flowbite.com',
+//         position: 'React Developer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+//
+//         productName: 'John Doe',
+//         productEmail: 'john.doe@example.com',
+//         position: 'Frontend Developer',
+//         status: 'Offline',
+//         statusColor: 'bg-red-500',
+//         categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+//         productName: 'Jane Smith',
+//         productEmail: 'jane.smith@example.com',
+//         position: 'UX Designer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
+//         productName: 'Neil Sims',
+//         productEmail: 'neil.sims@flowbite.com',
+//         position: 'React Developer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+//
+//         productName: 'John Doe',
+//         productEmail: 'john.doe@example.com',
+//         position: 'Frontend Developer',
+//         status: 'Offline',
+//         statusColor: 'bg-red-500',
+//         categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
+//     },
+//     {
+//         productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
+//         productName: 'Jane Smith',
+//         productEmail: 'jane.smith@example.com',
+//         position: 'UX Designer',
+//         status: 'Online',
+//         statusColor: 'bg-green-500',
+//         categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+//     },
+// ];
+
+
+
+
 // Funktion zur Generierung eines Hash-Wertes aus einem String
 const stringToHash = (str: string): number => {
     let hash = 0;
@@ -389,128 +510,64 @@ const stringToColor = (str: string): string => {
     return lightColor;
 };
 
+interface IUserData {
+    gender: string;
+    name: string;
+    age: number;
+    instagram_username: string;
+    language: string;
+    nationality: string;
+    profileImage: string;
+    advertisingDivision: string[];
+    statusColor: string;
+}
 
 
 const InfluencerOverview2: React.FC = () => {
-    const initialData = [
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
-            productName: 'Neil Sims',
-            productEmail: 'neil.sims@flowbite.com',
-            position: 'React Developer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
 
-            productName: 'John Doe',
-            productEmail: 'john.doe@example.com',
-            position: 'Frontend Developer',
-            status: 'Offline',
-            statusColor: 'bg-red-500',
-            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
-            productName: 'Jane Smith',
-            productEmail: 'jane.smith@example.com',
-            position: 'UX Designer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
-            productName: 'Neil Sims',
-            productEmail: 'neil.sims@flowbite.com',
-            position: 'React Developer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+    // profileImage
+    // name
+    // advertisingDivision
+    // nationality
+    // language
+    // instagram_username
+    // statusColor: 'bg-green-500'
+    // gender
+    // age
+    // const newData: IUserData[];
 
-            productName: 'John Doe',
-            productEmail: 'john.doe@example.com',
-            position: 'Frontend Developer',
-            status: 'Offline',
-            statusColor: 'bg-red-500',
-            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
-            productName: 'Jane Smith',
-            productEmail: 'jane.smith@example.com',
-            position: 'UX Designer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
-            productName: 'Neil Sims',
-            productEmail: 'neil.sims@flowbite.com',
-            position: 'React Developer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+    const [data, setData] = useState<IUserData[]>([]);
 
-            productName: 'John Doe',
-            productEmail: 'john.doe@example.com',
-            position: 'Frontend Developer',
-            status: 'Offline',
-            statusColor: 'bg-red-500',
-            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
-            productName: 'Jane Smith',
-            productEmail: 'jane.smith@example.com',
-            position: 'UX Designer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="gray" /%3E%3C/svg%3E',
-            productName: 'Neil Sims',
-            productEmail: 'neil.sims@flowbite.com',
-            position: 'React Developer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['Desktop PC', 'React Developer', 'Affe', 'Affe'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="red" /%3E%3C/svg%3E',
+    useEffect(() => {
+        axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
+            .then(response => {
 
-            productName: 'John Doe',
-            productEmail: 'john.doe@example.com',
-            position: 'Frontend Developer',
-            status: 'Offline',
-            statusColor: 'bg-red-500',
-            categories: ['Web Development', 'JavaScript', 'Frontend', 'UI/UX'],
-        },
-        {
-            productImage: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="50" cy="50" r="45" fill="green" /%3E%3C/svg%3E',
-            productName: 'Jane Smith',
-            productEmail: 'jane.smith@example.com',
-            position: 'UX Designer',
-            status: 'Online',
-            statusColor: 'bg-green-500',
-            categories: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-        },
-    ];
+
+                const newData: IUserData[] = response.data.results.map((user :any)=> ({
+                    gender: user.gender,
+                    name: user.name.last + ' ' + user.name.first,
+                    age: user.dob.age,
+                    instagram_username: '@' + user.location.city + user.name.last,
+                    language: 'Deutsch',
+                    nationality: user.location.country,
+                    profileImage: user.picture.medium,
+                    advertisingDivision: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+                    statusColor: 'bg-green-500'
+                }));
+
+                setData(newData);
+
+            })
+            .catch(error => {
+                console.error('There was an error making the request!', error);
+            });
+    }, []);
+
 
 
 
     //___________________ Suchleiste ___________________
-    const [data, setData] = useState(initialData);
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -518,22 +575,27 @@ const InfluencerOverview2: React.FC = () => {
     };
 
     const filteredData = data.filter(item =>
-        item.productName.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
 
-
     //__________________ Filterung der Spalten ___________________
-    const options = ['productName', 'position', 'status', 'categories'];
-    const initialSelectedOptions = ['productName', 'position', 'status', 'categories'];
+    // Definiere das assoziative Array
+    const options: { [key: string]: string } = {
+        name: "Name",
+        age: "Alter",
+        instagram_username: "Instagram-Account",
+        language: "Sprache",
+        nationality: "Nationalität",
+        advertisingDivision: "Werbungsbereich",
+    };
+    const initialSelectedOptions = ['name', 'age', 'instagram_username', 'language', 'nationality', 'advertisingDivision'];
     const [selectedColumns, setSelectedColumns] = useState<string[]>(initialSelectedOptions);
 
     // Funktion zum Behandeln von Änderungen der ausgewählten Optionen
     const handleDropdownChange = (selectedOptions: string[]) => {
         setSelectedColumns(selectedOptions);
     };
-
-
 
 
     return (
@@ -557,135 +619,165 @@ const InfluencerOverview2: React.FC = () => {
 
                 {/* Spaltenfilter */}
                 <InputMultiCheckboxDropdown selectOptions={options} label="Filter" onChange={handleDropdownChange}
-                                            initialSelectedOptions={initialSelectedOptions}/>
+                                            initialSelectedOptions={selectedColumns}/>
 
             </div>
 
 
-            <div className="bg-white overflow-hidden shadow-md sm:rounded-lg">
-                <div className="overflow-x-auto">
+            {/*// overflow-hidden*/}
+            <div className="bg-white shadow-md sm:rounded-lg">
+                <div
+                    // className="overflow-x-auto"
+                >
 
 
-                        <table className="w-full text-sm text-left text-gray-700">
+                    <table className="w-full text-sm text-left text-gray-700 ">
 
 
-                            <thead
-                                className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900 px-6 py-3 xl:py-4 xl:px-6 ">
-                            <tr>
-                                <th scope="col" className="pl-6 pr-3 py-3 xl:py-4 sticky left-0 bg-blue-700 z-10">
-                                    #
+                        <thead
+                            className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900 px-6 py-3 xl:py-4 xl:px-6">
+                        <tr>
+                            <th scope="col" className="pl-6 pr-3 py-3 xl:py-4 bg-blue-700">
+                                #
+                            </th>
+                            {selectedColumns.includes('name') && (
+                                <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">
+                                    Name
                                 </th>
-                                {selectedColumns.includes('productName') && (
-                                    <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">
-                                        Name
-                                    </th>
-                                )}
-                                {selectedColumns.includes('position') && (
-                                    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
-                                        Position
-                                    </th>
-                                )}
-                                {selectedColumns.includes('status') && (
-                                    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
-                                        Status
-                                    </th>
-                                )}
-                                {selectedColumns.includes('categories') && (
-                                    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
-                                        Category
-                                    </th>
-                                )}
+                            )}
+                            {selectedColumns.includes('age') && (
                                 <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
-                                    Action
+                                    Alter
                                 </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {filteredData.map((item, index) => (
-                                <tr
-                                    key={index}
-                                    className="bg-white border-b hover:bg-gray-50"
-                                >
-                                    <th className="pl-6 pr-3 py-4 text-blue-700 sticky left-0 bg-white">
-                                        {index + 1}
-                                    </th>
-                                    {selectedColumns.includes('productName') && (
-                                        <th
-                                            scope="row"
-                                            className="pl-3 pr-6 py-4 text-gray-900 whitespace-nowrap"
-                                        >
-                                            <div className="flex items-center">
-                                                <img
-                                                    className="w-10 h-10 rounded-full"
-                                                    src={item.productImage}
-                                                    alt={item.productName}
-                                                />
-                                                <div className="pl-3">
-                                                    <div className="text-base font-semibold">
-                                                        {item.productName}
-                                                    </div>
-                                                    <div className="font-normal text-gray-500">
-                                                        {item.productEmail}
-                                                    </div>
+                            )}
+                            {selectedColumns.includes('advertisingDivision') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Werbesparte
+                                </th>
+                            )}
+                            {selectedColumns.includes('nationality') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Nationalität
+                                </th>
+                            )}
+                            {selectedColumns.includes('language') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Sprache
+                                </th>
+                            )}
+                            {selectedColumns.includes('instagram_username') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Instagram-Account
+                                </th>
+                            )}
+                            <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                Action
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {filteredData.map((item, index) => (
+                            <tr
+                                key={index}
+                                className="bg-white border-b hover:bg-gray-50"
+                            >
+                                <th className="pl-6 pr-3 py-4 text-blue-700">
+                                    {index + 1}
+                                </th>
+                                {selectedColumns.includes('name') && (
+                                    <th
+                                        scope="row"
+                                        className="pl-3 pr-6 py-4 text-gray-900 whitespace-nowrap"
+                                    >
+                                        <div className="flex items-center">
+                                            <img
+                                                className="w-10 h-10 rounded-full"
+                                                src={item.profileImage}
+                                                alt={'Bild'}
+                                            />
+                                            <div className="pl-3">
+                                                <div className="text-base font-semibold">
+                                                    {item.name}
+                                                </div>
+                                                <div className="font-normal text-gray-500">
+                                                    {item.gender}
                                                 </div>
                                             </div>
-                                        </th>
+                                        </div>
+                                    </th>
 
-                                    )}
-                                    {selectedColumns.includes('position') && (
-                                        <td className="px-6 py-4">
-                                            {item.position}
-                                        </td>
-                                    )}
+                                )}
+                                {selectedColumns.includes('age') && (
+                                    <td className="px-6 py-4">
+                                        {item.age}
+                                    </td>
+                                )}
 
-                                    {selectedColumns.includes('status') && (
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div
-                                                    className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
-                                                ></div>
-                                                {' '}
-                                                {item.status}
-                                            </div>
-                                        </td>
-                                    )}
-                                    {selectedColumns.includes('categories') && (
-                                        <td className="px-2 sm:px-4 py-4">
-                                            <div className="flex flex-wrap gap-0.5">
-                                                {item.categories.map(
-                                                    (category, i) => (
-                                                        <span
-                                                            key={i}
-                                                            className="text-xs font-medium px-2 py-1 m-0.5 rounded-md whitespace-nowrap"
-                                                            style={{
-                                                                backgroundColor: stringToColor(
-                                                                    category
-                                                                ),
-                                                            }}
-                                                        >
+                                {selectedColumns.includes('advertisingDivision') && (
+                                    <td className="px-2 sm:px-4 py-4 min-w-80">
+                                        <div className="flex flex-wrap gap-0.5">
+                                            {item.advertisingDivision.map(
+                                                (category, i) => (
+                                                    <span
+                                                        key={i}
+                                                        className="text-xs font-medium px-2 py-1 m-0.5 rounded-md whitespace-nowrap"
+                                                        style={{
+                                                            backgroundColor: stringToColor(
+                                                                category
+                                                            ),
+                                                        }}
+                                                    >
                                                             {category}
                                                         </span>
-                                                    )
-                                                )}
-                                            </div>
-                                        </td>
-                                    )}
+                                                )
+                                            )}
+                                        </div>
+                                    </td>
+                                )}
+
+                                {selectedColumns.includes('nationality') && (
                                     <td className="px-6 py-4">
-                                        <a
-                                            href="#"
-                                            className="font-medium text-blue-600 hover:underline whitespace-nowrap"
-                                        >
-                                            Edit user
+                                        <div className="flex items-center">
+                                            <div
+                                                className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
+                                            ></div>
+                                            {' '}
+                                            {item.nationality}
+                                        </div>
+                                    </td>
+                                )}
+                                {selectedColumns.includes('language') && (
+                                    <td className="px-6 py-4">
+                                        {item.language}
+                                    </td>
+                                )}
+                                {selectedColumns.includes('instagram_username') && (
+                                    <td className="px-6 py-4">
+                                        <a href="https://www.instagram.com/festdamen.ffwschoenkirch2024/"
+                                            className="font-medium hover:text-blue-600 hover:underline whitespace-nowrap">
+                                            {item.instagram_username}
                                         </a>
                                     </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
+                                    )}
+                                <td className="px-6 py-4">
+                                    <a
+                                        href="#"
+                                        className="font-medium text-blue-600 hover:underline whitespace-nowrap"
+                                    >
+                                        Edit user
+                                    </a>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </div>
-            </div>
         </div>
-);
+        </div>
+    );
 };
+
+
+
 
 export default InfluencerOverview2;
