@@ -625,9 +625,9 @@ const InfluencerOverview2: React.FC = () => {
 
 
             {/*// overflow-hidden*/}
-            <div className="bg-white shadow-md sm:rounded-lg">
+            <div className="bg-white shadow-md sm:rounded-lg flex-1">
                 <div
-                    // className="overflow-x-auto"
+                    // className="overflow-x-auto h-2/3"
                 >
 
 
