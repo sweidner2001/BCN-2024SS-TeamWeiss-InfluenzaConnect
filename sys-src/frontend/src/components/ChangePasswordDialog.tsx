@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
+import { useForm } from 'react-hook-form';
+import InputField from './input/InputField'; // Ensure this import points to the correct file
 
 interface ChangePasswordDialogProps {
   isOpen: boolean;
@@ -9,17 +11,21 @@ interface ChangePasswordDialogProps {
 }
 
 const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    defaultValues: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: ''
+    }
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPassword !== confirmPassword) {
+  const handleFormSubmit = (data: { currentPassword: string; newPassword: string; confirmPassword: string }) => {
+    if (data.newPassword !== data.confirmPassword) {
       alert('New passwords do not match');
       return;
     }
-    onSubmit(currentPassword, newPassword);
+    onSubmit(data.currentPassword, data.newPassword);
+    reset();
   };
 
   return (
@@ -37,9 +43,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ isOpen, onC
           >
             <div className="fixed inset-0 bg-black bg-opacity-30" />
           </Transition.Child>
-
           <span className="inline-block h-screen align-middle" aria-hidden="true">&#8203;</span>
-
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -53,40 +57,31 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ isOpen, onC
               <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900 mb-4">
                 Change Password
               </Dialog.Title>
-              <p className="text-sm text-gray-500 mb-6">
-                Please fill in this form to change your password.
-              </p>
-              <form onSubmit={handleSubmit}>
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Current Password</label>
-                  <input
-                    type="password"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-12"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">New Password</label>
-                  <input
-                    type="password"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-12"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
-                  <input
-                    type="password"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-12"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </div>
+              <form onSubmit={handleSubmit(handleFormSubmit)}>
+                <InputField
+                  fieldWidth={4}
+                  id="currentPassword"
+                  label="Current Password"
+                  type="password"
+                  register={register('currentPassword', { required: true })}
+                  error={errors.currentPassword && 'Current password is required'}
+                />
+                <InputField
+                  fieldWidth={4}
+                  id="newPassword"
+                  label="New Password"
+                  type="password"
+                  register={register('newPassword', { required: true })}
+                  error={errors.newPassword && 'New password is required'}
+                />
+                <InputField
+                  fieldWidth={4}
+                  id="confirmPassword"
+                  label="Confirm New Password"
+                  type="password"
+                  register={register('confirmPassword', { required: true })}
+                  error={errors.confirmPassword && 'Passwords must match'}
+                />
                 <div className="mt-6 flex justify-end">
                   <button
                     type="button"
