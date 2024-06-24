@@ -131,21 +131,44 @@ const Signup: React.FC = () => {
         // alert(JSON.stringify(finalData));
 
         // Daten ans Backend senden:
-        fetch('http://localhost:5001/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(finalData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Weiterverarbeitung der Antwort
-            console.log(data);
-        })
-        .catch(error => {
+        try {
+            const response = await fetch('http://localhost:5001/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(finalData)
+            });
+
+            if (response.ok) {
+                const resData = await response.json();
+                console.log(resData);
+
+                // Setting the session after successful signup
+                const setSessionResponse = await fetch('http://localhost:5001/set_session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: finalData.form1.email })
+                });
+
+                if (setSessionResponse.ok) {
+                    const sessionData = await setSessionResponse.json();
+                    console.log(sessionData);
+
+                    // Redirect or update state as needed after setting the session
+                    // For example, you can redirect to a different page
+                    // window.location.href = '/dashboard';
+                } else {
+                    console.error('Failed to set session:', await setSessionResponse.text());
+                }
+            } else {
+                console.error('Registration failed:', await response.text());
+            }
+        } catch (error) {
             console.error('Error:', error);
-        });
+        }
     };
 
 
