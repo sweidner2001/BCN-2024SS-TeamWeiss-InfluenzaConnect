@@ -24,9 +24,12 @@ jobs:
       run: |
         ssh root@49.13.173.130 "
           cd BCN-2024SS-TeamWeiss-InfluenzaConnect/ &&
+          git stash &&
           git pull &&
+          git stash pop &&
           cd sys-src/devenv/ &&
           docker compose down &&
           docker compose -f docker-compose.prod.yml build &&
           docker compose -f docker-compose.prod.yml up -d
         "
+  
