@@ -15,6 +15,7 @@ check_result "Failed to create virtual environment"
 source backend/bin/activate
 check_result "Failed to activate virtual environment"
 
+pip3 install --upgrade pip
 pip3 install -r backend/requirements.txt
 check_result "Failed to install requirements"
 
