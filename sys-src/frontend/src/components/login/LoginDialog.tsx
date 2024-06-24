@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import InputField from '../input/InputField';
 
 interface LoginDialogProps {
   isOpen: boolean;
@@ -17,8 +18,8 @@ interface ILoginInputs {
 
 /**
  * @function getMaxFieldLength Gibt die max. Länge zurück und einen Fehlertext für die Formulardaten-Validation
- * @author Sebastian Weidner
- * @since 13.06.2024
+ * @autor Sebastian Weidner
+ * @seit 13.06.2024
  * @version 1.0
  *
  * @param maxLength Maximale Textlänge des input-Feldes
@@ -97,22 +98,26 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose }) => {
               </p>
               <form onSubmit={handleSubmit(handleLogin)}>
                 <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Email</label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-12 pl-3"
-                    {...register("email")}
+                  <InputField 
+                    fieldWidth={4} 
+                    id="email" 
+                    label="Email" 
+                    type="text" 
+                    register={register("email")} 
+                    autoComplete="email" 
+                    error={errors.email?.message} 
                   />
-                  {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
                 </div>
                 <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Password</label>
-                  <input
-                    type="password"
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm h-12 pl-3"
-                    {...register("password")}
+                  <InputField 
+                    fieldWidth={4} 
+                    id="password" 
+                    label="Password" 
+                    type="password" 
+                    register={register("password")} 
+                    autoComplete="current-password" 
+                    error={errors.password?.message} 
                   />
-                  {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
                 </div>
                 <div className="mt-6 flex justify-end">
                   <button
