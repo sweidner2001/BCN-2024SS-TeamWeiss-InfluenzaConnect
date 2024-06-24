@@ -4,7 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { SignupFormInputs1 } from '../forms/SignupFormInputs1'; // Pfade anpassen, falls notwendig
+import { SignupFormInputs1 } from '../forms/SignupFormInputs1'; 
+
 
 afterEach(() => {
   cleanup();

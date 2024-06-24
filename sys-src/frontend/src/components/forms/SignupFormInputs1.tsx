@@ -100,29 +100,3 @@ export type {
 }
 
 
-describe('SignupSchema1 validation', () => {
-    it('should validate a correct email and password', async () => {
-        const data = { email: 'test@example.com', passwort: 'abcdefghij' };
-        await expect(SignupSchema1.validate(data)).resolves.toBeTruthy();
-    });
-
-    it('should fail validation with an invalid email', async () => {
-        const data = { email: 'invalid-email', passwort: 'abcdefghij' };
-        await expect(SignupSchema1.validate(data)).rejects.toThrow('Bitte geben Sie eine gültige Email-Adresse ein!');
-    });
-
-    it('should fail validation with a short password', async () => {
-        const data = { email: 'test@example.com', passwort: 'short' };
-        await expect(SignupSchema1.validate(data)).rejects.toThrow('Das Passwort muss min. 10 Zeichen lang sein!');
-    });
-
-    it('should fail validation with a long email', async () => {
-        const data = { email: 'a'.repeat(41) + '@example.com', passwort: 'abcdefghij' };
-        await expect(SignupSchema1.validate(data)).rejects.toThrow('Eingabefeld ist auf 40 Zeichen begrenzt');
-    });
-
-    it('should fail validation with a long password', async () => {
-        const data = { email: 'test@example.com', passwort: 'a'.repeat(26) };
-        await expect(SignupSchema1.validate(data)).rejects.toThrow('Eingabefeld ist auf 25 Zeichen begrenzt');
-    });
-});
