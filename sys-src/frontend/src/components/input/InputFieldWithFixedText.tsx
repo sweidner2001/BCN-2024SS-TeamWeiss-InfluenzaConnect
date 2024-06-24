@@ -1,5 +1,6 @@
 import React from 'react';
 import InputLabel from './InputLabel'
+import ErrorField from "./ErrorField";
 
 
 /**
@@ -21,8 +22,7 @@ interface InputFieldProps {
     id: string;
     label: string;
     type: string;
-    // register: any;
-    required: boolean;
+    register: any;
     autoComplete?: string;
     error?: string;
 }
@@ -45,11 +45,14 @@ const InputFieldWithFixedText: React.FC<InputFieldProps & {fixedText:string}> = 
                                 ring-1 ring-inset ring-gray-300
                                 focus-within:ring-1 focus-within:ring-inset focus-within:ring-indigo-700">
                     <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">{fixedText}</span>
-                    <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label} required={probs.required}
+                    <input type={probs.type} id={probs.id} autoComplete={probs.autoComplete} placeholder={probs.label}
+                           {...probs.register}
                            className="block flex-1 border-0 bg-transparent py-1.5 pl-1 sm:text-sm sm:leading-6
                                        text-gray-900 placeholder:text-gray-400
                                        focus:ring-0 focus:outline-none "/>
                 </div>
+
+                <ErrorField errorMessage={probs.error}/>
             </div>
         </div>
     );

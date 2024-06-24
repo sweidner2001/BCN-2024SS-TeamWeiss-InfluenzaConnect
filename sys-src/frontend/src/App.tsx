@@ -3,11 +3,11 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // Imports eigene components:
-import Button from './components/Button';
-import ButtonDB from './components/ButtonSend2DB';
+import Button from './components/buttons/Button';
+import ButtonDB from './components/buttons/ButtonSend2DB';
 import Signup from "./components/pages/Signup";
 import Landing from "./components/pages/Landing";
-
+import ProfileView from "./components/pages/ProfileView";
 
 //######################### Components ############################
 function Home() {
@@ -33,6 +33,7 @@ export default function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/landing" element={<Landing />} />
+                <Route path="/profileView" element={<ProfileView />} />
             </Routes>
         </Router>
     );
