@@ -9,22 +9,60 @@ const ProfileView: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('personalData');
   const [selectedDataCard, setSelectedDataCard] = useState('private');
   const [userData, setUserData] = useState(null);
+  const [sessionEmail, setSessionEmail] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const response = await fetch('http://localhost:5001/profileView', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: 'nils.baierl1@gmail.com' })
-      });
-      const data = await response.json();
-      setUserData(data.user);
+    const fetchSessionEmail = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/get_session_email', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include' // This ensures cookies (session data) are sent with the request
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setSessionEmail(data.email);
+        } else {
+          console.error('Failed to fetch session email:', await response.text());
+        }
+      } catch (error) {
+        console.error('Error fetching session email:', error);
+      }
     };
 
-    fetchUserData();
+    fetchSessionEmail();
   }, []);
+
+  useEffect(() => {
+    if (sessionEmail) {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch('http://localhost:5001/profileView', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: sessionEmail }),
+            credentials: 'include' // This ensures cookies (session data) are sent with the request
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setUserData(data.user);
+          } else {
+            console.error('Failed to fetch user data:', await response.text());
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+
+      fetchUserData();
+    }
+  }, [sessionEmail]);
 
   const handleSave = (updatedData: any) => {
     fetch('http://localhost:5001/updateProfile', {
