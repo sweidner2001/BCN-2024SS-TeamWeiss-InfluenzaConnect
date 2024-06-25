@@ -42,24 +42,48 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose }) => {
   const handleLogin = async (data: ILoginInputs) => {
     alert(JSON.stringify(data));
 
-    // Daten ans Backend senden:
-    fetch('http://localhost:5001/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Weiterverarbeitung der Antwort
-        console.log(data);
-        alert('Anmeldung erfolgreich gesendet!');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Fehler!');
+    try {
+      // Daten ans Backend senden:
+      const response = await fetch('http://localhost:5001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
       });
+  
+      if (response.ok) {
+        const loginData = await response.json();
+        console.log(loginData);
+  
+        // Session nach erfolgreichem Login setzen
+        const setSessionResponse = await fetch('http://localhost:5001/set_session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: data.email })  
+        });
+  
+        if (setSessionResponse.ok) {
+          const sessionData = await setSessionResponse.json();
+          console.log(sessionData);
+  
+          // Optional: Weiterleitung oder Zustandsaktualisierung nach Session-Setzung
+
+          alert('Anmeldung erfolgreich gesendet!');
+        } else {
+          console.error('Fehler beim Setzen der Session:', await setSessionResponse.text());
+          alert('Fehler beim Setzen der Session!');
+        }
+      } else {
+        console.error('Anmeldung fehlgeschlagen:', await response.text());
+        alert('Anmeldung fehlgeschlagen!');
+      }
+    } catch (error) {
+      console.error('Fehler:', error);
+      alert('Fehler!');
+    }
   };
 
   return (
