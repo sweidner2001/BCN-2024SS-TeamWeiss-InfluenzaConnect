@@ -12,7 +12,7 @@ app.secret_key                           = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3
 app.config['SESSION_COOKIE_SECURE']      = True
 app.config['SESSION_COOKIE_SAMESITE']    = 'Lax'
 
-CORS(app)
+CORS(app, supports_credentials=True)
 
 @app.route('/set_session', methods=['POST'])
 def set_session():
@@ -27,6 +27,13 @@ def set_session():
 def get_session():
     email = session.get('email', 'Nicht eingeloggt')
     return f'Eingeloggt als {email}'
+
+@app.route('/get_session_email', methods=['GET'])
+def get_session_email():
+    email = session.get('email')
+    if email:
+        return jsonify(email=email), 200
+    return jsonify(message='No email in session'), 400
 
 @app.route('/remove_session')
 def remove_session():
