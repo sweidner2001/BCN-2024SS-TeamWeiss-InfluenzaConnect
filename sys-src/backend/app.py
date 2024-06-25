@@ -3,6 +3,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from database import save_user, find_user_by_email, fetch_all_users
 from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
+from userinfo_scripts.user_analysis import (
+    get_instagram_comments,
+    get_instagram_likes,
+    get_instagram_followers,
+    engagement_rate,
+    time_since_last_post,
+    get_instagram_profile_pic
+)
+from userinfo_scripts.categorization import get_instagram_hashtags
 
 app = Flask(__name__)
 CORS(app)
@@ -110,24 +119,42 @@ def collectData():
     Returns:
         JSON-Antwort mit gesammelten Userdaten.
     """
-    # Userdaten aus der Registrierungsdatenbank 
-    users = fetch_all_users(); 
+    try:
+        # Userdaten aus der Registrierungsdatenbank 
+        all_users = fetch_all_users()
+        user_data_dict = {}
 
-    # zusätzliche Daten vom Webscraping
-    # ToDo Domi
-    webscraping_data = []
+        for user in all_users:
+            user_data = {
+                'email': user['email'],
+                'password': user['password'],
+                'title': user['title'],
+                'first_name': user['first_name'],
+                'last_name': user['last_name'],
+                'country': user['country'],
+                'phone': user['phone'],
+                'language': user['language'],
+                'about_me': user['about_me'],
+                'instagram_username': user['instagram_username'],
+                'instagram_comments_avg': get_instagram_comments(user['instagram_username']),
+                'instagram_likes_avg': get_instagram_likes(user['instagram_username']),
+                'instagram_followers': get_instagram_followers(user['instagram_username']),
+                'instagram_engagement_rate': engagement_rate(user['instagram_username']),
+                'instagram_time_since_last_post': time_since_last_post(user['instagram_username']),
+                'hashtags': get_instagram_hashtags(user['instagram_username'])
+            }
 
-    # Profilbilder der Instagram Profile 
-    # ToDo Timon
-    profilepictures = []
+            # Optional: Download profile picture if needed
+            get_instagram_profile_pic(user['instagram_username'])
 
-    user_data = {
-        "users": users,
-        "webscraping_data":webscraping_data,
-        "profilepictures": profilepictures
-    }
+            user_data_dict[user['_id']] = user_data
 
-    return user_data
+        return user_data_dict
+
+    except Exception as e:
+        print(f"Error collecting data: {e}")
+        return {}
+
 
 # Run the app
 if __name__ == '__main__':
