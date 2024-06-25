@@ -1,5 +1,6 @@
 // React Imports:
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {SubmitHandler, useForm} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,6 +22,7 @@ const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
 const Signup: React.FC = () => {
 
     //___________________ Hooks: ___________________
+    const navigate = useNavigate(); // Hook for navigation
     const [currentForm, setCurrentForm] = useState(1);
     const [formData, setFormData] = useState<any>({});
     const [transition, setTransition] = useState(false);
@@ -150,7 +152,8 @@ const Signup: React.FC = () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ email: finalData.form1.email })
+                    body: JSON.stringify({ email: finalData.form1.email }),
+                    credentials: 'include'
                 });
 
                 if (setSessionResponse.ok) {
@@ -158,8 +161,7 @@ const Signup: React.FC = () => {
                     console.log(sessionData);
 
                     // Redirect or update state as needed after setting the session
-                    // For example, you can redirect to a different page
-                    // window.location.href = '/dashboard';
+                    navigate('/landing'); // Redirect to landing page
                 } else {
                     console.error('Failed to set session:', await setSessionResponse.text());
                 }
@@ -237,8 +239,5 @@ const Signup: React.FC = () => {
         </div>
     );
 };
-
-
-
 
 export default Signup;

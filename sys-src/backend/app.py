@@ -8,9 +8,10 @@ from datetime import timedelta
 app = Flask(__name__)
 # Session handling 
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
-app.secret_key                           = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96' # Starken geheimen Schlüssel einfügen
-app.config['SESSION_COOKIE_SECURE']      = True
-app.config['SESSION_COOKIE_SAMESITE']    = 'Lax'
+app.secret_key = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96'  # Use a strong secret key
+app.config['SESSION_COOKIE_SECURE'] = False  # Should be True in production with HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
 
 CORS(app, supports_credentials=True)
 
@@ -20,20 +21,22 @@ def set_session():
     email = data.get('email')
     if email:
         session['email'] = email
+        app.logger.debug(f'Session email set to: {session["email"]}')
         return jsonify(message=f'Session-Daten für {email} gesetzt!')
     return jsonify(message='Bitte eine E-Mail-Adresse angeben.'), 400
+
+@app.route('/get_session_email', methods=['GET'])
+def get_session_email():
+    email = session.get('email')
+    app.logger.debug(f'Retrieving session email: {email}')
+    if email:
+        return jsonify(email=email), 200
+    return jsonify(message='No email in session'), 400
 
 @app.route('/get_session')
 def get_session():
     email = session.get('email', 'Nicht eingeloggt')
     return f'Eingeloggt als {email}'
-
-@app.route('/get_session_email', methods=['GET'])
-def get_session_email():
-    email = session.get('email')
-    if email:
-        return jsonify(email=email), 200
-    return jsonify(message='No email in session'), 400
 
 @app.route('/remove_session')
 def remove_session():
@@ -143,31 +146,18 @@ def login():
 # Datenbeschaffung für Profilansicht 
 @app.route('/profileView', methods=['POST'])
 def get_profile_data():
-    """
-    Selektiert alle User Daten zu einem bestimmten User.
-    
-    Erwartet JSON-Daten im Anfrage-Body mit 'Email'.
-    Überprüft die Eingabedaten und authentifiziert den Benutzer, falls gültig.
-    
-    Returns:
-        JSON-Antwort mit Userdaten.
-    """
-    data  = request.json
+    data = request.json
     email = data.get('email')
 
     user = find_user_by_email(app, email)
 
     if not user:
         return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
-    
-    # zusätzliche webscraping Daten 
-    webscraping_data = []
 
-    # Profilbilder
+    webscraping_data = []
     profile_picture = []
 
-    #Daten zusammenführen
-    user_data ={
+    user_data = {
         'user': user,
         'webscraping': webscraping_data,
         'profilPicture': profile_picture

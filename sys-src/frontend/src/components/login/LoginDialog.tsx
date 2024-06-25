@@ -9,6 +9,7 @@ import InputField from '../input/InputField';
 interface LoginDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onLoginSuccess: (userData: { firstName: string }) => void;  // Add this prop
 }
 
 interface ILoginInputs {
@@ -16,73 +17,72 @@ interface ILoginInputs {
   password: string;
 }
 
-/**
- * @function getMaxFieldLength Gibt die max. Länge zurück und einen Fehlertext für die Formulardaten-Validation
- * @autor Sebastian Weidner
- * @seit 13.06.2024
- * @version 1.0
- *
- * @param maxLength Maximale Textlänge des input-Feldes
- */
-const getMaxFieldLength = (maxLength: number): [number, string] => {
-  const maxFieldLengthText = `Eingabefeld ist auf ${maxLength} Zeichen begrenzt`;
-  return [maxLength, maxFieldLengthText];
-};
-
 const LoginSchema = yup.object({
   email: yup.string().trim().required('Email is required'),
   password: yup.string().required('Password is required')
 });
 
-const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose }) => {
+const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSuccess }) => {  // Add onLoginSuccess here
   const { register, handleSubmit, formState: { errors } } = useForm<ILoginInputs>({
     resolver: yupResolver(LoginSchema)
   });
 
   const handleLogin = async (data: ILoginInputs) => {
-    alert(JSON.stringify(data));
-
     try {
-      // Daten ans Backend senden:
       const response = await fetch('http://localhost:5001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       });
-  
+
       if (response.ok) {
-        const loginData = await response.json();
-        console.log(loginData);
-  
-        // Session nach erfolgreichem Login setzen
+        // const loginData = await response.json(); // Remove this line
+
         const setSessionResponse = await fetch('http://localhost:5001/set_session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email: data.email })  
+          body: JSON.stringify({ email: data.email }),
+          credentials: 'include'
         });
-  
-        if (setSessionResponse.ok) {
-          const sessionData = await setSessionResponse.json();
-          console.log(sessionData);
-  
-          // Optional: Weiterleitung oder Zustandsaktualisierung nach Session-Setzung
 
-          alert('Anmeldung erfolgreich gesendet!');
+        // const emailResponse = await fetch('http://localhost:5001/get_session_email', { // Remove this line
+        //   method: 'GET',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   credentials: 'include' // This ensures cookies (session data) are sent with the request
+        // });
+
+        if (setSessionResponse.ok) {
+          // const sessionData = await setSessionResponse.json(); // Remove this line
+
+          const userResponse = await fetch('http://localhost:5001/profileView', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: data.email }),
+            credentials: 'include'
+          });
+
+          if (userResponse.ok) {
+            const userData = await userResponse.json();
+            onLoginSuccess({ firstName: userData.user.first_name });  // Call the callback with user data
+            onClose();  // Close the dialog
+          }
         } else {
           console.error('Fehler beim Setzen der Session:', await setSessionResponse.text());
-          alert('Fehler beim Setzen der Session!');
         }
       } else {
         console.error('Anmeldung fehlgeschlagen:', await response.text());
-        alert('Anmeldung fehlgeschlagen!');
       }
     } catch (error) {
       console.error('Fehler:', error);
-      alert('Fehler!');
     }
   };
 
