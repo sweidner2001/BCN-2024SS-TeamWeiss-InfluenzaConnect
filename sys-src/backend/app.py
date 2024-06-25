@@ -11,17 +11,17 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 app.secret_key                           = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96' # Starken geheimen Schlüssel einfügen
 app.config['SESSION_COOKIE_SECURE']      = True
 app.config['SESSION_COOKIE_SAMESITE']    = 'Lax'
-session(app)
 
 CORS(app)
 
 @app.route('/set_session', methods=['POST'])
 def set_session():
-    email = request.form.get('email')
+    data = request.json
+    email = data.get('email')
     if email:
         session['email'] = email
-        return f'Session-Daten für {email} gesetzt!'
-    return 'Bitte eine E-Mail-Adresse angeben.', 400
+        return jsonify(message=f'Session-Daten für {email} gesetzt!')
+    return jsonify(message='Bitte eine E-Mail-Adresse angeben.'), 400
 
 @app.route('/get_session')
 def get_session():
