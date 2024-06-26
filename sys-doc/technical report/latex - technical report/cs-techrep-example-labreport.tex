@@ -187,29 +187,99 @@ Die \textit{Datailübersicht zum Influencer} wurde nicht implementiert. Stattdes
 %#################### Projektsetup  ###########################
 \section{Projektsetup}
 
+
+
+%#################### Architektur ###########################
+\section{Architektur}
+
 %------------------- Containerisierung --------------------------------
 \subsection{Containerisierung}
 
 %------------------- Deployment --------------------------------
 \subsection{Deployment}
 
-%#################### Architektur ###########################
-\section{Architektur}
+
 \subsection{Frontend-Architektur}
 
 
 \subsection{Backend-Architektur}
 
+%#################### Techstack ###########################
+\section{Techstack}
+\subsection{Frontend}
+% Referenz React, Tailwind CSS, Typescript, 
+Für die Realisierung des Frontends wird auf das JavaScript-Framework React verwendet. Es erleichtert die Entwicklungsarbeit im Frontend, indem es dabei hilft, wiederverwendbaren Code zu schreiben, sowie graphische Inhalte dynamisch aufzubauen und zu befüllen. HTML, CSS und JavaScript-Code wird dabei in sogenannten Komponenten gekapselt. In React gibt es sog. Hooks, die dazu benutzt werden, bestimmte Funktionialitäten in den Komponenten zu erreichen. Erwähnenswert ist hier der Hook \texttt{useState()}, der bestimmte Zustände zwschenspeichern kann, sodass diese beim erneuten Rendern der Komponente nicht verloren gehen. Desweiteren haben wir uns für die Gestaltung der Webpages für Tailwind CSS entschieden. Tailwind CSS wird oft mit React verwendet und ist zur Zeit sehr im Trend, weil es leicht zu erlernen ist, gutes vordefiniertes Design und trotzdem große Gestaltungsfreiräume bietet, da man notfalls interne CSS-Werte speziell für sein Projekt überschreiben kann. Außerdem haben wir entschlossen, anstatt JavaScript auf TypeScript zu setzen, da TypeScript eine Typisierung zulässt und somit logische Typfehler beseitigt. 
+
+TypeScript ist komplett kompatibel mit JavaScript.
+Fetch!!
 
 %#################### Implementierung ###########################
 \section{Implementierung}
 \subsection{Frontend}
 
+\subsubsection{Landing Page}
+Routing und useState<> Hook auch mit erwähnen
+
+\subsubsection{Registrierung}
+Die Registrierung dient dazu, sich als Influencer registrieren und vermarkten zu können. Die Registrierung ist in drei Schritten aufgebaut:
+Zuerst muss er seine Anmeldeinformationen - eingeben. Im Zweiten Schritt werden seine Persönliche Daten abgefragt, die später teilweise für die Unternehmen veröffentlicht werden. Und im Dritten Schritt muss er seinen Instagram-Account hinterlegen, der anschließend im Backend analysiert wird.\\
+Nachfolgend finden Sie eine Detailierte Auslistung der Eingaben:
+\begin{itemize}
+\item{Anmeldeinformationen - Email, Passwort}
+\item{Persönliche Daten - Anrede, Vorname, Nachname, Nationalität, Telefonnr., Gesprochene Sprachen, Beschreibung über sich selbst}
+\item{Verknüpfung Socail-Media Accounts - Instagram Username}
+\end{itemize}
+Jeder der drei Schritte wurde in einem Eigenständigen Fomular realisiert, zwsichen denen durch einen Weiter- und Zurück-Button hin- und hergewechselt werden kann.
+
+% Referenz React hook Form
+Für die Eingabefelder wurden von Grund auf eigene Komponenten erstellt. Ein Eingabefeld besitzt immer ein Label und ein Ausgabefeld für Fehlermeldungen. Dabei taucht unter jedem Eingabefeld eine Fehlermeldung auf, falls die eingegebenen Daten nicht den Richtlinien entsprechen. Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. So können Formulareingaben ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponte automatisch unter dem Input-Feldern angezeigt. 
+
+
+Wurden alle Eingaben getätigt werden diese gesammelt mittels \texttt{fetch()} API an das Backend gesendet und dort nochmals überpfrüft.
+Neben einer einfachen Eingabefeld, wurden Komponenten für ein Select-, ein Multiselectdropdown und für zwei Buttons zur Registrierung erstellt. 
+
+\texttt{
+muss man erwähnen, dass man einen SubmitHandler und für React-Hook-Form ein useForm() verwendet, sowie zur Registrierung der Eingabefelder ein register(...), dass die Methoden onBlur, onChange, ref und name des input-Feldes setzt?
+}
+
+
+\subsubsection{An- und Abmeldung}
+Wiederverwendung der Input-Komponenten
+Popup-Dialog Komponente von XXX verwendet
+Daten ans Backend gesendet - Response - Session gesetzt 
+Button Logout und Email erscheint 
+Logout -> Session gelöscht, Erscheinungsbild wie zuvor
+
+\subsubsection{Profildaten Bearbeiten}
+
+
+\subsubsection{Influncerübersicht}
+Die Influencerübersicht dient dazu, dass Unternehmen einen passenden Influencer für sich finden können. Demnach sind in einer Tabelle alle Registrierten Influencer mit allen relevanten Daten, inkl. Daten, die durch die Analyse des Instagram-Acounts gewonnen wurden zu sehen. 
+Für die Datendarstellung in der Tabelle wurde in TypeScript extra eine Datenstruktur erstellt, auf die ankommende Daten gamappt werden. Die Daten werden im React-Hook \texttt{useEffect()}, der dazu dient die Komponente mit externen Systemen zu synchronisiern, vom Backend mittels \texttt{fetch()} API geholt.
+Ein \textbf{Spaltenfilter} ermöglicht es, Spalten ein- und wieder auszublenden. Die Komponente ist dabei so ähnlich wie das Multiselect-Dropdown in der Registrierung aufgebaut, nur das die Werte mittels Checkbox ausgewählt werden können und diese visuell nicht außerhalb des Dropdowns sichtbar sind. Die Komponente kommt ohne \texttt{React Hook Form} aus, stattdessen wird ihr eine onChangeEventHandler-Methode übergeben, die die ausgewählten Spalten übergeben bekommt und diese in einer Variable \texttt{selectedColumns} vom Typ \texttt{useState<string[]>()} speichert. Vor dem Rendering der Spalten muss somit nur noch überprüft werden, ob die angegebene Spalte in \texttt{selectedColumns} enthalten ist. 
+Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach einen Influencer durchsuchen.
+
+Ein Multiselekt-Dropdown in Form eDazu werden mittels useState
+
+eigene Tabelle
+Spaltenfilter
+Suchfeld
+Daten aus Backend holen
+
 \subsection{Backend}
 
-\subsubsection{Persistenz}
+\subsubsection{Datenvalidierung und -speicherung}
+
+
+
+\subsubsection{Session}
+
 
 \subsection{Instagram-Acount Analyse}
+
+\subsection{Persistenz}
+
+
 
 
 
@@ -221,7 +291,7 @@ Die \textit{Datailübersicht zum Influencer} wurde nicht implementiert. Stattdes
 
 \subsection{Backend}
 
-
+Technologie-Stack
 
 %#################### Fazit und Ausblik  ###########################
 \section{Fazit und Ausblik}
