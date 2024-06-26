@@ -1,10 +1,14 @@
 from pymongo import MongoClient
-from config import MONGO_URI, DATABASE_NAME, COLLECTION_NAME
+from config import MONGO_URI, DATABASE_NAME, COLLECTION_REGISTRATION, COLLECTION_ANALYSIS
+import userinfo_scripts.categorization as categorization
+import userinfo_scripts.user_analysis as analysis
 
 # MongoDB-Verbindung herstellen
 client = MongoClient(MONGO_URI)
 db = client[DATABASE_NAME]
-registration_collection = db[COLLECTION_NAME]
+registration_collection = db[COLLECTION_REGISTRATION]
+analysis_collection = db[COLLECTION_ANALYSIS]
+
 
 def get_db_connection():
     """
