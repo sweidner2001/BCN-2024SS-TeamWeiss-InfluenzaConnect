@@ -1,31 +1,49 @@
 // React Imports:
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import {SubmitHandler, useForm} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 // Imports eigene Componenten:
-import {FormularButton, CancelButton} from "../buttons/FormularButton";
-import {SignupFormInputs1, SignupSchema1} from "../forms/SignupFormInputs1";
-import type {IFormInputs1} from "../forms/SignupFormInputs1";
-import {SignupFormInputs2, SignupSchema2} from "../forms/SignupFormInputs2";
-import type {IFormInputs2} from "../forms/SignupFormInputs2";
-import {SignupFormInputs3, SignupSchema3} from "../forms/SignupFormInputs3";
-import type {IFormInputs3} from "../forms/SignupFormInputs3";
-
-
+import { FormularButton, CancelButton } from "../buttons/FormularButton";
+import { SignupFormInputs1, SignupSchema1 } from "../forms/SignupFormInputs1";
+import type { IFormInputs1 } from "../forms/SignupFormInputs1";
+import { SignupFormInputs2, SignupSchema2 } from "../forms/SignupFormInputs2";
+import type { IFormInputs2 } from "../forms/SignupFormInputs2";
+import { SignupFormInputs3, SignupSchema3 } from "../forms/SignupFormInputs3";
+import type { IFormInputs3 } from "../forms/SignupFormInputs3";
 
 //___________________ Formular Validation  ________________
-const sleep = (ms:number) => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 const Signup: React.FC = () => {
 
     //___________________ Hooks: ___________________
+    const navigate = useNavigate(); // Hook for navigation
     const [currentForm, setCurrentForm] = useState(1);
     const [formData, setFormData] = useState<any>({});
     const [transition, setTransition] = useState(false);
     const [direction, setDirection] = useState<'left' | 'right'>('left');
+    const [headerText, setHeaderText] = useState("Registrierung InfluenzaConnect");
+    const [subHeaderText, setSubHeaderText] = useState("#InfluencerMarketing #Werbepartner #Karriere");
+    const [headerHeight, setHeaderHeight] = useState('h-1/3');
 
+    useEffect(() => {
+        if (currentForm === 2) {
+            setHeaderText("InfluenzaConnect");
+            setSubHeaderText("");
+            setHeaderHeight('h-40'); 
+        } else if (currentForm === 3) {
+            setHeaderText("Fast fertig!");
+            setSubHeaderText("Nur noch ein Schritt, um die Registrierung abzuschließen.");
+            setHeaderHeight('h-3/5');
+        } else {
+            setHeaderText("Registrierung InfluenzaConnect");
+            setSubHeaderText("#InfluencerMarketing #Werbepartner #Karriere");
+            setHeaderHeight('h-1/3');
+        }
+    }, [currentForm]);
 
     //___________________ Variablen ________________
     const form1 = useForm<IFormInputs1>({
@@ -63,7 +81,6 @@ const Signup: React.FC = () => {
     // // form1.formState.errors.passwort = test.passwort;
     // Object.assign(form1.formState.errors, errorMessages);
 
-
     //___________________ Event-Handler ________________
     /**
      * @event function Event-Handler-Funktion wenn auf den Weiter-Button gedrückt wird
@@ -73,8 +90,6 @@ const Signup: React.FC = () => {
         // Übergang zum nächsten Formular
         setDirection('left');
         setTransition(true);
-
-
 
         setTimeout(() => {
             // Formulardaten zwischenspeichern, um Sie beim zurückgehen
@@ -108,7 +123,6 @@ const Signup: React.FC = () => {
         setTransition(true);
 
         setTimeout(() => {
-
             // Formular wechseln:
             setCurrentForm(formNumber);
 
@@ -116,7 +130,6 @@ const Signup: React.FC = () => {
             setTransition(false);
         }, 500);
     };
-
 
     /**
      * @event function Event-Handler-Funktion wenn auf den Registrierungs-Button gedrückt wird
@@ -131,45 +144,63 @@ const Signup: React.FC = () => {
         // alert(JSON.stringify(finalData));
 
         // Daten ans Backend senden:
-        fetch('http://localhost:5001/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(finalData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Weiterverarbeitung der Antwort
-            console.log(data);
-        })
-        .catch(error => {
+        try {
+            const response = await fetch('http://localhost:5001/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(finalData)
+            });
+
+            if (response.ok) {
+                const resData = await response.json();
+                console.log(resData);
+
+                // Setting the session after successful signup
+                const setSessionResponse = await fetch('http://localhost:5001/set_session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: finalData.form1.email }),
+                    credentials: 'include'
+                });
+
+                if (setSessionResponse.ok) {
+                    const sessionData = await setSessionResponse.json();
+                    console.log(sessionData);
+
+                    // Redirect or update state as needed after setting the session
+                    navigate('/landing'); // Redirect to landing page
+                } else {
+                    console.error('Failed to set session:', await setSessionResponse.text());
+                }
+            } else {
+                console.error('Registration failed:', await response.text());
+            }
+        } catch (error) {
             console.error('Error:', error);
-        });
+        }
     };
-
-
 
     //___________________ HTML: Formular ________________
     return (
-        <div className="w-full h-screen flex items-start">
+        <div className="w-full h-screen flex flex-col md:flex-row items-start">
             {/************* Linke Seite ***************/}
-            <div className='relative w-1/2 h-full flex flex-col'>
+            <div className={`relative w-full md:w-1/2 ${headerHeight} md:h-full flex flex-col transition-all duration-500`}>
                 {/*--- Text ---*/}
-                <div className='absolute top-[25%] left-[15%]'>
-                    <h1 className='text-5xl font-extrabold text-slate-50 my-6'>Registrierung InfluenzaConnect </h1>
-                    <p className='text-lg font-medium text-slate-50'>#InfluencerMarketing #Werbepartner #Karriere</p>
+                <div className='absolute top-[35%] left-[10%] md:left-[15%]'> {/* Adjusted top margin */}
+                    <h1 className='text-3xl md:text-5xl font-extrabold text-slate-50 my-6'>{headerText}</h1>
+                    {subHeaderText && <p className='text-md md:text-lg font-medium text-slate-50'>{subHeaderText}</p>}
                 </div>
 
                 {/*--- Hintergrund ---*/}
-                <div className="flex-1 bg-gradient-to-r from-gray-900 from-5% to-sky-900 to-90%"></div>
+                <div className="flex-1 bg-gradient-to-r from-gray-900 to-blue-900 to-90%"></div>
             </div>
 
             {/************* Rechte Seite ***************/}
-            {/*<div className='w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500'>*/}
-            <div className={`w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500 ${transition ? 'opacity-0 transform scale-95' : 'opacity-100 transform scale-100'}`}>
-            {/*<div className={`w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500 ${transition ? (direction === 'left' ? 'translate-x-full' : '-translate-x-full') : 'translate-x-0'}`}>*/}
-
+            <div className={`w-full md:w-1/2 h-full flex flex-col items-center overflow-y-auto transition-transform duration-500 ${transition ? 'opacity-0 transform scale-95' : 'opacity-100 transform scale-100'}`}>
                 <div className='w-3/4 mx-auto my-10'>
                     {currentForm === 1 && (
                         <form onSubmit={form1.handleSubmit(() => handleNext(1))} className='flex flex-col space-y-4'>
@@ -177,25 +208,22 @@ const Signup: React.FC = () => {
                             <SignupFormInputs1 form1={form1} />
 
                             <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
-                                <CancelButton type="button" text="Abbrechen" linkTo="/landing"/>
-                                <FormularButton type="submit" text="Weiter"/>
+                                <CancelButton type="button" text="Abbrechen" linkTo="/landing" />
+                                <FormularButton type="submit" text="Weiter" />
                             </div>
                         </form>
                     )}
 
                     {currentForm === 2 && (
-                    <div className={`transition-transform duration-500 ${currentForm == 2 ? 'translate-x-0' : '-translate-x-full'}`}>
-
                         <form onSubmit={form2.handleSubmit(() => handleNext(2))} className='flex flex-col space-y-4'>
 
                             <SignupFormInputs2 form2={form2} />
 
-                            <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
+                            <div className="flex items-center justify-between md:justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
                                 <CancelButton type="button" text="Zurück" onClick={() => handleBack(1)} />
-                                <FormularButton type="submit" text="Weiter"/>
+                                <FormularButton type="submit" text="Weiter" />
                             </div>
                         </form>
-                    </div>
                     )}
 
                     {currentForm === 3 && (
@@ -203,9 +231,9 @@ const Signup: React.FC = () => {
 
                             <SignupFormInputs3 form3={form3} />
 
-                            <div className="flex items-center justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
+                            <div className="flex items-center justify-between md:justify-end gap-x-6 border-t-2 border-gray-900/10 pt-6">
                                 <CancelButton type="button" text="Zurück" onClick={() => handleBack(2)} />
-                                <FormularButton type="submit" text="Registrieren"/>
+                                <FormularButton type="submit" text="Registrieren" />
                             </div>
                         </form>
                     )}
@@ -214,8 +242,5 @@ const Signup: React.FC = () => {
         </div>
     );
 };
-
-
-
 
 export default Signup;
