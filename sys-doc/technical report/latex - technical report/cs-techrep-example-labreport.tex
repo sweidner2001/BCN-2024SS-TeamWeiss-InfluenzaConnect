@@ -216,11 +216,14 @@ Fetch!!
 %#################### Implementierung ###########################
 \section{Implementierung}
 \subsection{Frontend}
+%\begin{enumerate}
+%\item{test}
+%\end{enumerate}
 
-\subsubsection{Landing Page}
-Routing und useState<> Hook auch mit erwähnen
+\subsubsection{Landing Page\\}
+ Routing auch mit erwähnen
 
-\subsubsection{Registrierung}
+\subsubsection{Registrierung\\}
 Die Registrierung dient dazu, sich als Influencer registrieren und vermarkten zu können. Die Registrierung ist in drei Schritten aufgebaut:
 Zuerst muss er seine Anmeldeinformationen - eingeben. Im Zweiten Schritt werden seine Persönliche Daten abgefragt, die später teilweise für die Unternehmen veröffentlicht werden. Und im Dritten Schritt muss er seinen Instagram-Account hinterlegen, der anschließend im Backend analysiert wird.\\
 Nachfolgend finden Sie eine Detailierte Auslistung der Eingaben:
@@ -232,7 +235,9 @@ Nachfolgend finden Sie eine Detailierte Auslistung der Eingaben:
 Jeder der drei Schritte wurde in einem Eigenständigen Fomular realisiert, zwsichen denen durch einen Weiter- und Zurück-Button hin- und hergewechselt werden kann.
 
 % Referenz React hook Form
-Für die Eingabefelder wurden von Grund auf eigene Komponenten erstellt. Ein Eingabefeld besitzt immer ein Label und ein Ausgabefeld für Fehlermeldungen. Dabei taucht unter jedem Eingabefeld eine Fehlermeldung auf, falls die eingegebenen Daten nicht den Richtlinien entsprechen. Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. So können Formulareingaben ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponte automatisch unter dem Input-Feldern angezeigt. 
+Für die Eingabefelder wurden von Grund auf eigene Komponenten erstellt. Ein Eingabefeld besitzt immer ein Label und ein Ausgabefeld für Fehlermeldungen. Dabei taucht unter jedem Eingabefeld eine Fehlermeldung auf, falls die eingegebenen Daten nicht den Richtlinien entsprechen. 
+Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. Die Formularfelder werden dabei an ein zentrales Formular-Objekt vom Typ \texttt{useForm()} gebunden, indem diese mit der Methode \texttt{register(\dq InputFeldName \dq )} daran gebunden werden.  \texttt{register(...)} setzt setzt die Methoden \texttt{onBlur() }, \texttt{onChange()}, sowie die Attribute \texttt{ref} und \texttt{name} des Eingabefelds. 
+So können Formulareingaben ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponte automatisch unter dem Input-Feldern angezeigt. 
 
 
 Wurden alle Eingaben getätigt werden diese gesammelt mittels \texttt{fetch()} API an das Backend gesendet und dort nochmals überpfrüft.
@@ -243,28 +248,28 @@ muss man erwähnen, dass man einen SubmitHandler und für React-Hook-Form ein us
 }
 
 
-\subsubsection{An- und Abmeldung}
+\subsubsection{An- und Abmeldung\\}
 Wiederverwendung der Input-Komponenten
 Popup-Dialog Komponente von XXX verwendet
 Daten ans Backend gesendet - Response - Session gesetzt 
 Button Logout und Email erscheint 
 Logout -> Session gelöscht, Erscheinungsbild wie zuvor
 
-\subsubsection{Profildaten Bearbeiten}
+\subsubsection{Profildaten Bearbeiten\\}
+Anpassung der Input-Komponenten, Standardmäßig non-Editable
+Daten werden anhand der Email, die in der Session gespeichert ist rausgeholt.
+durch Edit-Button kann kann man die Eingabefelder bearbeiten. Gleichzeitig erscheint unten links ein Abbrechen- und ein Speichern-Button. Wird der letztere Button betätigt, werden die Daten im Frontend Validiert und anschließend ins Backend gesendet. Dort werden Sie nochmals auf validiert und schlussendlich persistiert, indem die alten mit den neuen Daten überschrieben werden.
 
 
-\subsubsection{Influncerübersicht}
+\subsubsection{Influncerübersicht\\}
+% Asynchroner Fetch? Datenfilterung überarbeiten 
 Die Influencerübersicht dient dazu, dass Unternehmen einen passenden Influencer für sich finden können. Demnach sind in einer Tabelle alle Registrierten Influencer mit allen relevanten Daten, inkl. Daten, die durch die Analyse des Instagram-Acounts gewonnen wurden zu sehen. 
 Für die Datendarstellung in der Tabelle wurde in TypeScript extra eine Datenstruktur erstellt, auf die ankommende Daten gamappt werden. Die Daten werden im React-Hook \texttt{useEffect()}, der dazu dient die Komponente mit externen Systemen zu synchronisiern, vom Backend mittels \texttt{fetch()} API geholt.
+\\
 Ein \textbf{Spaltenfilter} ermöglicht es, Spalten ein- und wieder auszublenden. Die Komponente ist dabei so ähnlich wie das Multiselect-Dropdown in der Registrierung aufgebaut, nur das die Werte mittels Checkbox ausgewählt werden können und diese visuell nicht außerhalb des Dropdowns sichtbar sind. Die Komponente kommt ohne \texttt{React Hook Form} aus, stattdessen wird ihr eine onChangeEventHandler-Methode übergeben, die die ausgewählten Spalten übergeben bekommt und diese in einer Variable \texttt{selectedColumns} vom Typ \texttt{useState<string[]>()} speichert. Vor dem Rendering der Spalten muss somit nur noch überprüft werden, ob die angegebene Spalte in \texttt{selectedColumns} enthalten ist. 
-Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach einen Influencer durchsuchen.
+\\
+Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines bestimmten Influencer durchsuchen. Dazu wurde eine Variable \texttt{searchTerm} vom Typ \texttt{useState<string>()} angelegt, die durch das \texttt{onChange()} Event des Suchfeldes mit dessen Wert aktuell gehalten wird. Anschließend wird eine Filterfunktion mithilfe des Inhalts der Variable \texttt{searchTerm} auf allen Daten angewendet und die Tabelle aktualisiert.
 
-Ein Multiselekt-Dropdown in Form eDazu werden mittels useState
-
-eigene Tabelle
-Spaltenfilter
-Suchfeld
-Daten aus Backend holen
 
 \subsection{Backend}
 
@@ -273,12 +278,19 @@ Daten aus Backend holen
 
 
 \subsubsection{Session}
-
+muss nicht als eigener Punkt definiert werden. aber kurz beschreiben, wie wir Session setzen, Library erwähnen und das Email hinterlegt wird.
 
 \subsection{Instagram-Acount Analyse}
+Daten an ChatGPT senden, --> wie, durch welche Methode (Fetch, oder axios, ajax-API) 
+Prompt kurz und knapp beschreiben. 
+Überprüfung ob Produkt-WerbeSparte-Tags richtig sind(?)
+kurz noch beschreiben, welche Daten sonst noch gescrapt werden
+Libraries erwähnen und vll. einzelene Methoden, instascrape, ...
 
 \subsection{Persistenz}
-
+\texttt{
+Datenbank-Schema und Api/Bibliothek für DB-Anbindung beschreiben. kann evtl. auch mit ins Backend / in den Techstack. 
+}
 
 
 
@@ -286,12 +298,16 @@ Daten aus Backend holen
 
 %#################### Testen  ###########################
 \section{Testen}
-
+\texttt{
+Ihr müsst nicht all so viel übers Testing schreiben. Kurz das Testing-Tool beschreiben und deren Besonderheiten / wie es grob funktioniert. Anschließend noch ein paar Worte zur Test-Coverage und evtl. entdeckte Fehler.
+}
 \subsection{Frontend}
-
+\texttt{
+kurz Jest beschreiben, wie es grob funktioniert, z.B. dass in Jest die Komponenten selbstständig gerendert werden können und man Werte in Inputfelder setzen kann und man anhand geschmissener Fehlermeldungen der Formalure die Richtigkeit überprüfen kann...
+}
 \subsection{Backend}
 
-Technologie-Stack
+
 
 %#################### Fazit und Ausblik  ###########################
 \section{Fazit und Ausblik}
@@ -303,6 +319,7 @@ Technologie-Stack
 
 
 %#################### Alt/ Vorlage ###########################
+\newpage
 \section{Functional Requirements}
 Influencer sollen sich auf der Plattform registrieren, damit diese von Unternehmen leichter aufgefunden werden, um ihre Produkte zu vermarkten. Nachfolgend werden die besuchenden User von InfluenzaConnect, die ihr Produkt vermarkten wollen als 'Unternehmen' und die User, die sich vermarkten wollen, als 'Influencer' bezeichnet.
 
