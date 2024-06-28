@@ -195,10 +195,22 @@ Die \textit{Datailübersicht zum Influencer} wurde nicht implementiert. Stattdes
 
 %------------------- Containerisierung --------------------------------
 \subsection{Containerisierung}
+%Referenz Docker
+Das Projekt wurde mittels Docker containerisiert, um eine flexible und skalierbare Umgebung für die verschiedenen Komponenten der Anwendung zu schaffen.
+Dabei wurden das Frontend, Backend sowie die MongoDB in separate Docker-Container aufgeteilt, was eine einfache Verwaltung und Skalierung der einzelnen Dienste ermöglicht. Dockerfiles legen dabei fest, welche Software und Abhängigkeiten in den virtuellen Containern installiert werden. Für das Backend wird ein Python 3.10 Slim Image verwendet. In dieses werden beim Starten des Containers die notwendigen Python-Pakete automatisiert installiert und der Anwendungscode kopiert. Das Frontend basiert auf einem Node.js 16 Image, das ebenfalls automatisch die benötigten Node-Module installiert und den Build-Prozess des Frontends startet (Kein multi stage).
 
 %------------------- Deployment --------------------------------
+%Referenz Hetzner, Github, Git, GitHub Actions
 \subsection{Deployment}
-
+InfluenzaConnect verwendet GitHub als Git-Respository. Das Deployment in unsere Hetzner-Cloud erfolgt demnach mittels GitHub Actions. Der CD-Workflow befindet sich wird dabei ausgelöst, sobald Änderungen auf den \texttt{prod} Branch gepusht werden. Der anschließende Deployment-Job läuft auf einer Ubuntu-Maschine in der Hetzner-Cloud und umfasst folgende Schritte:
+\begin{itemize}
+\item{Checkout Code: Der Quellcode wird aus dem Repository ausgecheckt.}
+\item{Setup SSH: SSH wird eingerichtet, um eine sichere Verbindung zum Hetzner-Server
+herzustellen.}
+\item{Deploy to Hetzner: Der Code wird auf den Hetzner-Server deployt.}
+\end{itemize}
+Beim deployen wird dabei unser Projektverzeichnis aktualisiert, Docker Compose verwendet, um die bestehenden Container zu stoppen, neu zu bauen und schließlich die Anwendung in die Produktionsumgebung hochzufahren.
+Durch diese Pipline wird sichergestellt, dass jede Änderung im \texttt{prod} Branch automatisch auf dem Produktionsserver deployet wird. Dadurch wird eine kontinuierliche Integration und Bereitstellung neuer Features und Bugfixes ermöglicht, Entwicklungszyklen beschleunigt und die Qualität der Anwendung verbessert.
 
 \subsection{Frontend-Architektur}
 
@@ -226,7 +238,7 @@ Fetch!!
 
 \subsubsection{Registrierung\\}
 Die Registrierung dient dazu, sich als Influencer registrieren und vermarkten zu können. Die Registrierung ist in drei Schritten aufgebaut:
-Zuerst muss er seine Anmeldeinformationen - eingeben. Im Zweiten Schritt werden seine Persönliche Daten abgefragt, die später teilweise für die Unternehmen veröffentlicht werden. Und im Dritten Schritt muss er seinen Instagram-Account hinterlegen, der anschließend im Backend analysiert wird.\\
+Zuerst muss er seine Anmeldeinformationen - eingeben. Im Zweiten Schritt werden seine Persönliche Daten abgefragt, die später teilweise für die Unternehmen veröffentlicht werden und im Dritten Schritt muss er seinen Instagram-Account hinterlegen, der anschließend im Backend analysiert wird.\\
 Nachfolgend finden Sie eine Detailierte Auslistung der Eingaben:
 \begin{itemize}
 \item{Anmeldeinformationen - Email, Passwort}
@@ -237,39 +249,37 @@ Jeder der drei Schritte wurde in einem Eigenständigen Fomular realisiert, zwsic
 
 % Referenz React hook Form
 Für die Eingabefelder wurden von Grund auf eigene Komponenten erstellt. Ein Eingabefeld besitzt immer ein Label und ein Ausgabefeld für Fehlermeldungen. Dabei taucht unter jedem Eingabefeld eine Fehlermeldung auf, falls die eingegebenen Daten nicht den Richtlinien entsprechen. 
-Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. Die Formularfelder werden dabei an ein zentrales Formular-Objekt vom Typ \texttt{useForm()} gebunden, indem diese mit der Methode \texttt{register(\dq InputFeldName \dq )} daran gebunden werden.  \texttt{register(...)} setzt setzt die Methoden \texttt{onBlur() }, \texttt{onChange()}, sowie die Attribute \texttt{ref} und \texttt{name} des Eingabefelds. 
-So können Formulareingaben ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponte automatisch unter dem Input-Feldern angezeigt. 
-
+Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. %Die Formularfelder werden dabei an ein zentrales Formular-Objekt vom Typ \texttt{useForm()} gebunden, indem diese mit der Methode \texttt{register(\dq InputFeldName \dq )} daran gebunden werden.  \texttt{register(...)} setzt setzt die Methoden \texttt{onBlur() }, \texttt{onChange()}, sowie die Attribute \texttt{ref} und \texttt{name} des Eingabefelds. So können Formulareingaben 
+Formulareingaben können so z.B. ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponte automatisch unter dem Input-Feldern angezeigt. 
 
 Wurden alle Eingaben getätigt werden diese gesammelt mittels \texttt{fetch()} API an das Backend gesendet und dort nochmals überpfrüft.
 Neben einer einfachen Eingabefeld, wurden Komponenten für ein Select-, ein Multiselectdropdown und für zwei Buttons zur Registrierung erstellt. 
 
-\texttt{
-muss man erwähnen, dass man einen SubmitHandler und für React-Hook-Form ein useForm() verwendet, sowie zur Registrierung der Eingabefelder ein register(...), dass die Methoden onBlur, onChange, ref und name des input-Feldes setzt?
-}
 
 
 \subsubsection{An- und Abmeldung\\}
-Wiederverwendung der Input-Komponenten
-Popup-Dialog Komponente von XXX verwendet
-Daten ans Backend gesendet - Response - Session gesetzt 
-Button Logout und Email erscheint 
-Logout -> Session gelöscht, Erscheinungsbild wie zuvor
-
+\texttt{
+- Wiederverwendung der Input-Komponenten
+- Popup-Dialog Komponente von XXX verwendet
+- Daten ans Backend gesendet - Response - Session gesetzt 
+- Button Logout und Email erscheint 
+- Logout -> Session gelöscht, Erscheinungsbild wie zuvor
+}
 \subsubsection{Profildaten Bearbeiten\\}
-Anpassung der Input-Komponenten, Standardmäßig non-Editable
-Daten werden anhand der Email, die in der Session gespeichert ist rausgeholt.
-durch Edit-Button kann kann man die Eingabefelder bearbeiten. Gleichzeitig erscheint unten links ein Abbrechen- und ein Speichern-Button. Wird der letztere Button betätigt, werden die Daten im Frontend Validiert und anschließend ins Backend gesendet. Dort werden Sie nochmals auf validiert und schlussendlich persistiert, indem die alten mit den neuen Daten überschrieben werden.
-
+\texttt{
+- Anpassung der Input-Komponenten, Standardmäßig non-Editable
+- Daten werden anhand der Email, die in der Session gespeichert ist rausgeholt.
+- durch Edit-Button kann kann man die Eingabefelder bearbeiten. Gleichzeitig erscheint unten links ein Abbrechen- und ein Speichern-Button. Wird der letztere Button betätigt, werden die Daten im Frontend Validiert und anschließend ins Backend gesendet. Dort werden Sie nochmals auf validiert und schlussendlich persistiert, indem die alten mit den neuen Daten überschrieben werden.
+}
 
 \subsubsection{Influncerübersicht\\}
 % Asynchroner Fetch? Datenfilterung überarbeiten 
-Die Influencerübersicht dient dazu, dass Unternehmen einen passenden Influencer für sich finden können. Demnach sind in einer Tabelle alle Registrierten Influencer mit allen relevanten Daten, inkl. Daten, die durch die Analyse des Instagram-Acounts gewonnen wurden zu sehen. 
-Für die Datendarstellung in der Tabelle wurde in TypeScript extra eine Datenstruktur erstellt, auf die ankommende Daten gamappt werden. Die Daten werden im React-Hook \texttt{useEffect()}, der dazu dient die Komponente mit externen Systemen zu synchronisiern, vom Backend mittels \texttt{fetch()} API geholt.
+Die Influencerübersicht dient dazu, dass Unternehmen einen passenden Influencer für sich finden können. Demnach sind in einer Tabelle alle Registrierten Influencer mit allen relevanten Daten, inkl. Informationen, die durch die Analyse des Instagram-Acounts gewonnen wurden zu sehen. %???
+Für die Datendarstellung in der Tabelle wurde in TypeScript eine Datenstruktur erstellt, auf die die Daten vom Backend gamappt werden. %Die Daten werden im React-Hook \texttt{useEffect()}, der dazu dient die Komponente mit externen Systemen zu synchronisiern, vom Backend mittels \texttt{fetch()} API geholt.
 \\
-Ein \textbf{Spaltenfilter} ermöglicht es, Spalten ein- und wieder auszublenden. Die Komponente ist dabei so ähnlich wie das Multiselect-Dropdown in der Registrierung aufgebaut, nur das die Werte mittels Checkbox ausgewählt werden können und diese visuell nicht außerhalb des Dropdowns sichtbar sind. Die Komponente kommt ohne \texttt{React Hook Form} aus, stattdessen wird ihr eine onChangeEventHandler-Methode übergeben, die die ausgewählten Spalten übergeben bekommt und diese in einer Variable \texttt{selectedColumns} vom Typ \texttt{useState<string[]>()} speichert. Vor dem Rendering der Spalten muss somit nur noch überprüft werden, ob die angegebene Spalte in \texttt{selectedColumns} enthalten ist. 
+Ein \textbf{Spaltenfilter} ermöglicht es, Spalten ein- und wieder auszublenden. Die Komponente ist dabei so ähnlich wie das Multiselect-Dropdown in der Registrierung aufgebaut, nur das die Werte mittels einer Checkbox ausgewählt werden können und ausgewählte Einträge nicht außerhalb des Dropdowns sichtbar werden. Die Komponente wurde ohne \texttt{React Hook Form} realisiert. Stattdessen wird ihr eine \texttt{onChange()} Event-Handler übergeben, der die ausgewählten Spalten in einer Zustands-Variable vom Typ \texttt{useState<string[]>()} speichert. Vor dem Rendering der Spalten muss somit nur noch überprüft werden, ob die angegebene Spalte in dieser Varialbe enthalten ist. 
 \\
-Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines bestimmten Influencer durchsuchen. Dazu wurde eine Variable \texttt{searchTerm} vom Typ \texttt{useState<string>()} angelegt, die durch das \texttt{onChange()} Event des Suchfeldes mit dessen Wert aktuell gehalten wird. Anschließend wird eine Filterfunktion mithilfe des Inhalts der Variable \texttt{searchTerm} auf allen Daten angewendet und die Tabelle aktualisiert.
+Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines bestimmten Influencer durchsuchen. Dazu wird ebenfalls der Wert des Suchfeldes in eine Variable vom Typ \texttt{useState<string>()} gespeichert. Anschließend wird eine Filterfunktion mithilfe des Inhalts dieser Variable auf allen Daten angewendet und die Tabelle aktualisiert.
 
 
 \subsection{Backend}
@@ -314,12 +324,16 @@ kurz Jest beschreiben, wie es grob funktioniert, z.B. dass in Jest die Komponent
 \section{Fazit und Ausblik}
 InfluenzaConnect bietet zum aktuellen Zeitpunkt nur einen kleinen Ausschnitt der geplanten Funktionialität. Das MVP wurde in der zu verfügbaren Zeit nur knapp verfehlt, dafür wurde die WebApp sehr ansprechend und solide aufgebaut. Ein erster Schritt wurde hinsichtlich der automatischen Analyse des Instagram-Profils des Influencers getan. Diese kann zuküftig noch erweitert, verbessert und auf weitere Social-Media-Plattformen angewendet werden. 
 
+Diese Strukturierung und Automatisierung mittels Docker und GitHub Actions bietet eine
+robuste Basis für den Betrieb und die Weiterentwicklung von "InfluenzaConnect".
 
 %#################### Literatur ###########################
 
 
 
 %#################### Alt/ Vorlage ###########################
+\newpage
+ende
 \newpage
 \section{Functional Requirements}
 Influencer sollen sich auf der Plattform registrieren, damit diese von Unternehmen leichter aufgefunden werden, um ihre Produkte zu vermarkten. Nachfolgend werden die besuchenden User von InfluenzaConnect, die ihr Produkt vermarkten wollen als 'Unternehmen' und die User, die sich vermarkten wollen, als 'Influencer' bezeichnet.
