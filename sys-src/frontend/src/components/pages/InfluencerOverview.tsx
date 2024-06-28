@@ -511,15 +511,21 @@ const stringToColor = (str: string): string => {
 };
 
 interface IUserData {
+    profileImage: string;
     gender: string;
     name: string;
-    age: number;
-    instagram_username: string;
-    language: string;
+    //age: number;                // gibt es nicht
+    advertisingDivision: string[];  // = hashtags im Backend
     nationality: string;
-    profileImage: string;
-    advertisingDivision: string[];
+    language: string;
     statusColor: string;
+    instagram_username: string;
+    instagram_followers: string;
+    instagram_comments_avg: string;
+    instagram_likes_avg: string;
+    instagram_engagement_rate: string;
+    instagram_time_since_last_post: string;
+    about_me: string;
 }
 
 
@@ -546,13 +552,14 @@ const InfluencerOverview2: React.FC = () => {
                 const newData: IUserData[] = response.data.results.map((user :any)=> ({
                     gender: user.gender,
                     name: user.name.last + ' ' + user.name.first,
-                    age: user.dob.age,
+                    instagram_comments_avg: user.dob.age,
                     instagram_username: '@' + user.location.city + user.name.last,
                     language: 'Deutsch',
                     nationality: user.location.country,
                     profileImage: user.picture.medium,
                     advertisingDivision: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-                    statusColor: 'bg-green-500'
+                    statusColor: 'bg-green-500',
+                    about_me: 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer den es auf der ganzen Welt gibt!'
                 }));
 
                 setData(newData);
@@ -583,11 +590,18 @@ const InfluencerOverview2: React.FC = () => {
     // Definiere das assoziative Array
     const options: { [key: string]: string } = {
         name: "Name",
-        age: "Alter",
-        instagram_username: "Instagram-Account",
-        language: "Sprache",
+        //age: "Alter",
+        advertisingDivision: "Werbesparte",
         nationality: "Nationalität",
-        advertisingDivision: "Werbungsbereich",
+        language: "Sprache",
+        instagram_username: "Instagram-Account",
+
+        instagram_followers: "Instagram-Follower",
+        instagram_comments_avg: "\u00D8 Kommentare",
+        instagram_likes_avg: "\u00D8 Likes",
+        instagram_engagement_rate: "Score",
+        instagram_time_since_last_post: "letzter Post",
+        about_me: "Über mich"
     };
     const initialSelectedOptions = ['name', 'age', 'instagram_username', 'language', 'nationality', 'advertisingDivision'];
     const [selectedColumns, setSelectedColumns] = useState<string[]>(initialSelectedOptions);
@@ -645,11 +659,11 @@ const InfluencerOverview2: React.FC = () => {
                                     Name
                                 </th>
                             )}
-                            {selectedColumns.includes('age') && (
-                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
-                                    Alter
-                                </th>
-                            )}
+                            {/*{selectedColumns.includes('age') && (*/}
+                            {/*    <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">*/}
+                            {/*        Alter*/}
+                            {/*    </th>*/}
+                            {/*)}*/}
                             {selectedColumns.includes('advertisingDivision') && (
                                 <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
                                     Werbesparte
@@ -670,6 +684,36 @@ const InfluencerOverview2: React.FC = () => {
                                     Instagram-Account
                                 </th>
                             )}
+                            {selectedColumns.includes('instagram_followers') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Follower
+                                </th>
+                            )}
+                            {selectedColumns.includes('instagram_comments_avg') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    \u00D8 Kommentare
+                                </th>
+                            )}
+                            {selectedColumns.includes('instagram_likes_avg') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    \u00D8 Likes
+                                </th>
+                            )}
+                            {selectedColumns.includes('instagram_engagement_rate') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Score
+                                </th>
+                            )}
+                            {selectedColumns.includes('instagram_time_since_last_post') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    letzter Post
+                                </th>
+                            )}
+                            {selectedColumns.includes('about_me') && (
+                                <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
+                                    Über mich
+                                </th>
+                            )}
                             <th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">
                                 Action
                             </th>
@@ -677,13 +721,13 @@ const InfluencerOverview2: React.FC = () => {
                         </thead>
                         <tbody>
                         {filteredData.map((item, index) => (
-                            <tr
-                                key={index}
-                                className="bg-white border-b hover:bg-gray-50"
-                            >
+                            <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                                {/* Tabellenindex */}
                                 <th className="pl-6 pr-3 py-4 text-blue-700">
                                     {index + 1}
                                 </th>
+
+                                {/* Name */}
                                 {selectedColumns.includes('name') && (
                                     <th
                                         scope="row"
@@ -705,14 +749,14 @@ const InfluencerOverview2: React.FC = () => {
                                             </div>
                                         </div>
                                     </th>
-
                                 )}
-                                {selectedColumns.includes('age') && (
-                                    <td className="px-6 py-4">
-                                        {item.age}
-                                    </td>
-                                )}
+                                {/*{selectedColumns.includes('age') && (*/}
+                                {/*    <td className="px-6 py-4">*/}
+                                {/*        {item.age}*/}
+                                {/*    </td>*/}
+                                {/*)}*/}
 
+                                {/* Werbesparte */}
                                 {selectedColumns.includes('advertisingDivision') && (
                                     <td className="px-2 sm:px-4 py-4 min-w-80">
                                         <div className="flex flex-wrap gap-0.5">
@@ -735,6 +779,7 @@ const InfluencerOverview2: React.FC = () => {
                                     </td>
                                 )}
 
+                                {/* Nationalität */}
                                 {selectedColumns.includes('nationality') && (
                                     <td className="px-6 py-4">
                                         <div className="flex items-center">
@@ -746,11 +791,15 @@ const InfluencerOverview2: React.FC = () => {
                                         </div>
                                     </td>
                                 )}
+
+                                {/* Sprache */}
                                 {selectedColumns.includes('language') && (
                                     <td className="px-6 py-4">
                                         {item.language}
                                     </td>
                                 )}
+
+                                {/* Instagram Username */}
                                 {selectedColumns.includes('instagram_username') && (
                                     <td className="px-6 py-4">
                                         <a href="https://www.instagram.com/festdamen.ffwschoenkirch2024/"
@@ -758,7 +807,51 @@ const InfluencerOverview2: React.FC = () => {
                                             {item.instagram_username}
                                         </a>
                                     </td>
-                                    )}
+                                )}
+
+                                {/* Instagram - Follower  */}
+                                {selectedColumns.includes('instagram_followers') && (
+                                    <td className="px-6 py-4">
+                                        {item.instagram_followers}
+                                    </td>
+                                )}
+
+                                {/* Instagram - durchschnittliche Kommentare  */}
+                                {selectedColumns.includes('instagram_comments_avg') && (
+                                    <td className="px-6 py-4">
+                                        {item.instagram_comments_avg}
+                                    </td>
+                                )}
+
+                                {/* Instagram - durchschnittliche Likes  */}
+                                {selectedColumns.includes('instagram_likes_avg') && (
+                                    <td className="px-6 py-4">
+                                        {item.instagram_likes_avg}
+                                    </td>
+                                )}
+
+                                {/* Instagram - Score  */}
+                                {selectedColumns.includes('instagram_engagement_rate') && (
+                                    <td className="px-6 py-4">
+                                        {item.instagram_engagement_rate}
+                                    </td>
+                                )}
+
+                                {/* Instagram - wann war letzter Post  */}
+                                {selectedColumns.includes('instagram_time_since_last_post') && (
+                                    <td className="px-6 py-4">
+                                        {item.instagram_time_since_last_post}
+                                    </td>
+                                )}
+
+                                {/* Über mich  */}
+                                {selectedColumns.includes('about_me') && (
+                                    <td className="px-6 py-4 text-xs min-w-80">
+                                        {item.about_me}
+                                    </td>
+                                )}
+
+                                {/* Button */}
                                 <td className="px-6 py-4">
                                     <a
                                         href="#"
