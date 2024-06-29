@@ -125,7 +125,6 @@ Die Architektur basiert im Frontend auf dem React JavaScript-Framework, im Backe
 Frontend, Backend und die MongoDB wurden mittels Docker containerisiert, um eine hochskalierung der Webanwendung zu ermöglichen.
 Als CSS Framework wurde Tailwind CSS und für die Kommunikation zwischen Frontend und Backend die Axios, ein Promise-basierter HTTP-Client sowie die Fetch API verwendet. Für die Datenaquise wurde auf die Instagram-API und ? zurückgegriffen.}
 \end{abstract}
-
 % A list of IEEE Computer Society appoved keywords can be obtained at
 % http://www.computer.org/mc/keywords/keywords.htm
 \begin{IEEEkeywords}
@@ -184,17 +183,20 @@ Vom MVP wurden folgende Punkte umgesetzt:
 Die \textit{Datailübersicht zum Influencer} wurde nicht implementiert. Stattdessen wurde für den \textit{angemeldeten Influencer eine Profilseite implementiert, in der er seine aktuellen Profildaten einsehen und ändern kann}. Um alle Daten zum Influencer totz der fehlenden Dateilansicht für die Besucher der Website bereitzustellen, wurden diese vorerst in die Tabelle in der Übersichtsseite zu den Influencern integriert. \\
 
 
-
-%#################### Projektsetup  ###########################
-\section{Projektsetup}
-
-
-
 %#################### Architektur ###########################
 \section{Architektur}
 
 %------------------- Containerisierung --------------------------------
 \subsection{Containerisierung}
+
+%Bild vom Deployment
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{../Bilder/Deployment.png}
+	\caption{Containerisierung und Deployment}
+	\label{fig:Deployment}
+\end{figure}
+
 %Referenz Docker
 Das Projekt wurde mittels Docker containerisiert, um eine flexible und skalierbare Umgebung für die verschiedenen Komponenten der Anwendung zu schaffen.
 Dabei wurden das Frontend, Backend sowie die MongoDB in separate Docker-Container aufgeteilt, was eine einfache Verwaltung und Skalierung der einzelnen Dienste ermöglicht. Dockerfiles legen dabei fest, welche Software und Abhängigkeiten in den virtuellen Containern installiert werden. Für das Backend wird ein Python 3.10 Slim Image verwendet. In dieses werden beim Starten des Containers die notwendigen Python-Pakete automatisiert installiert und der Anwendungscode kopiert. Das Frontend basiert auf einem Node.js 16 Image, das ebenfalls automatisch die benötigten Node-Module installiert und den Build-Prozess des Frontends startet (Kein multi stage).
@@ -203,22 +205,27 @@ Dabei wurden das Frontend, Backend sowie die MongoDB in separate Docker-Containe
 %Referenz Hetzner, Github, Git, GitHub Actions
 \subsection{Deployment}
 InfluenzaConnect verwendet GitHub als Git-Respository. Das Deployment in unsere Hetzner-Cloud erfolgt demnach mittels GitHub Actions. Der CD-Workflow befindet sich wird dabei ausgelöst, sobald Änderungen auf den \texttt{prod} Branch gepusht werden. Der anschließende Deployment-Job läuft auf einer Ubuntu-Maschine in der Hetzner-Cloud und umfasst folgende Schritte:
-\begin{itemize}
-\item{Checkout Code: Der Quellcode wird aus dem Repository ausgecheckt.}
-\item{Setup SSH: SSH wird eingerichtet, um eine sichere Verbindung zum Hetzner-Server
+\begin{enumerate}
+\item{\textbf{Checkout Code} - Der Quellcode wird aus dem Repository ausgecheckt.}
+\item{\textbf{Setup SSH} - SSH wird eingerichtet, um eine sichere Verbindung zum Hetzner-Server
 herzustellen.}
-\item{Deploy to Hetzner: Der Code wird auf den Hetzner-Server deployt.}
-\end{itemize}
+\item{\textbf{Deploy to Hetzner} - Der Code wird auf den Hetzner-Server deployt.}
+\end{enumerate}
 Beim deployen wird dabei unser Projektverzeichnis aktualisiert, Docker Compose verwendet, um die bestehenden Container zu stoppen, neu zu bauen und schließlich die Anwendung in die Produktionsumgebung hochzufahren.
 Durch diese Pipline wird sichergestellt, dass jede Änderung im \texttt{prod} Branch automatisch auf dem Produktionsserver deployet wird. Dadurch wird eine kontinuierliche Integration und Bereitstellung neuer Features und Bugfixes ermöglicht, Entwicklungszyklen beschleunigt und die Qualität der Anwendung verbessert.
 
-\subsection{Frontend-Architektur}
-
-
-\subsection{Backend-Architektur}
 
 %#################### Techstack ###########################
 \section{Techstack}
+
+%Bild von Architektur
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{../Bilder/Architektur.png}
+	\caption{Architektur von InfluenzaConnect}
+	\label{fig:Architektur}
+\end{figure}
+
 \subsection{Frontend}
 % Referenz React, Tailwind CSS, Typescript, 
 Für die Realisierung des Frontends wird das JavaScript-Framework React verwendet. Es erleichtert die Entwicklungsarbeit im Frontend, indem es dabei hilft, wiederverwendbaren Code zu schreiben, sowie graphische Inhalte dynamisch aufzubauen und zu befüllen. HTML, CSS und JavaScript-Code wird dabei in sogenannten Komponenten gekapselt. In React gibt es sog. Hooks, die dazu benutzt werden, bestimmte Funktionialitäten in den Komponenten zu erreichen. Erwähnenswert ist hier der Hook \texttt{useState()}, der bestimmte Zustände zwschenspeichern kann, sodass diese beim erneuten Rendern der Komponente nicht verloren gehen. Desweiteren haben wir uns für die Gestaltung der Webpages für Tailwind CSS entschieden. Tailwind CSS wird oft mit React verwendet und ist zur Zeit sehr im Trend, weil es leicht zu erlernen ist, gutes vordefiniertes Design und trotzdem große Gestaltungsfreiräume bietet, da man notfalls interne CSS-Werte speziell für sein Projekt überschreiben kann. Außerdem haben wir entschlossen, anstatt JavaScript auf TypeScript zu setzen, da TypeScript eine Typisierung zulässt und somit logische Typfehler beseitigt. 
@@ -230,6 +237,8 @@ Fetch!!
 \subsection{Backend}
 %Referenz Python, Flusk, MongoDB, pymongo
 Im Backend haben wir uns für das Python-Webframework Flask entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden die HTTP-Anfragen verarbeitet und entsprechende Antworten zurückgeben. 
+
+\subsection{Persistenz}
 Zum persistieren der Daten setzen wir auf eine MongoDB als Datenbanksystem. Die \texttt{pymongo}-Bibliothek von Python fungiert dabei als offizieller Treiber für die MongoDB, die Funktionen für die Interaktion der Datenbank bereitstellt, um Daten zu speichern, abzurufen, aktualisieren und zu löschen.
 
 
@@ -292,8 +301,9 @@ Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines be
 
 
 \subsection{Backend}
-%Unser Backend ist mit Python und dem Framework FastAPI realisiert und fungiert als zentrale Schnittstelle zwischen Datenbank und Frontend. Über eine RESTful-API kommuniziert das Frontend mit dem Backend, wobei JSON als Rückgabeformat für alle API-Endpunkte verwendet wird.
-
+texttt{
+Unser Backend ist mit Python und dem Framework FastAPI realisiert und fungiert als zentrale Schnittstelle zwischen Datenbank und Frontend. Über eine RESTful-API kommuniziert das Frontend mit dem Backend, wobei JSON als Rückgabeformat für alle API-Endpunkte verwendet wird.
+}
 Die Hauptaufgaben des Backends umfassen die Aufbereitung und Bereitstellung von Daten für das Frontend sowie die Verarbeitung von Benutzeranfragen. Dabei haben wir uns für das Python-Webframework Flask entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden die HTTP-Anfragen verarbeitet und entsprechende Antworten zurückgeben. In unserem Fall haben wir folgende Routen definiert:
 
 \begin{table}[h]
@@ -332,12 +342,13 @@ In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der 
 
 
 \subsection{Instagram-Acount Analyse}
+\texttt{
 Daten an ChatGPT senden, --> wie, durch welche Methode (Fetch, oder axios, ajax-API) 
 Prompt kurz und knapp beschreiben. 
 Überprüfung ob Produkt-WerbeSparte-Tags richtig sind(?)
 kurz noch beschreiben, welche Daten sonst noch gescrapt werden
 Libraries erwähnen und vll. einzelene Methoden, instascrape, ...
-
+}
 \subsection{Persistenz}
 
 In der Datenbank sind die Benutzerinformationen strukturiert in einem Schema gespeichert, die nachfolgend definiert sind. 
@@ -356,13 +367,13 @@ Die Hauptaufgaben der Datenbankschicht umfassen das Speichern, Aktualisieren und
 \section{Testen}
 % Referenz Jest, Pytest
 \subsection{Frontend}
-Im Frontend wurde das Testing-Framework Jest verwendet. Es kann sowohl Komponenten einzeln auf ihre Funktionalität (Unit-Test), als auch die Interaktion mit anderen Komponenten überprüfen. So kann man 
+Im Frontend wurde das Testing-Framework Jest verwendet. Es kann sowohl Komponenten einzeln auf ihre Funktionalität (Unit-Test), als auch die Interaktion mit anderen Komponenten überprüfen. Es gibt folgende Testarten:
 
-\begin{enumerate}
+\begin{itemize}
 	\item{\textbf{Rendering-Tests} - Überprüfen, ob alle Formularelemente korrekt gerendert werden.}
 	\item{\textbf{Tests der Benutzerinteraktion} - Simulieren von Benutzereingaben und Interaktionen und Sicherstellung der korrekten Erfassung von Eingaben und das anzeigen von Fehlermeldungen.}
 	\item{\textbf{Zugänglichkeitstests} - Überprüfung der Zugänglichkeit von Formularelementen über ihr Text-Label, sowie der Navigierbarkeit von interaktiven Elementen der Anwendung über die Tastatur.}
-\end{enumerate}
+\end{itemize}
 
 
 \subsection{Backend}
