@@ -221,10 +221,19 @@ Durch diese Pipline wird sichergestellt, dass jede Änderung im \texttt{prod} Br
 \section{Techstack}
 \subsection{Frontend}
 % Referenz React, Tailwind CSS, Typescript, 
-Für die Realisierung des Frontends wird auf das JavaScript-Framework React verwendet. Es erleichtert die Entwicklungsarbeit im Frontend, indem es dabei hilft, wiederverwendbaren Code zu schreiben, sowie graphische Inhalte dynamisch aufzubauen und zu befüllen. HTML, CSS und JavaScript-Code wird dabei in sogenannten Komponenten gekapselt. In React gibt es sog. Hooks, die dazu benutzt werden, bestimmte Funktionialitäten in den Komponenten zu erreichen. Erwähnenswert ist hier der Hook \texttt{useState()}, der bestimmte Zustände zwschenspeichern kann, sodass diese beim erneuten Rendern der Komponente nicht verloren gehen. Desweiteren haben wir uns für die Gestaltung der Webpages für Tailwind CSS entschieden. Tailwind CSS wird oft mit React verwendet und ist zur Zeit sehr im Trend, weil es leicht zu erlernen ist, gutes vordefiniertes Design und trotzdem große Gestaltungsfreiräume bietet, da man notfalls interne CSS-Werte speziell für sein Projekt überschreiben kann. Außerdem haben wir entschlossen, anstatt JavaScript auf TypeScript zu setzen, da TypeScript eine Typisierung zulässt und somit logische Typfehler beseitigt. 
+Für die Realisierung des Frontends wird das JavaScript-Framework React verwendet. Es erleichtert die Entwicklungsarbeit im Frontend, indem es dabei hilft, wiederverwendbaren Code zu schreiben, sowie graphische Inhalte dynamisch aufzubauen und zu befüllen. HTML, CSS und JavaScript-Code wird dabei in sogenannten Komponenten gekapselt. In React gibt es sog. Hooks, die dazu benutzt werden, bestimmte Funktionialitäten in den Komponenten zu erreichen. Erwähnenswert ist hier der Hook \texttt{useState()}, der bestimmte Zustände zwschenspeichern kann, sodass diese beim erneuten Rendern der Komponente nicht verloren gehen. Desweiteren haben wir uns für die Gestaltung der Webpages für Tailwind CSS entschieden. Tailwind CSS wird oft mit React verwendet und ist zur Zeit sehr im Trend, weil es leicht zu erlernen ist, gutes vordefiniertes Design und trotzdem große Gestaltungsfreiräume bietet, da man notfalls interne CSS-Werte speziell für sein Projekt überschreiben kann. Außerdem haben wir entschlossen, anstatt JavaScript auf TypeScript zu setzen, da TypeScript eine Typisierung zulässt und somit logische Typfehler beseitigt. 
 
 TypeScript ist komplett kompatibel mit JavaScript.
 Fetch!!
+
+
+\subsection{Backend}
+%Referenz Python, Flusk, MongoDB, pymongo
+Im Backend haben wir uns für das Python-Webframework Flask entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden die HTTP-Anfragen verarbeitet und entsprechende Antworten zurückgeben. 
+Zum persistieren der Daten setzen wir auf eine MongoDB als Datenbanksystem. Die \texttt{pymongo}-Bibliothek von Python fungiert dabei als offizieller Treiber für die MongoDB, die Funktionen für die Interaktion der Datenbank bereitstellt, um Daten zu speichern, abzurufen, aktualisieren und zu löschen.
+
+
+
 
 %#################### Implementierung ###########################
 \section{Implementierung}
@@ -283,13 +292,44 @@ Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines be
 
 
 \subsection{Backend}
+%Unser Backend ist mit Python und dem Framework FastAPI realisiert und fungiert als zentrale Schnittstelle zwischen Datenbank und Frontend. Über eine RESTful-API kommuniziert das Frontend mit dem Backend, wobei JSON als Rückgabeformat für alle API-Endpunkte verwendet wird.
+
+Die Hauptaufgaben des Backends umfassen die Aufbereitung und Bereitstellung von Daten für das Frontend sowie die Verarbeitung von Benutzeranfragen. Dabei haben wir uns für das Python-Webframework Flask entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden die HTTP-Anfragen verarbeitet und entsprechende Antworten zurückgeben. In unserem Fall haben wir folgende Routen definiert:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|>{\raggedright\arraybackslash}m{0.75\linewidth}|}
+        \hline
+  	 \multicolumn{1}{|c|}{\textbf{Route}} & \multicolumn{1}{c|}{\textbf{Zweck der Route}} \\
+        \hline
+        \verb|/signup| & Registrierung: Die eingegebenen Daten werden validiert und verschlüsselt in der MongoDB gespeichert. \\
+        \hline
+        \verb|/login| & Anmeldung: Die Eingaben werden überprüft, und bei erfolgreicher Authentifizierung eine Session gestartet. \\
+        \hline
+        \verb|/profile| & Profildaten ändern: Gibt die Profilinformationen des eingeloggten Benutzers zurück. \\
+        \hline
+        \verb|/logout| & Abmelden: Beendet die aktuelle Sitzung und meldet den Benutzer ab. \\
+        \hline
+        \verb|/collect| & Influencer Übersichtstabelle: Gibt die Daten aller registrierten Influencer gesammelt zurück, um diese im Frontend anzuzeigen \\
+        \hline
+	   \verb|/<session>| & Routen für Session-Handling \\
+        \hline
+    \end{tabular}
+    \caption{Definierte API-Routen}
+    \label{tab:api-routes}
+\end{table}
+
+
 
 \subsubsection{Datenvalidierung und -speicherung}
+Die Validierungsfunktionen prüfen die Benutzereingaben mithilfe von regulären Ausdrücken und einfachen Bedingungen, um sicherzustellen, dass sie den erwarteten Standards entsprechen. Dabei wird z.B. überprüft, ob die E-Mail im richtigen Format vorliegt, das Passwort ausreichend lang ist oder obligatorische Informationen wie Vor- und Nachname korrekt angegeben wurden. Spezielle Validierungen wie die Überprüfung des Instagram-Benutzernamens und optionaler Informationen wie der Telefonnummern werden ebenfalls durchgeführt. Darüber hinaus nutzen diese Funktionen externe Ressourcen, beispielsweise eine Webanfragen für die Überprüfung von Instagram-Benutzernamen auf ihre Existenz und ob es sich um ein privates oder öffentliches Profil handelt. 
+
 
 
 
 \subsubsection{Session}
-muss nicht als eigener Punkt definiert werden. aber kurz beschreiben, wie wir Session setzen, Library erwähnen und das Email hinterlegt wird.
+In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der Flask-Bibliothek. Wenn sich ein Benutzer Anmeldet oder Registriert, wird seine E-Mail-Adresse in einer Session gespeichert. Diese Funktionalität gewährleistet, dass der Benutzer während seines Besuchs auf der Webseite identifiziert bleibt, was essenziell ist, um personalisierte Inhalte und Funktionen bereitzustellen. Die Flask-Bibliothek bietet uns ebenfalls die Möglichkeit, Session-Daten sicher zu verwalten. Zum Schutz sensibler Informationen wie der Benutzer-E-Mail verwenden wir Konfigurationsoptionen um die Datenübertragung zu verschlüsseln. Zusätzlich sorgt die eingstellte Sessionlaufzeit dafür, dass die Session nach 30 Minuten der Inaktivität automatisch abläuft und die Daten somit vor unautorisiertem Zugriff geschützt werden.
+
 
 \subsection{Instagram-Acount Analyse}
 Daten an ChatGPT senden, --> wie, durch welche Methode (Fetch, oder axios, ajax-API) 
@@ -299,9 +339,14 @@ kurz noch beschreiben, welche Daten sonst noch gescrapt werden
 Libraries erwähnen und vll. einzelene Methoden, instascrape, ...
 
 \subsection{Persistenz}
+
+In der Datenbank sind die Benutzerinformationen strukturiert in einem Schema gespeichert, die nachfolgend definiert sind. 
 \texttt{
-Datenbank-Schema und Api/Bibliothek für DB-Anbindung beschreiben. kann evtl. auch mit ins Backend / in den Techstack. 
+Datenbank-Schema
 }
+
+Die Hauptaufgaben der Datenbankschicht umfassen das Speichern, Aktualisieren und das Abrufen dieser Benutzerdaten. Es wird sichergestellt, dass zurückgegebene Daten immer das definierte Standardformat einhalten, um die Konsistenz weiterer Verarbeitungsschritte innerhalb der Anwendung sicherzustellen. Fehler während dem Speichern oder dem Abrufen von Benutzerdaten werden für eine zuverlässige Fehlerbehandlung genau protokolliert.
+
 
 
 
@@ -317,6 +362,7 @@ Ihr müsst nicht all so viel übers Testing schreiben. Kurz das Testing-Tool bes
 kurz Jest beschreiben, wie es grob funktioniert, z.B. dass in Jest die Komponenten selbstständig gerendert werden können und man Werte in Inputfelder setzen kann und man anhand geschmissener Fehlermeldungen der Formalure die Richtigkeit überprüfen kann...
 }
 \subsection{Backend}
+Die Verwendung von pytest ermöglichte uns umfassendes, aber effizientes Testen unserer Datenvalidierungslogik. Pytest ist ein Testframework für Python, das das Schreiben, Organisieren und Ausführen von Tests vereinfacht, da diese mit einfachen Mitteln zu implementieren sind. Durch die Nutzung der Funktionen von pytest wie Fixtures, Mocks und Parametrisierung konnten wir eine robuste Validierungslogik für die eingegebenen Daten des Users sicherstellen, bzw. potenzielle Probleme beseitigen und so schlussendlich die Zuverlässigkeit der gesamten Anwendun verbessern. 
 
 
 
