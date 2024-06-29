@@ -328,7 +328,7 @@ Die Validierungsfunktionen prüfen die Benutzereingaben mithilfe von regulären 
 
 
 \subsubsection{Session}
-In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der Flask-Bibliothek. Wenn sich ein Benutzer Anmeldet oder Registriert, wird seine E-Mail-Adresse in einer Session gespeichert. Diese Funktionalität gewährleistet, dass der Benutzer während seines Besuchs auf der Webseite identifiziert bleibt, was essenziell ist, um personalisierte Inhalte und Funktionen bereitzustellen. Die Flask-Bibliothek bietet uns ebenfalls die Möglichkeit, Session-Daten sicher zu verwalten. Zum Schutz sensibler Informationen wie der Benutzer-E-Mail verwenden wir Konfigurationsoptionen um die Datenübertragung zu verschlüsseln. Zusätzlich sorgt die eingstellte Sessionlaufzeit dafür, dass die Session nach 30 Minuten der Inaktivität automatisch abläuft und die Daten somit vor unautorisiertem Zugriff geschützt werden.
+In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der Flask-Bibliothek. Wenn sich ein Benutzer Anmeldet oder Registriert, wird seine E-Mail-Adresse in einer Session gespeichert, um den Benutzer während seines Besuchs auf der Website identifzieren und personalisierte Funktionen bereitstellen zu können. Die Bibliothek bietet uns ebenfalls die Möglichkeit, Session-Daten sicher zu verwalten. Zum Schutz sensibler Informationen, werden die Daten verschlüsselt übertragen und nach 30 Minuten der Inaktivität läuft die Session automatisch ab, sodass die Daten vor unautorisiertem Zugriff bewahrt werden.
 
 
 \subsection{Instagram-Acount Analyse}
@@ -354,13 +354,17 @@ Die Hauptaufgaben der Datenbankschicht umfassen das Speichern, Aktualisieren und
 
 %#################### Testen  ###########################
 \section{Testen}
-\texttt{
-Ihr müsst nicht all so viel übers Testing schreiben. Kurz das Testing-Tool beschreiben und deren Besonderheiten / wie es grob funktioniert. Anschließend noch ein paar Worte zur Test-Coverage und evtl. entdeckte Fehler.
-}
+% Referenz Jest, Pytest
 \subsection{Frontend}
-\texttt{
-kurz Jest beschreiben, wie es grob funktioniert, z.B. dass in Jest die Komponenten selbstständig gerendert werden können und man Werte in Inputfelder setzen kann und man anhand geschmissener Fehlermeldungen der Formalure die Richtigkeit überprüfen kann...
-}
+Im Frontend wurde das Testing-Framework Jest verwendet. Es kann sowohl Komponenten einzeln auf ihre Funktionalität (Unit-Test), als auch die Interaktion mit anderen Komponenten überprüfen. So kann man 
+
+\begin{enumerate}
+	\item{\textbf{Rendering-Tests} - Überprüfen, ob alle Formularelemente korrekt gerendert werden.}
+	\item{\textbf{Tests der Benutzerinteraktion} - Simulieren von Benutzereingaben und Interaktionen und Sicherstellung der korrekten Erfassung von Eingaben und das anzeigen von Fehlermeldungen.}
+	\item{\textbf{Zugänglichkeitstests} - Überprüfung der Zugänglichkeit von Formularelementen über ihr Text-Label, sowie der Navigierbarkeit von interaktiven Elementen der Anwendung über die Tastatur.}
+\end{enumerate}
+
+
 \subsection{Backend}
 Die Verwendung von pytest ermöglichte uns umfassendes, aber effizientes Testen unserer Datenvalidierungslogik. Pytest ist ein Testframework für Python, das das Schreiben, Organisieren und Ausführen von Tests vereinfacht, da diese mit einfachen Mitteln zu implementieren sind. Durch die Nutzung der Funktionen von pytest wie Fixtures, Mocks und Parametrisierung konnten wir eine robuste Validierungslogik für die eingegebenen Daten des Users sicherstellen, bzw. potenzielle Probleme beseitigen und so schlussendlich die Zuverlässigkeit der gesamten Anwendun verbessern. 
 
@@ -368,10 +372,11 @@ Die Verwendung von pytest ermöglichte uns umfassendes, aber effizientes Testen 
 
 %#################### Fazit und Ausblik  ###########################
 \section{Fazit und Ausblik}
-InfluenzaConnect bietet zum aktuellen Zeitpunkt nur einen kleinen Ausschnitt der geplanten Funktionialität. Das MVP wurde in der zu verfügbaren Zeit nur knapp verfehlt, dafür wurde die WebApp sehr ansprechend und solide aufgebaut. Ein erster Schritt wurde hinsichtlich der automatischen Analyse des Instagram-Profils des Influencers getan. Diese kann zuküftig noch erweitert, verbessert und auf weitere Social-Media-Plattformen angewendet werden. 
+InfluenzaConnect bietet zum aktuellen Zeitpunkt nur einen kleinen Ausschnitt der geplanten Funktionialität. Das MVP wurde in der zu verfügbaren Zeit nur knapp verfehlt, dafür wurde die WebApp sehr ansprechend und solide aufgebaut. Ein wichtiger Schritt wurde hinsichtlich der automatischen Analyse des Instagram-Profils des Influencers getan. Diese kann zuküftig noch erweitert, verbessert und auf weitere Social-Media-Plattformen angewendet werden. 
 
-Diese Strukturierung und Automatisierung mittels Docker und GitHub Actions bietet eine
-robuste Basis für den Betrieb und die Weiterentwicklung von "InfluenzaConnect".
+Es gibt, wie im bereits Fachkozept beschrieben, noch etliche vielversprechende Möglichkeiten zur Erweiterung der Anwendung, wie eine Detailansicht und eine Vergleichsfunktion zwischen Influencern, sowie eine Registrierung für Unternehmen und eine Kommunikationsfunktionalität. Darüber hinaus sollte die Sicherheit und der Datenschutz der Anwendung weiter verbessert werden, insbesondere in Bezug auf die Verarbeitung und Speicherung personenbezogener Daten. Die CD-Automatisierung mittels Docker und GitHub Actions bietet dafür eine robuste Basis für den Betrieb und die Weiterentwicklung von "InfluenzaConnect". 
+
+
 
 %#################### Literatur ###########################
 
