@@ -252,7 +252,8 @@ Zum persistieren der Daten setzen wir auf eine MongoDB als Datenbanksystem. Die 
 %\end{enumerate}
 
 \subsubsection{Landing Page\\}
- Routing auch mit erwähnen
+Die Landing Page wurde einladent gestaltet und enthält ansprechende Beschreibungen zu den Hauptfunktionen von InfluenzaConnect. Der User kann zwischen "Spectator" und "Influencer" auswählen, um die passende Seite zu
+besuchen. Außerdem kann er über die Navigationsleiste zur gewünschten Seite navigieren.
 
 \subsubsection{Registrierung\\}
 Die Registrierung dient dazu, sich als Influencer registrieren und vermarkten zu können. Die Registrierung ist in drei Schritten aufgebaut:
@@ -276,19 +277,10 @@ Neben einer einfachen Eingabefeld, wurden Komponenten für ein Select-, ein Mult
 
 
 \subsubsection{An- und Abmeldung\\}
-\texttt{
-- Wiederverwendung der Input-Komponenten
-- Popup-Dialog Komponente von XXX verwendet
-- Daten ans Backend gesendet - Response - Session gesetzt 
-- Button Logout und Email erscheint 
-- Logout -> Session gelöscht, Erscheinungsbild wie zuvor
-}
+Die Anmeldung erfolgt durch eine eine Popup-Dialog-Komponente, die unsere wiederverwendbaren Input-Komponenten enthält. Nach erfolgreicher Anmeldung wird zum Benutzer eine Session gesetzt und das Profil des Nutzers in der Navigationsbar anzeigt. Der Logout-Button löscht die Session und stellt das ursprüngliche Erscheinungsbild wieder her.
+
 \subsubsection{Profildaten Bearbeiten\\}
-\texttt{
-- Anpassung der Input-Komponenten, Standardmäßig non-Editable
-- Daten werden anhand der Email, die in der Session gespeichert ist rausgeholt.
-- durch Edit-Button kann kann man die Eingabefelder bearbeiten. Gleichzeitig erscheint unten links ein Abbrechen- und ein Speichern-Button. Wird der letztere Button betätigt, werden die Daten im Frontend Validiert und anschließend ins Backend gesendet. Dort werden Sie nochmals auf validiert und schlussendlich persistiert, indem die alten mit den neuen Daten überschrieben werden.
-}
+Die Profildaten können über eine Eingabemaske nachträglich verändert werden. Die Daten werden anhand der in der Session gespeicherten E-Mail abgerufen. Standardmäßig ist die Eingabemaske nicht editierbar. Sie wird es erst, wenn der Edit-Button betätigt wird. Nachdem die Daten eingegeben wurden, können diese Bestätigt werden. Nach einer Validierung der Daten im Frontend werden diese anschließend ins Backend gesendet, dort nochmals validiert und schlussendlich persistiert, indem die alten Daten überschrieben werden.
 
 \subsubsection{Influncerübersicht\\}
 % Asynchroner Fetch? Datenfilterung überarbeiten 
