@@ -330,17 +330,26 @@ Die Validierungsfunktionen prüfen die Benutzereingaben mithilfe von regulären 
 
 
 \subsubsection{Session}
-In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der Flask-Bibliothek. Wenn sich ein Benutzer Anmeldet oder Registriert, wird seine E-Mail-Adresse in einer Session gespeichert, um den Benutzer während seines Besuchs auf der Website identifzieren und personalisierte Funktionen bereitstellen zu können. Die Bibliothek bietet uns ebenfalls die Möglichkeit, Session-Daten sicher zu verwalten. Zum Schutz sensibler Informationen, werden die Daten verschlüsselt übertragen und nach 30 Minuten der Inaktivität läuft die Session automatisch ab, sodass die Daten vor unautorisiertem Zugriff bewahrt werden.
+In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der Flask-Bibliothek. Wenn sich ein Benutzer Anmeldet oder Registriert, wird seine E-Mail-Adresse in einer Session gespeichert, um den Benutzer während seines Besuchs auf der Website identifzieren und personalisierte Funktionen bereitstellen zu können. Die Bibliothek bietet uns ebenfalls die Möglichkeit, Session-Daten sicher zu verwalten. Zum Schutz sensibler Informationen, werden die Daten verschlüsselt übertragen und nach 30 Minuten der Inaktivität läuft die Session automatisch ab, sodass die Daten vor unautorisiertem Zugriff bewahrt werden. 
 
 
-\subsection{Instagram-Acount Analyse}
-\texttt{
-Daten an ChatGPT senden, --> wie, durch welche Methode (Fetch, oder axios, ajax-API) 
-Prompt kurz und knapp beschreiben. 
-Überprüfung ob Produkt-WerbeSparte-Tags richtig sind(?)
-kurz noch beschreiben, welche Daten sonst noch gescrapt werden
-Libraries erwähnen und vll. einzelene Methoden, instascrape, ...
-}
+\subsection{Instagram-Account Analyse}
+Durch die Kombination der \texttt{Instaloader}-Labrary zur Extraktion der Profil- und Postdaten sowie GPT-3.5-turbo, können umfangreichende Auswertungen erstellen erstellt werden. Die Library extrahiert sämtliche Daten des Influencers, mitsamt der Daten der 100 zuletzt geposteten Beiträge, inkl. Bild, Bildunterschriften, Kommentare und vieles mehr. Nachfolgend sind die durchgeführten Analysen aufgelistet:
+
+\begin{itemize}
+
+\item{\textbf{Zuordnung Produkt-Werbesparte:} Das Sprachmodell führt anhand der Hashtags unter den Beiträgen eine semantischen Analyse durch, indem es den Influencer eine primäre und sekundäre Produkt-Werbesparte zuordnet. Diese soll dann die Interessensgebiete des Influencers wiederspiegeln.}
+
+\item{\textbf{Erfassung der Kerndaten des Profils:} Desweiteren werden anhand der letzen 100 Posts durchschnittliche Werte wie Anzahl der Kommentare und Likes des Influencers berechnet. Auch wird der Zeitpunkt des letzten Posts erfasst. Diese Information ist wichtig, um die Frequenz und Aktualität der Beitragsaktivität des Influencers bewerten zu können.}
+
+\item{\textbf{Download von Posts und Profilbild:} Das Profilbild des Accounts und die neuesten Posts werden für spätere Analysen heruntergeladen und gespeichert. Später soll eine visuelle Auswertung der Bilder weitere Informationen Unternehmen zur Verfügung stellen. Das Profilbild wird dabei als Profilbild in InfluenzaConnect übernommen. }
+
+\item{\textbf{Berechnung der Engagement-Rate:} Die Engagement-Rate ist ein Maß für die Interaktion der Follower mit den Beiträgen eines Influencers, die aus Likes-, Kommentar und Follower-Anzahl berechnet wird. Kommentare werden dabei stärker gewichtet, da sie mehr Interaktionsaufwand erfordern als Likes. Die Engagementrate wird mit folgender Formel berechnet: \[
+\text{Engagement-Rate} = \frac{\text{Likes} \times 0.3 + \text{Kommentare} \times 0.7}{\text{Follower}} \] }
+\end{itemize}
+
+
+
 \subsection{Persistenz}
 
 In der Datenbank sind die Benutzerinformationen strukturiert in einem Schema gespeichert, die nachfolgend definiert sind. 
