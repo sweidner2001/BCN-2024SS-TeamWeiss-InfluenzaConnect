@@ -48,7 +48,7 @@ interface IUserData {
 
 
 
-const InfluencerOverview2: React.FC = () => {
+const InfluencerOverview: React.FC = () => {
 
     const [data, setData] = useState<IUserData[]>([]);
 
@@ -310,14 +310,14 @@ const InfluencerOverview2: React.FC = () => {
                                 )}
 
                                 {/* Button */}
-                                <td className="px-6 py-4">
+                                {/* <td className="px-6 py-4">
                                     <a
                                         href="#"
                                         className="font-medium text-blue-600 hover:underline whitespace-nowrap"
                                     >
                                         Edit user
                                     </a>
-                                </td>
+                                </td> */}
                             </tr>
                         ))}
                         </tbody>
@@ -331,4 +331,4 @@ const InfluencerOverview2: React.FC = () => {
 
 
 
-export default InfluencerOverview2;
+export default InfluencerOverview;
