@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import save_user, find_user_by_email, fetch_all_users
 from validation import validate_registration_data, validate_login_data
@@ -12,9 +12,50 @@ from userinfo_scripts.user_analysis import (
     get_instagram_profile_pic
 )
 from userinfo_scripts.categorization import get_instagram_hashtags
+from datetime import timedelta
 
 app = Flask(__name__)
-CORS(app)
+# Session handling
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.secret_key = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96'  # Use a strong secret key
+app.config['SESSION_COOKIE_SECURE'] = False  # Should be True in production with HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+CORS(app, supports_credentials=True)
+
+@app.route('/set_session', methods=['POST'])
+def set_session():
+    data = request.json
+    email = data.get('email')
+    if email:
+        session['email'] = email
+        app.logger.debug(f'Session email set to: {session["email"]}')
+        return jsonify(message=f'Session-Daten für {email} gesetzt!')
+    return jsonify(message='Bitte eine E-Mail-Adresse angeben.'), 400
+
+@app.route('/get_session_email', methods=['GET'])
+def get_session_email():
+    email = session.get('email')
+    app.logger.debug(f'Retrieving session email: {email}')
+    if email:
+        return jsonify(email=email), 200
+    return jsonify(message='No email in session'), 400
+
+@app.route('/get_session')
+def get_session():
+    email = session.get('email', 'Nicht eingeloggt')
+    return f'Eingeloggt als {email}'
+
+@app.route('/remove_session')
+def remove_session():
+    session.pop('email', None)
+    return 'Session-Daten entfernt!'
+
+@app.route('/clear_session')
+def clear_session():
+    session.clear()
+    return 'Alle Session-Daten gelöscht!'
 
 # Registrierungshandler 
 @app.route('/signup', methods=['POST'])
@@ -111,6 +152,30 @@ def login():
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
 
 
+# Datenbeschaffung für Profilansicht
+@app.route('/profileView', methods=['POST'])
+def get_profile_data():
+    data = request.json
+    email = data.get('email')
+
+    user = find_user_by_email(app, email)
+
+    if not user:
+        return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
+
+    webscraping_data = []
+    profile_picture = []
+
+    user_data = {
+        'user': user,
+        'webscraping': webscraping_data,
+        'profilPicture': profile_picture
+    }
+
+    return jsonify(user_data), 200
+
+
+
 @app.route('/collectData', methods=['POST'])
 def collectData():
     """"
@@ -120,7 +185,7 @@ def collectData():
         JSON-Antwort mit gesammelten Userdaten.
     """
     try:
-        # Userdaten aus der Registrierungsdatenbank 
+        # Userdaten aus der Registrierungsdatenbank
         all_users = fetch_all_users()
         user_data_dict = {}
 
