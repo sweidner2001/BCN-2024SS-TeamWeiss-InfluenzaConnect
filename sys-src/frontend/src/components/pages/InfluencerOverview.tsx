@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import InputMultiCheckboxDropdown from "../input/InputMultiCheckboxDropdown";
+import NavBar from "../NavBar";
 
 
 // Funktion zur Generierung eines Hash-Wertes aus einem String
@@ -121,6 +122,10 @@ const InfluencerOverview: React.FC = () => {
 
 
     return (
+
+        <>
+        <NavBar/>
+
         <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between mb-4">
 
@@ -323,8 +328,9 @@ const InfluencerOverview: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+            </div>
         </div>
-        </div>
+        </>
     );
 };
 

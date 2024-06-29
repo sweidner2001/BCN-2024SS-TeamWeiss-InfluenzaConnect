@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import LoginDialog from '../login/LoginDialog';
 import Logo from '../../logo.svg';
+import NavBar from "../NavBar";
 
 const LandingPage: React.FC = () => {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -68,42 +69,8 @@ const LandingPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
-            <nav className="bg-gradient-to-r from-gray-900 to-blue-900 text-white px-4 py-2 flex flex-wrap justify-between items-center">
-                <div className="flex items-center">
-                    <img 
-                        src={Logo} 
-                        alt="Logo" 
-                        className="w-20 h-20 animate-spin-slow hover:scale-105 transition-transform duration-150"
-                    />
-                    <Link to="/" className="text-white text-2xl font-bold ml-4">InfluenzaConnect</Link>
-                    <Link to="/about" className="ml-4 text-white hover:text-gray-400">About Us</Link>
-                </div>
-                <div className="flex items-center mt-4 md:mt-0">
-                    {user ? (
-                        <>
-                            <span className="ml-4 text-xl text-white">Welcome, {user.firstName}</span>
-                            <button 
-                                onClick={handleLogout} 
-                                className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                            >
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <button 
-                                onClick={() => setIsLoginOpen(true)} 
-                                className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >
-                                Login
-                            </button>
-                            <Link to="/signup" className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sign Up</Link>
-                        </>
-                    )}
-                </div>
-            </nav>
-
+        <>
+            <NavBar/>
             <div className="flex-grow flex flex-col items-center justify-center py-16 px-4">
                 <motion.img 
                     src={Logo} 
@@ -140,13 +107,7 @@ const LandingPage: React.FC = () => {
                     </motion.div>
                 </div>
             </div>
-
-            <LoginDialog 
-                isOpen={isLoginOpen} 
-                onClose={() => setIsLoginOpen(false)} 
-                onLoginSuccess={handleLoginSuccess}  // Pass the callback here
-            />
-        </div>
+        </>
     );
 }
 
