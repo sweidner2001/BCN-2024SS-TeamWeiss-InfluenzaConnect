@@ -1,12 +1,21 @@
 from flask import Flask, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from database import save_user, find_user_by_email
+from database import save_user, find_user_by_email, fetch_all_users
 from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
+from userinfo_scripts.user_analysis import (
+    get_instagram_comments,
+    get_instagram_likes,
+    get_instagram_followers,
+    engagement_rate,
+    time_since_last_post,
+    get_instagram_profile_pic
+)
+from userinfo_scripts.categorization import get_instagram_hashtags
 from datetime import timedelta
 
 app = Flask(__name__)
-# Session handling 
+# Session handling
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 app.secret_key = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96'  # Use a strong secret key
 app.config['SESSION_COOKIE_SECURE'] = False  # Should be True in production with HTTPS
@@ -143,7 +152,7 @@ def login():
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
 
 
-# Datenbeschaffung für Profilansicht 
+# Datenbeschaffung für Profilansicht
 @app.route('/profileView', methods=['POST'])
 def get_profile_data():
     data = request.json
@@ -164,6 +173,52 @@ def get_profile_data():
     }
 
     return jsonify(user_data), 200
+
+
+
+@app.route('/collectData', methods=['POST'])
+def collectData():
+    """"
+    Sammelt alle Daten für die Anzeige aller Instagramm Profile zusammen und gibt alle Daten zurück
+
+    Returns:
+        JSON-Antwort mit gesammelten Userdaten.
+    """
+    try:
+        # Userdaten aus der Registrierungsdatenbank
+        all_users = fetch_all_users()
+        user_data_dict = {}
+
+        for user in all_users:
+            user_data = {
+                'email': user['email'],
+                'password': user['password'],
+                'title': user['title'],
+                'first_name': user['first_name'],
+                'last_name': user['last_name'],
+                'country': user['country'],
+                'phone': user['phone'],
+                'language': user['language'],
+                'about_me': user['about_me'],
+                'instagram_username': user['instagram_username'],
+                'instagram_comments_avg': get_instagram_comments(user['instagram_username']),
+                'instagram_likes_avg': get_instagram_likes(user['instagram_username']),
+                'instagram_followers': get_instagram_followers(user['instagram_username']),
+                'instagram_engagement_rate': engagement_rate(user['instagram_username']),
+                'instagram_time_since_last_post': time_since_last_post(user['instagram_username']),
+                'hashtags': get_instagram_hashtags(user['instagram_username'])
+            }
+
+            # Optional: Download profile picture if needed
+            get_instagram_profile_pic(user['instagram_username'])
+
+            user_data_dict[user['_id']] = user_data
+
+        return user_data_dict
+
+    except Exception as e:
+        print(f"Error collecting data: {e}")
+        return {}
 
 
 # Run the app
