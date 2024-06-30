@@ -56,7 +56,7 @@ const FormularButton: React.FC<ButtonProbs> = ({...probs}) => {
  * @since 13.06.2024
  * @version 1.0
  *
- * @param text
+ * @param ButtonProbs Button-Properties
  */
 const CancelButton: React.FC<ButtonProbs> = ({...probs}) => {
 

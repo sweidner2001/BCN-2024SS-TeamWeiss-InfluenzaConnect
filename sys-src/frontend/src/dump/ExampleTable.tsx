@@ -1,6 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import InfluencerOverview2 from "../components/pages/InfluencerOverview";
 
+
+
+/**
+ * @function InfluencerOverview Lediglich eine Bespieltabelle, um sich best. Layouts rauszukopieren
+ * @author Sebastian Weidner
+ * @since 14.06.2024
+ * @version 1.0
+ */
 const InfluencerOverview: React.FC = () => {
 
     return (

@@ -23,7 +23,7 @@ interface InputMultiSelectDropdownProps {
 
 
 /**
- * @function MultiSelectCheckboxDropdown Multiselect-Dropdown Element, das Checkboxen für die Auswahl der Einträge hat.
+ * @function InputMultiSelectCheckboxDropdown Multiselect-Dropdown Element, das Checkboxen für die Auswahl der Einträge hat.
  * @author Sebastian Weidner
  * @since 30.06.2024
  * @version 1.0

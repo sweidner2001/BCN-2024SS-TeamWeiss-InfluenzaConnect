@@ -1,5 +1,5 @@
 // React Imports:
-import React, {useState} from 'react';
+import React from 'react';
 import * as yup from "yup";
 
 // Imports eigene Componenten:

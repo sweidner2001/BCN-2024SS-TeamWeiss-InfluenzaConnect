@@ -27,6 +27,14 @@ const stringToColor = (str: string): string => {
     return lightColor;
 };
 
+
+
+/**
+ * @interface IUserData Datentyp für die anzuzeigenden Spalten
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ */
 interface IUserData {
     profileImage: string;
     gender: string;
@@ -48,9 +56,15 @@ interface IUserData {
 
 
 
-
+/**
+ * @function InfluencerOverview Tabelle, die alle Infos zu allen Influencer anzeigt
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ */
 const InfluencerOverview: React.FC = () => {
 
+    //__________________ Daten holen: _____________________
     const [data, setData] = useState<IUserData[]>([]);
 
     useEffect(() => {
@@ -83,13 +97,13 @@ const InfluencerOverview: React.FC = () => {
 
 
     //___________________ Suchleiste ___________________
-
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
+    // Daten filtern:
     const filteredData = data.filter(item =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -112,6 +126,8 @@ const InfluencerOverview: React.FC = () => {
         instagram_time_since_last_post: "letzter Post",
         about_me: "Über mich"
     };
+
+    // anzuzeigende Standard-Spalten beim Laden der Tabelle
     const initialSelectedOptions = ['name', 'age', 'instagram_username', 'language', 'nationality', 'advertisingDivision'];
     const [selectedColumns, setSelectedColumns] = useState<string[]>(initialSelectedOptions);
 
@@ -126,7 +142,11 @@ const InfluencerOverview: React.FC = () => {
         <>
         <NavBar/>
 
+        {/*------------------- Influencer Tabelle ---------------------*/}
         <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+
+
+            {/*----- Tabelleneinstellungen und Filteroptionen ------*/}
             <div className="flex justify-between mb-4">
 
                 {/* Anzahl Tabelleneinträge */}
@@ -150,7 +170,7 @@ const InfluencerOverview: React.FC = () => {
 
             </div>
 
-
+            {/*----- Tabelle ------*/}
             {/*// overflow-hidden*/}
             <div className="bg-white shadow-md sm:rounded-lg flex-1">
                 <div
