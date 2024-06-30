@@ -1,4 +1,4 @@
-\documentclass[conference,a4paper,flushend]{cs-techrep}
+ \documentclass[conference,a4paper,flushend]{cs-techrep}
 \pdfoutput=1 % pdflatex hint for arxiv.org (within first 5 lines)
 
 % Class cs-techrep.cls loads biblatex / biber with predefined options
@@ -25,7 +25,7 @@
 \cstechrepSeries{Technical Reports}
 %\cstechrepSeries{Technische Berichte} % DE
 \cstechrepYear{2024}
-\cstechrepMonth{3}
+\cstechrepMonth{5}
 \cstechrepNumber{CL-\cstechrepYear{}-42}
 %\cstechrepLang{english}  % en-US
 \cstechrepLang{ngerman} % DE
@@ -250,12 +250,12 @@ Zum persistieren der Daten setzen wir auf eine MongoDB als Datenbanksystem. Die 
 %\begin{enumerate}
 %\item{test}
 %\end{enumerate}
-
-\subsubsection{Landing Page\\}
-Die Landing Page wurde einladent gestaltet und enthält ansprechende Beschreibungen zu den Hauptfunktionen von InfluenzaConnect. Der User kann zwischen ``Spectator'' und ``Influencer'' auswählen, um die passende Seite zu
+\begin{enumerate}
+\item{\textit{Landing Page}}\\
+Die Landing Page wurde einladend gestaltet und enthält ansprechende Beschreibungen zu den Hauptfunktionen von InfluenzaConnect. Der User kann zwischen ``Spectator'' und ``Influencer'' auswählen, um die passende Seite zu
 besuchen. Außerdem kann er über die Navigationsleiste zur gewünschten Seite navigieren.
-
-\subsubsection{Registrierung\\}
+\\
+\item{\textit{Registrierung}}\\
 Die Registrierung dient dazu, sich als Influencer registrieren und vermarkten zu können. Die Registrierung ist in drei Schritten aufgebaut:
 Zuerst muss er seine Anmeldeinformationen - eingeben. Im Zweiten Schritt werden seine Persönliche Daten abgefragt, die später teilweise für die Unternehmen veröffentlicht werden und im Dritten Schritt muss er seinen Instagram-Account hinterlegen, der anschließend im Backend analysiert wird.\\
 Nachfolgend finden Sie eine Detailierte Auslistung der Eingaben:
@@ -273,16 +273,15 @@ Formulareingaben können so z.B. ganz einfach zwischenspeichert werden, um diese
 
 Wurden alle Eingaben getätigt werden diese gesammelt an das Backend gesendet und dort nochmals überpfrüft.
 Neben einem einfachen Eingabefeld, wurden Komponenten für ein Select-, ein Multiselectdropdown und für zwei Buttons passend zur Registrierung erstellt. Das Multiselectdropdown wurde dabei als interaktive HTML-Liste in React realsisiert, dass ausgewählte Einträge im Input-Feld der Komponente anzeigt. Durch ein kleines rotes kreuz, kann man diese direkt ohne das Dropdown erneut zu öffnen wieder deselektieren.
-
 %Die Formularfelder werden dabei an ein zentrales Formular-Objekt vom Typ \texttt{useForm()} gebunden, indem diese mit der Methode \texttt{register(\dq InputFeldName \dq )} daran gebunden werden.  \texttt{register(...)} setzt setzt die Methoden \texttt{onBlur() }, \texttt{onChange()}, sowie die Attribute \texttt{ref} und \texttt{name} des Eingabefelds. So können Formulareingaben 
-
-\subsubsection{An- und Abmeldung\\}
+\\
+\item{\textit{An- und Abmeldung}}\\
 Die Anmeldung erfolgt durch eine eine Popup-Dialog-Komponente, die unsere wiederverwendbaren Input-Komponenten enthält. Nach erfolgreicher Anmeldung wird zum Benutzer eine Session gesetzt und das Profil des Nutzers in der Navigationsbar anzeigt. Der Logout-Button löscht die Session und stellt das ursprüngliche Erscheinungsbild wieder her.
-
-\subsubsection{Profildaten Bearbeiten\\}
+\\
+\item{\textit{Profildaten Bearbeiten}}\\
 Die Profildaten können über eine Eingabemaske nachträglich verändert werden. Die Daten werden anhand der in der Session gespeicherten E-Mail abgerufen. Standardmäßig ist die Eingabemaske nicht editierbar. Sie wird es erst, wenn der Edit-Button betätigt wird. Nachdem die Daten eingegeben wurden, können diese Bestätigt werden. Nach einer Validierung der Daten im Frontend werden diese anschließend ins Backend gesendet, dort nochmals validiert und schlussendlich persistiert, indem die alten Daten überschrieben werden.
-
-\subsubsection{Influncerübersicht\\}
+\\
+\item{\textit{Influncerübersicht}}\\
 % Asynchroner Fetch? Datenfilterung überarbeiten 
 Die Influencerübersicht dient dazu, dass Unternehmen einen passenden Influencer für sich finden können. Demnach sind in einer Tabelle alle Registrierten Influencer mit allen relevanten Daten, inkl. Informationen, die durch die Analyse des Instagram-Acounts gewonnen wurden zu sehen. %???
 Für die Datendarstellung in der Tabelle wurde in TypeScript eine Datenstruktur erstellt, auf die die Daten vom Backend gamappt werden. %Die Daten werden im React-Hook \texttt{useEffect()}, der dazu dient die Komponente mit externen Systemen zu synchronisiern, vom Backend mittels \texttt{fetch()} API geholt.
@@ -290,7 +289,7 @@ Für die Datendarstellung in der Tabelle wurde in TypeScript eine Datenstruktur 
 Ein \textbf{Spaltenfilter} ermöglicht es, Spalten ein- und wieder auszublenden. Die Komponente ist dabei so ähnlich wie das Multiselect-Dropdown in der Registrierung aufgebaut, nur das die Werte mittels einer Checkbox ausgewählt werden können und ausgewählte Einträge nicht außerhalb des Dropdowns sichtbar werden. Die Komponente wurde ohne \texttt{React Hook Form} realisiert. Stattdessen wird ihr eine \texttt{onChange()} Event-Handler übergeben, der die ausgewählten Spalten in einer Zustands-Variable vom Typ \texttt{useState()} speichert. Vor dem Rendering der Spalten muss somit nur noch überprüft werden, ob die angegebene Spalte in dieser Varialbe enthalten ist. 
 \\
 Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines bestimmten Influencer durchsuchen. Dazu wird ebenfalls der Wert des Suchfeldes in eine Variable vom Typ \texttt{useState()} gespeichert. Anschließend wird eine Filterfunktion mithilfe des Inhalts dieser Variable auf allen Daten angewendet und die Tabelle aktualisiert.
-
+\end{enumerate}
 
 \subsection{Backend}
 \texttt{
@@ -386,157 +385,12 @@ Die Verwendung von pytest ermöglichte uns umfassendes, aber effizientes Testen 
 \section{Fazit und Ausblik}
 InfluenzaConnect bietet zum aktuellen Zeitpunkt nur einen kleinen Ausschnitt der geplanten Funktionialität. Das MVP wurde in der zu verfügbaren Zeit nur knapp verfehlt, dafür wurde die WebApp sehr ansprechend und solide aufgebaut. Ein wichtiger Schritt wurde hinsichtlich der automatischen Analyse des Instagram-Profils des Influencers getan. Diese kann zuküftig noch erweitert, verbessert und auf weitere Social-Media-Plattformen angewendet werden. 
 
-Es gibt, wie im bereits Fachkozept beschrieben, noch etliche vielversprechende Möglichkeiten zur Erweiterung der Anwendung, wie eine Detailansicht und eine Vergleichsfunktion zwischen Influencern, sowie eine Registrierung für Unternehmen und eine Kommunikationsfunktionalität. Darüber hinaus sollte die Sicherheit und der Datenschutz der Anwendung weiter verbessert werden, insbesondere in Bezug auf die Verarbeitung und Speicherung personenbezogener Daten. Die CD-Automatisierung mittels Docker und GitHub Actions bietet dafür eine robuste Basis für den Betrieb und die Weiterentwicklung von "InfluenzaConnect". 
+Es gibt, wie im bereits Fachkozept beschrieben, noch etliche vielversprechende Möglichkeiten zur Erweiterung der Anwendung, wie eine Detailansicht und eine Vergleichsfunktion zwischen Influencern, sowie eine Registrierung für Unternehmen und eine Kommunikationsfunktionalität. Darüber hinaus sollte die Sicherheit und der Datenschutz der Anwendung weiter verbessert werden, insbesondere in Bezug auf die Verarbeitung und Speicherung personenbezogener Daten. Die CD-Automatisierung mittels Docker und GitHub Actions bietet dafür eine robuste Basis für den Betrieb und die Weiterentwicklung von InfluenzaConnect. 
 
 
 
 %#################### Literatur ###########################
 
-
-
-%#################### Alt/ Vorlage ###########################
-\newpage
-ende
-\newpage
-\section{Functional Requirements}
-Influencer sollen sich auf der Plattform registrieren, damit diese von Unternehmen leichter aufgefunden werden, um ihre Produkte zu vermarkten. Nachfolgend werden die besuchenden User von InfluenzaConnect, die ihr Produkt vermarkten wollen als 'Unternehmen' und die User, die sich vermarkten wollen, als 'Influencer' bezeichnet.
-
-
-
-\subsection{MVP}
-\begin{enumerate}
-\item{\textit{Influencer sollen sich registrieren}\\
- Influencer sollen sich auf der Plattform registrieren, damit Sie auf der Plattform angezeigt und von Unternehmen gefunden werden können.\\
- \textbf{Akzeptanzkriterien:}
-
-Influencer sollen bei der Registrierung folgendes in ihrem Profil hinterlegen:
-\begin{itemize}
-\item{Ihre Kontaktdaten}
-\item{eine kleine Beschreibung über sich selbst}
-\item{Ihr Instagram-Profil}
-\end{itemize}
-Nach der Registrierung ist der Influencer angemeldet und es wird der Home-Screen angezeigt\\}
-
-
-
-\item{\textit{Webscraping des Instagram-Profils}\\
-Das Instagram-Profil des Influencers wird automatisch analysiert, um relevante Informationen für die bessere Selbstvermarktung zu speichern. Diese Informationen werden den Unternehmen später bereitgestellt, um den für sie richtigen Influencer zu finden. \\
-\\
-\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Influencer - falls möglich - einer Produkt-Werbe-Sparte zuordnen. Falls dies fehlschlägt\\
---> manuelle Eintragung der Produkt-Werbe-Sparte vom Influencer selbst}
-\item{Analyse der Reichweite des Influencers, indem die Anzahl der Follower, Likes und Anzahl der Posts mit berücksichtigt werden.}
-\item{Das Profilbild soll von Instagram gescrapt werden\\}
-\end{itemize}}
-
-\item{\textit{Übersicht über alle registrierten Influencer}\\
-Die Unternehmen möchten auf einer Übersichtsseite einen Überblick über alle auf der Plattform registrierten Influencer bekommen, damit sie den richtigen Influencer, zu ihrem Produkt finden können. \\
- \textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Pro Influencer soll eine kleine Auswahl relevanter Informationen auf der Übersichtsseite angezeigt werden.}
-
-\item{Influencer sollen sortiert angezeigt werden}
-
-\item{mittels Suche und Filter können die angezeigten Einträge eingeschränkt werden.\\}
-\end{itemize}}
-
-
-
-\item{\textit{Informationen zum Influencer}\\
-Unternehmen möchten durch Auswahl eines Influencers auf der 'Übersichtsseite der registrierten Influencer' nähere Informationen zu diesen angezeigt bekommen, um den Influencer besser beurteilen zu können, ob dieser zum Unternehmen passt.\\
- \textbf{Akzeptanzkriterien:}
- \begin{itemize}
-\item{Durch Auswahl eines Eintrages auf der Übersichtsseite werden alle relevanten Informationen zum ausgewählten Influencer angezeigt.}
-\item{Kontaktinformationen sollen verlinkt werden, um die Influencer schnell kontaktieren zu können.\\}
-\end{itemize}}
-\end{enumerate}
-
-
-
-\subsection{Optionale Anforderungen} %\textbar{} \textquote{Gesamtsystem}}
-
-\begin{enumerate}
-
-\item{\textit{Integration von Instagram-Posts in der Detailansicht}}\\
-Unternehmen wollen die neuesten Instagram-Posts eines Influencers in der Plattform-Detailansicht angezeigt bekommen, um einen Einblick in deren Inhalte zu erhalten.\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Die letzten Instagram-Posts werden in die Detailansicht integriert.}
-\item{Eine Vorschau der Posts ist sichtbar, einschließlich Bild und Bildunterschrift.\\}
-\end{itemize}
-
-\item{\textit{Bildanalyse für Influencer-Profile}}\\
-Unternehmen möchten eine Bildanalyse für Influencer-Profile, um die Inhalte besser zu verstehen und relevante Bilder zu identifizieren.\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Die Bildanalyse identifiziert Bilder, in denen der Influencer selbst zu sehen ist.}
-\item{Diese Bilder werden im Profil oder in der Detailansicht angezeigt.\\}
-\end{itemize}
-
-\item{\textit{Produkthochladen für die Influencer-Werbung}}\\
-Unternehmen möchten Produkte auf der Plattform hochladen, um passende Influencer für Werbekampagnen zu finden und diese mit relevanten Tags zu kennzeichnen.\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Unternehmen können Produktbilder hochladen.}
-\item{Eine Bildanalyse weist den Produkten passende Tags zu.}
-\item{Basierend auf den Tags werden passende Influencer vorgeschlagen.\\}
-\end{itemize}
-
-\item{\textit{Registrierung und Direktkontakt mit Influencern}}\\
-Unternehmen möchten sich auf der Plattform registrieren, um direkt mit Influencern in Kontakt zu treten.\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Unternehmen können sich registrieren und ein eigenes Profil erstellen.}
-\item{Die Plattform ermöglicht direkte Kommunikation zwischen Unternehmen und Influencern.\\}
-\end{itemize}
-
-\item{\textit{Übersicht über aktuelle Kontakte mit Influencern}}\\
-Unternehmen möchten eine Übersicht über ihre aktuellen Kontakte mit Influencern haben, um die Zusammenarbeit im Blick zu behalten und mögliche Partnerschaften zu verwalten.\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Unternehmen können auf ihrer Profilseite eine Liste der Influencer sehen, mit denen sie in Kontakt stehen.}
-\item{Die Plattform zeigt an, ob Nachrichten oder Kooperationen zwischen Unternehmen und Influencern bestehen.\\}
-\end{itemize}
-
-\item{\textit{Vergleichsfunktion für Influencer}}\\
-Unternehmen möchten eine Vergleichsfunktion haben, um verschiedene Influencer direkt nebeneinander vergleichen zu können und so die beste Entscheidung für Kooperationen zu treffen.\\
-\textbf{Akzeptanzkriterien:}
-\begin{itemize}
-\item{Die Plattform ermöglicht es, mehrere Influencer auszuwählen und deren Profile nebeneinander zu vergleichen.}
-\item{Die Vergleichsfunktion zeigt relevante Metriken wie Follower-Zahl, Engagement-Rate und Produktübereinstimmung an.\\}
-\end{itemize}
-\end{enumerate}
-
-
-\section{Data Acquisition}
-
-Um relevante Informationen über Instagram-Influencer zu sammeln, verwenden wir eine Kombination aus der Instagram-API und Web-Scraping. Die API liefert grundlegende Daten wie Follower-Zahlen und Engagement-Raten, während Web-Scraping zusätzliche Informationen wie Profildetails, Beiträge und Story-Daten extrahiert. Wir nutzen Python und Bibliotheken wie instascrape, um diese Daten zu sammeln und in einer Datenbank zu speichern. Die gesammelten Informationen können dann für potenzielle Werbepartner zugänglich gemacht werden. Die Umsetzung wird dabei in einen Web-Service ausgelagert.
-
-
-
-\section{Architectural Goals} % \textbar{} \textquote{Architekturziele}}
-Die Architektur von InfluenzaConnect zielt darauf ab, ein robustes und skalierbares System zu schaffen, das effizient mit externen API‘s  und den Benutzern der WebApp interagiert. Durch Nutzung modernster Webtechnologien, soll eine hohe Verfügbarkeit und Wartbarkeit des Systems gewährleistet werden. 
-
-\section{Architecture of InfluenzaConnect}
-
-\subsection{Technology Stack} %\textbar{} \textquote{Gesamtsystem}}
-Um die genannten Anforderungen zu erfüllen haben wir uns für folgenden Tech-Stack entschieden:
-
- Das Backend basiert auf Python mit Flask, da diese Sprachen einen sehr modernen Ansatz bieten. Außerdem fördert ein in Python geschriebenes Backend die Möglichkeit, dass auch Junior Developer einen einfachen Einstieg in den Code finden können. Das Frontend wird mit React und TypeScript entwickelt, wobei Tailwind CSS für Design und Styling verwendet wird. MongoDB dient als Datenbanksystem, mit GraphQL für Datenbankabfragen, was eine flexible und leistungsfähige Datenmanipulation ermöglicht. 
-
-\subsection{Frontend}
-
-Das Frontend von InfluenzaConnect ist darauf ausgerichtet, eine intuitive und interaktive Benutzeroberfläche zu bieten, die Nutzern eine effiziente Navigation durch die Plattform ermöglicht. Für die Entwicklung dieser interaktiven Komponenten nutzen wir React und TypeScript, die eine solide Struktur bereitstellen. Tailwind CSS erleichtert uns das schnelle und flexible Design der Benutzeroberflächen.
-
-\subsection{Backend}
-
-Python gepaart mit Flask bildet das Rückgrat unseres Backends und ermöglicht die Entwicklung von API-Services, die essenziell für Funktionen wie Benutzerauthentifizierung und Datenmanagement sind. Diese technische Wahl gewährleistet Flexibilität im Umgang mit verschiedenen Datenquellen. Zusätzlich erleichtert es die Integration mit Plattformen wie Instagram, wodurch unsere Anwendung eine breitere Palette von Marketing-Tools effizient unterstützen kann. 
-
-\subsection{Persistence}
-
-Die Daten werden mittels einer MongoDB persistiert, ein NoSQL-Datenbanksystem, das für seine Flexibilität und Leistungsfähigkeit bei der Verwaltung großer Mengen unstrukturierter Daten bekannt ist. GraphQL wird eingesetzt, um effiziente und flexible Datenabfragen zu ermöglichen, die es Entwicklern erlauben, genau die Daten abzurufen, die sie benötigen.
 
 
 
