@@ -3,15 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import LoginDialog from './login/LoginDialog';
 import Logo from '../logo.svg';
 
-const NavBar: React.FC = () => {
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const [user, setUser] = useState<{ firstName: string } | null>(null);
-    const navigate = useNavigate();
 
+/**
+ * @function NavBar Navigationsbar
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ */
+const NavBar: React.FC = () => {
+
+    //____________________ Variablen: _______________________
     const logoVariants = {
         hidden: { scale: 1 },
         visible: { scale: [1, 1.3, 1], transition: { duration: 2, repeat: Infinity } },
     };
+
+
+    //____________________ Hooks: _______________________
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [user, setUser] = useState<{ firstName: string } | null>(null);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const checkSession = async () => {
@@ -46,6 +58,8 @@ const NavBar: React.FC = () => {
         checkSession();
     }, []);
 
+
+    //_______________________ Funktionen: _____________________
     const handleLoginSuccess = (userData: { firstName: string }) => {
         setUser(userData);
         setIsLoginOpen(false);
@@ -66,6 +80,7 @@ const NavBar: React.FC = () => {
         }
     };
 
+    //_______________________ HTML Navbar: _____________________
     return (
         <div className="flex flex-col bg-gray-50">
             <nav
