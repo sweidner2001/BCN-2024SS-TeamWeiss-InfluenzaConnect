@@ -122,7 +122,7 @@ const LandingPage: React.FC = () => {
                         className="bg-gradient-to-l from-blue-700 to-blue-900 shadow-lg rounded-lg p-8 text-center transform hover:scale-105 transition-transform duration-150"
                         whileHover={{ scale: 1.05 }}
                     >
-                        <Link to="/homepage">
+                        <Link to="/findInfluencer">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Spectator</h2>
                             <p className="text-lg md:text-xl text-gray-100 mb-4">Explore content and stay updated with the latest trends.</p>
                             <p className="text-sm text-gray-200">InfluenzaConnect is a web application that automates and modernizes influencer marketing for businesses. It provides a convenient platform for influencers to showcase themselves on the web.</p>
