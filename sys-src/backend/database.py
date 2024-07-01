@@ -83,7 +83,7 @@ def find_user_by_email(app, email):
         app.logger.error(f"Error finding user: {e}")
         raise e
     
-def fetch_all_users():
+def fetch_all_users(app):
     """
     Ruft alle Benutzerdaten aus der MongoDB ab.
 

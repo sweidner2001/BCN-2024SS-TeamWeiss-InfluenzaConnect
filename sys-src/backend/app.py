@@ -186,7 +186,7 @@ def collectData():
     """
     try:
         # Userdaten aus der Registrierungsdatenbank
-        all_users = fetch_all_users()
+        all_users = fetch_all_users(app)
         user_data_dict = {}
 
         for user in all_users:
