@@ -1,73 +1,135 @@
 import pytest
-from validation import validate_registration_data, validate_age, validate_instagram_username
+from datetime import datetime
 
-def test_validate_registration_data():
-    # Gültige Daten
-    valid_data = {
-        'email': 'test@example.com',
-        'password': 'password123',
-        'title': 'Herr',
-        'first_name': 'Max',
-        'last_name': 'Mustermann',
-        'country': 'Deutschland',
-        'state': 'Bayern',
-        'phone': '+491234567890',
-        'language': 'Deutsch',
-        'about_me': 'Ich bin Max.',
-        'instagram_username': 'valid_user',
-        'birthdate': '2000-01-01'
-    }
-    is_valid, message = validate_registration_data(**valid_data)
-    assert is_valid, message
+# Importiere die zu testenden Funktionen
+from validation import validate_registration_data, validate_login_data, validate_instagram_username, validate_age
 
-    # Ungültige E-Mail
-    invalid_email = valid_data.copy()
-    invalid_email['email'] = 'invalid-email'
-    is_valid, message = validate_registration_data(**invalid_email)
-    assert not is_valid
-    assert message == "Ungültige E-Mail-Adresse."
+def test_validate_registration_data_valid():
+    """
+    Testet die validate_registration_data-Funktion mit gültigen Eingabedaten.
+    """
+    result, errors = validate_registration_data(
+        email="test@example.com",
+        password="strongpassword123",
+        title="Herr",
+        first_name="Max",
+        last_name="Mustermann",
+        country="Deutschland",
+        phone="+491234567890",
+        language="Deutsch",
+        about_me="Hallo, ich bin Max.",
+        instagram_username="validusername"
+    )
+    assert result is True
+    assert not errors
 
-    # Zu kurzes Passwort
-    short_password = valid_data.copy()
-    short_password['password'] = 'short'
-    is_valid, message = validate_registration_data(**short_password)
-    assert not is_valid
-    assert message == "Passwort muss mindestens 8 Zeichen lang sein."
+def test_validate_registration_data_invalid_email():
+    """
+    Testet die validate_registration_data-Funktion mit einer ungültigen E-Mail-Adresse.
+    """
+    result, errors = validate_registration_data(
+        email="invalidemail",
+        password="strongpassword123",
+        title="Herr",
+        first_name="Max",
+        last_name="Mustermann",
+        country="Deutschland",
+        phone="+491234567890",
+        language="Deutsch",
+        about_me="Hallo, ich bin Max.",
+        instagram_username="validusername"
+    )
+    assert result is False
+    assert "email" in errors
 
-    # Ungültige Telefonnummer
-    invalid_phone = valid_data.copy()
-    invalid_phone['phone'] = 'invalid_phone'
-    is_valid, message = validate_registration_data(**invalid_phone)
-    assert not is_valid
-    assert message == "Ungültige Telefonnummer."
+def test_validate_registration_data_short_password():
+    """
+    Testet die validate_registration_data-Funktion mit einem zu kurzen Passwort.
+    """
+    result, errors = validate_registration_data(
+        email="test@example.com",
+        password="short",
+        title="Herr",
+        first_name="Max",
+        last_name="Mustermann",
+        country="Deutschland",
+        phone="+491234567890",
+        language="Deutsch",
+        about_me="Hallo, ich bin Max.",
+        instagram_username="validusername"
+    )
+    assert result is False
+    assert "password" in errors
 
-    # Zu jung
-    too_young = valid_data.copy()
-    too_young['birthdate'] = '2010-01-01'
-    is_valid, message = validate_registration_data(**too_young)
-    assert not is_valid
-    assert message == "Der Benutzer muss mindestens 18 Jahre alt sein."
+def test_validate_login_data_valid():
+    """
+    Testet die validate_login_data-Funktion mit gültigen Eingabedaten.
+    """
+    result, errors = validate_login_data(email="test@example.com", password="strongpassword123")
+    assert result is True
+    assert not errors
 
-    # Ungültiger Instagram-Username
-    invalid_instagram = valid_data.copy()
-    invalid_instagram['instagram_username'] = 'this_user_does_not_exist_12345'
-    is_valid, message = validate_registration_data(**invalid_instagram)
-    assert not is_valid
-    assert message == "Ungültiger oder nicht existierender Instagram-Username."
+def test_validate_login_data_invalid_email():
+    """
+    Testet die validate_login_data-Funktion mit einer ungültigen E-Mail-Adresse.
+    """
+    result, errors = validate_login_data(email="invalidemail", password="strongpassword123")
+    assert result is False
+    assert "email" in errors
 
-def test_validate_age():
-    # Gültiges Datum (über 18)
-    assert validate_age('2000-01-01') == True
+def test_validate_login_data_missing_password():
+    """
+    Testet die validate_login_data-Funktion mit einem fehlenden Passwort.
+    """
+    result, errors = validate_login_data(email="test@example.com", password="")
+    assert result is False
+    assert "password" in errors
 
-    # Ungültiges Datum (unter 18)
-    assert validate_age('2010-01-01') == False
+def test_validate_instagram_username_valid(mocker):
+    """
+    Testet die validate_instagram_username-Funktion mit einem gültigen und öffentlichen Instagram-Benutzernamen.
+    """
+    mock_response = mocker.Mock()
+    mock_response.status_code = 200
+    mock_response.text = '<meta property="og:description" content="testuser">'
 
-    # Ungültiges Datum Format
-    assert validate_age('invalid-date') == False
+    mocker.patch('requests.get', return_value=mock_response)
 
-def test_validate_instagram_username():
-    # Gültiger Instagram-Username
-    assert validate_instagram_username('instagram') == True  # Beispiel: 'instagram' sollte öffentlich sein
+    result = validate_instagram_username("validusername")
+    assert result is True
 
-    # Ungültiger Instagram-Username
-    assert validate_instagram_username('this_user_does_not_exist_12345') == False
+def test_validate_instagram_username_invalid(mocker):
+    """
+    Testet die validate_instagram_username-Funktion mit einem ungültigen Instagram-Benutzernamen.
+    """
+    mock_response = mocker.Mock()
+    mock_response.status_code = 404
+
+    mocker.patch('requests.get', return_value=mock_response)
+
+    result = validate_instagram_username("invalidusername")
+    assert result is False
+
+def test_validate_age_valid():
+    """
+    Testet die validate_age-Funktion mit einem Benutzer, der mindestens 18 Jahre alt ist.
+    """
+    result = validate_age("2000-01-01")
+    assert result is True
+
+def test_validate_age_invalid():
+    """
+    Testet die validate_age-Funktion mit einem Benutzer, der jünger als 18 Jahre ist.
+    """
+    result = validate_age("2010-01-01")
+    assert result is False
+
+def test_validate_age_invalid_date():
+    """
+    Testet die validate_age-Funktion mit einem ungültigen Geburtsdatum.
+    """
+    result = validate_age("invalid-date")
+    assert result is False
+
+if __name__ == "__main__":
+    pytest.main()

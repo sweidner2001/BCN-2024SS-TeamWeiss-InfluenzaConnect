@@ -86,3 +86,20 @@ def find_user_by_email(app, email):
     except Exception as e:
         app.logger.error(f"Error finding user: {e}")
         raise e
+    
+def fetch_all_users():
+    """
+    Ruft alle Benutzerdaten aus der MongoDB ab.
+
+    Returns:
+        list: Eine Liste mit allen Benutzerdaten.
+    """
+    try:
+        users = list(registration_collection.find())
+        # Konvertieren der ObjectId in einen string für JSON
+        for user in users:
+            user['_id'] = str(user['_id'])
+        return users
+    except Exception as e:
+        app.logger.error(f"Error fetching users: {e}")
+        return []
