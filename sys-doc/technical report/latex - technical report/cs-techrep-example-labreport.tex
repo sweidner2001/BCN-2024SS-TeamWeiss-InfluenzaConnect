@@ -121,9 +121,9 @@
 \textit{InfluenzaConnect ist eine Webandwendung, die das Ziel der strategische Vernetzung von Unternehmen und Influencern verfolgt. Dabei soll das Influencer Marketing von Unternehmen, als auch die selbstständige Vermarktung als Influencer erleichtert werden. Die Besonderheit von InfluenzaConnect ist u.a. die automatisierte Analyse des Instagram-Profils des Influencers bei der Registrierung.\\
 % Durch InfluenzaConnect soll das Influencer-Marketing für Unternehmen effizienter gestaltet werden. Gleichzeitig bietet die Plattform den Influencern eine bequeme Möglichkeit, sich im Web zu präsentieren.
 %Um eine große Reichweite zu erzielen, wurde InluenzaConnect als Webandwenung realisiert. 
-Die Architektur basiert im Frontend auf dem React JavaScript-Framework, im Backend auf dem Python-Framework Flask und für die Persistenz wird die NoSQL Datenbank MongoDB verwendet. 
-Frontend, Backend und die MongoDB wurden mittels Docker containerisiert, um eine hochskalierung der Webanwendung zu ermöglichen.
-Als CSS Framework wurde Tailwind CSS und für die Kommunikation zwischen Frontend und Backend die Axios, ein Promise-basierter HTTP-Client sowie die Fetch API verwendet. Für die Datenaquise wurde auf die Instagram-API und ? zurückgegriffen.}
+Die Architektur basiert im Frontend auf dem React JavaScript-Framework \cite{react}, im Backend auf dem Python-Framework Flask \cite{flask} und für die Persistenz wird die NoSQL Datenbank MongoDB \cite{mongodb} verwendet. 
+Frontend, Backend und die MongoDB wurden mittels Docker \cite{docker} containerisiert, um eine hochskalierung der Webanwendung zu ermöglichen.
+Als CSS Framework wurde Tailwind CSS \cite{noauthor_tailwind_nodate} verwendet und für die Datenaquise auf die Instagram-API \cite{InstaApi} zurückgegriffen.}
 \end{abstract}
 % A list of IEEE Computer Society appoved keywords can be obtained at
 % http://www.computer.org/mc/keywords/keywords.htm
@@ -198,20 +198,20 @@ Die \textit{Datailübersicht zum Influencer} wurde nicht implementiert. Stattdes
 \end{figure}
 
 %Referenz Docker
-Das Projekt wurde mittels Docker containerisiert, um eine flexible und skalierbare Umgebung für die verschiedenen Komponenten der Anwendung zu schaffen.
-Dabei wurden das Frontend, Backend sowie die MongoDB in separate Docker-Container aufgeteilt, was eine einfache Verwaltung und Skalierung der einzelnen Dienste ermöglicht. Dockerfiles legen dabei fest, welche Software und Abhängigkeiten in den virtuellen Containern installiert werden. Für das Backend wird ein Python 3.10 Slim Image verwendet. In dieses werden beim Starten des Containers die notwendigen Python-Pakete automatisiert installiert und der Anwendungscode kopiert. Das Frontend basiert auf einem Node.js 16 Image, das ebenfalls automatisch die benötigten Node-Module installiert und den Build-Prozess des Frontends startet (Kein multi stage).
+Das Projekt wurde mittels Docker \cite{docker} containerisiert, um eine flexible und skalierbare Umgebung für die verschiedenen Komponenten der Anwendung zu schaffen.
+Dabei wurden das Frontend, Backend sowie die MongoDB \cite{mongodb} in separate Docker-Container aufgeteilt, was eine einfache Verwaltung und Skalierung der einzelnen Dienste ermöglicht. Dockerfiles legen dabei fest, welche Software und Abhängigkeiten in den virtuellen Containern installiert werden. Für das Backend wird ein Python 3.10 \cite{python} Slim Image verwendet. In dieses werden beim Starten des Containers die notwendigen Python-Pakete automatisiert installiert und der Anwendungscode kopiert. Das Frontend basiert auf einem Node.js \cite{node} 16 Image, das ebenfalls automatisch die benötigten Node-Module installiert und den Build-Prozess des Frontends startet (Kein multi stage).
 
 %------------------- Deployment --------------------------------
 %Referenz Hetzner, Github, Git, GitHub Actions
 \subsection{Deployment}
-InfluenzaConnect verwendet GitHub als Git-Respository. Das Deployment in unsere Hetzner-Cloud erfolgt demnach mittels GitHub Actions. Der CD-Workflow befindet sich wird dabei ausgelöst, sobald Änderungen auf den \texttt{prod} Branch gepusht werden. Der anschließende Deployment-Job läuft auf einer Ubuntu-Maschine in der Hetzner-Cloud und umfasst folgende Schritte:
+InfluenzaConnect verwendet GitHub \cite{GitHub} als Git-Respository. Das Deployment in unsere Hetzner-Cloud \cite{noauthor_gunstiges_nodate} erfolgt demnach mittels GitHub Actions \cite{GitHubActions}. Der CD-Workflow befindet sich wird dabei ausgelöst, sobald Änderungen auf den \texttt{prod} Branch gepusht werden. Der anschließende Deployment-Job läuft auf einer Ubuntu-Maschine in der Hetzner-Cloud und umfasst folgende Schritte:
 \begin{enumerate}
 \item{\textbf{Checkout Code} - Der Quellcode wird aus dem Repository ausgecheckt.}
 \item{\textbf{Setup SSH} - SSH wird eingerichtet, um eine sichere Verbindung zum Hetzner-Server
 herzustellen.}
 \item{\textbf{Deploy to Hetzner} - Der Code wird auf den Hetzner-Server deployt.}
 \end{enumerate}
-Beim deployen wird dabei unser Projektverzeichnis aktualisiert, Docker Compose verwendet, um die bestehenden Container zu stoppen, neu zu bauen und schließlich die Anwendung in die Produktionsumgebung hochzufahren.
+Beim deployen wird dabei unser Projektverzeichnis aktualisiert, Docker Compose \cite{docker-compose} verwendet, um die bestehenden Container zu stoppen, neu zu bauen und schließlich die Anwendung in die Produktionsumgebung hochzufahren.
 Durch diese Pipeline wird sichergestellt, dass jede Änderung im \texttt{prod} Branch automatisch auf dem Produktionsserver deployed wird. Dadurch wird eine kontinuierliche Integration und Bereitstellung neuer Features und Bugfixes ermöglicht, Entwicklungszyklen beschleunigt und die Qualität der Anwendung verbessert.
 
 
@@ -228,18 +228,16 @@ Durch diese Pipeline wird sichergestellt, dass jede Änderung im \texttt{prod} B
 
 \subsection{Frontend}
 % Referenz React, Tailwind CSS, Typescript, 
-Für die Realisierung des Frontends wird das JavaScript-Framework React verwendet. Es erleichtert die Entwicklungsarbeit im Frontend, indem es dabei hilft, wiederverwendbaren Code zu schreiben, sowie graphische Inhalte dynamisch aufzubauen und zu befüllen. HTML, CSS und JavaScript-Code wird dabei in sogenannten Komponenten gekapselt. In React gibt es sog. Hooks, die dazu benutzt werden, bestimmte Funktionalitäten in den Komponenten zu erreichen. Erwähnenswert ist hier der Hook \texttt{useState()}, der bestimmte Zustände zwschenspeichern kann, sodass diese beim erneuten Rendern der Komponente nicht verloren gehen. Des Weiteren haben wir uns für die Gestaltung der Webpages für Tailwind CSS entschieden. Tailwind CSS wird oft mit React verwendet und ist zur Zeit sehr im Trend, weil es leicht zu erlernen ist, gutes vordefiniertes Design und trotzdem große Gestaltungsfreiräume bietet, da man notfalls interne CSS-Werte speziell für sein Projekt überschreiben kann. Außerdem haben wir entschlossen, anstatt JavaScript auf TypeScript zu setzen, da TypeScript eine Typisierung zulässt und somit logische Typfehler beseitigt. 
-
-TypeScript ist komplett kompatibel mit JavaScript.
-Fetch!!
+Für die Realisierung des Frontends wird das JavaScript-Framework React \cite{react} verwendet. Es erleichtert die Entwicklungsarbeit im Frontend, indem es dabei hilft, wiederverwendbaren Code zu schreiben, sowie graphische Inhalte dynamisch aufzubauen und zu befüllen. HTML, CSS und JavaScript-Code wird dabei in sogenannten Komponenten gekapselt. In React gibt es sog. Hooks, die dazu benutzt werden, bestimmte Funktionalitäten in den Komponenten zu erreichen. Erwähnenswert ist hier der Hook \texttt{useState()}, der bestimmte Zustände zwschenspeichern kann, sodass diese beim erneuten Rendern der Komponente nicht verloren gehen. Des Weiteren haben wir uns für die Gestaltung der Webpages für Tailwind CSS \cite{noauthor_tailwind_nodate} entschieden. Tailwind CSS wird oft mit React \cite{react} verwendet und ist zur Zeit sehr im Trend, weil es leicht zu erlernen ist, gutes vordefiniertes Design und trotzdem große Gestaltungsfreiräume bietet, da man notfalls interne CSS-Werte speziell für sein Projekt überschreiben kann. Außerdem haben wir entschlossen, anstatt JavaScript \cite{noauthor_ecma-262_nodate} auf TypeScript \cite{typescript} zu setzen, da es komplett kompatibel mit JavaScript ist, eine Typisierung zulässt und somit logische Typfehler beseitigt. Für die Kommunikation zwischen Frontend und Backend wird Axios \cite{noauthor_axios_nodate}, ein Promise-basierter HTTP-Client sowie die Fetch API \cite{noauthor_fetch_nodate} verwendet.
 
 
 \subsection{Backend}
 %Referenz Python, Flusk, MongoDB, pymongo
-Im Backend haben wir uns für das Python-Webframework Flask entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden die HTTP-Anfragen verarbeitet und entsprechende Antworten zurückgeben. 
+Im Backend haben wir uns für das Python-Webframework Flask \cite{flask} entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden HTTP-Anfragen vom Frontend verarbeitet und entsprechende Antworten im JSON-Format \cite{noauthor_json_nodate} zurückgeben.
+
 
 \subsection{Persistenz}
-Zum persistieren der Daten setzen wir auf eine MongoDB als Datenbanksystem. Die \texttt{pymongo}-Bibliothek von Python fungiert dabei als offizieller Treiber für die MongoDB, die Funktionen für die Interaktion der Datenbank bereitstellt, um Daten zu speichern, abzurufen, aktualisieren und zu löschen.
+Zum persistieren der Daten setzen wir auf eine MongoDB \cite{mongodb} als Datenbanksystem. Die \texttt{pymongo}-Bibliothek \cite{pymongo} von Python fungiert dabei als offizieller Treiber für die MongoDB, die Funktionen für die Interaktion der Datenbank bereitstellt, um Daten zu speichern, abzurufen, aktualisieren und zu löschen.
 
 
 
@@ -268,8 +266,8 @@ Jeder der drei Schritte wurde in einem Eigenständigen Formular realisiert, zwis
 
 % Referenz React hook Form
 Für die Eingabefelder wurden von Grund auf eigene Komponenten erstellt. Ein Eingabefeld besitzt immer ein Label und ein Ausgabefeld für Fehlermeldungen. Dabei taucht unter jedem Eingabefeld eine Fehlermeldung auf, falls die eingegebenen Daten nicht den Richtlinien entsprechen. 
-Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. 
-Formulareingaben können so z.B. ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponente automatisch unter dem Input-Feldern angezeigt. 
+Um das Datenhandling mit den Input-Felder zu vereinfachen und um Codezeilen zu sparren, wurde die Bibliothek \texttt{React Hook Form} \cite{noauthor_home_nodate} im Frontend eingebunden. Durch diese kann man vereinfacht die Logik hinter den Formularen erstellen. 
+Formulareingaben können so z.B. ganz einfach zwischenspeichert werden, um diese z.B. beim zurückgehen nicht zu verlieren. Auch das einbinden einer Datenvalidierung wird unterstützt. So werden die Eingaben mit der Bibliothek \texttt{Yup} \cite{quense_jquenseyup_2024} validiert, die gleichzeitig das Setzten eigener Fehlermeldungen, nach jedem Validierungsschritt erlaubt. Die Fehlermeldungen werden anschließend in ein internes Objekt, dass \texttt{React Hook Form} zu jedem registrierten Input-Element erstellt, geschrieben und durch unsere Komponente automatisch unter dem Input-Feldern angezeigt. 
 
 Wurden alle Eingaben getätigt werden diese gesammelt an das Backend gesendet und dort nochmals überprüft.
 Neben einem einfachen Eingabefeld, wurden Komponenten für ein Select-, ein Multiselectdropdown und für zwei Buttons passend zur Registrierung erstellt. Das Multiselectdropdown wurde dabei als interaktive HTML-Liste in React realisiert, dass ausgewählte Einträge im Input-Feld der Komponente anzeigt. Durch ein kleines rotes Kreuz, kann man diese direkt ohne das Dropdown erneut zu öffnen wieder deselektieren.
@@ -292,10 +290,7 @@ Durch \textbf{Suchfeld} kann der User die Tabelle direkt nach dem Namen eines be
 \end{enumerate}
 
 \subsection{Backend}
-\texttt{
-Unser Backend ist mit Python und dem Framework FastAPI realisiert und fungiert als zentrale Schnittstelle zwischen Datenbank und Frontend. Über eine RESTful-API kommuniziert das Frontend mit dem Backend, wobei JSON als Rückgabeformat für alle API-Endpunkte verwendet wird.
-}
-Die Hauptaufgaben des Backends umfassen die Aufbereitung und Bereitstellung von Daten für das Frontend sowie die Verarbeitung von Benutzeranfragen. Dabei haben wir uns für das Python-Webframework Flask entschieden. Flask ermöglicht die Erstellung von Webanwendungen in Python durch eine minimalistiche und flexible Struktur, sodass es sich gut für kleine bis mittelgroße Projekte eignet. Durch das Definieren von Routen, basierend auf den Anforderungen der Clients werden die HTTP-Anfragen verarbeitet und entsprechende Antworten zurückgeben. In unserem Fall haben wir folgende Routen definiert:
+Die Hauptaufgaben des Backends umfassen die Aufbereitung und Bereitstellung von Daten für das Frontend sowie die Verarbeitung von Benutzeranfragen. Durch das Definieren von Routen in Flask, kann das Frontend mit dem Backend kommunizieren und entsprechende Antworten auf die Anfragen im JSON-Format zurückgeben. In unserem Fall haben wir folgende Routen definiert:
 
 \begin{table}[h]
     \centering
@@ -322,7 +317,7 @@ Die Hauptaufgaben des Backends umfassen die Aufbereitung und Bereitstellung von 
 
 
 
-\subsubsection{Datenvalidierung und -speicherung}
+\subsection{Datenvalidierung und -speicherung}
 Die Validierungsfunktionen prüfen die Benutzereingaben mithilfe von regulären Ausdrücken und einfachen Bedingungen, um sicherzustellen, dass sie den erwarteten Standards entsprechen. Dabei wird z.B. überprüft, ob die E-Mail im richtigen Format vorliegt, das Passwort ausreichend lang ist oder obligatorische Informationen wie Vor- und Nachname korrekt angegeben wurden. Spezielle Validierungen wie die Überprüfung des Instagram-Benutzernamens und optionaler Informationen wie der Telefonnummern werden ebenfalls durchgeführt. Darüber hinaus nutzen diese Funktionen externe Ressourcen, beispielsweise eine Webanfragen für die Überprüfung von Instagram-Benutzernamen auf ihre Existenz und ob es sich um ein privates oder öffentliches Profil handelt. 
 
 
@@ -333,7 +328,7 @@ In unserer Flask-Anwendung nutzen wir die mittgelieferte Session-Verwaltung der 
 
 
 \subsection{Instagram-Account Analyse}
-Durch die Kombination der \texttt{Instaloader}-Labrary zur Extraktion der Profil- und Postdaten sowie GPT-3.5-turbo, können umfangreiche Auswertungen erstellen erstellt werden. Die Library extrahiert sämtliche Daten des Influencers, mitsamt der Daten der 100 zuletzt geposteten Beiträge, inkl. Bild, Bildunterschriften, Kommentare und vieles mehr. Nachfolgend sind die durchgeführten Analysen aufgelistet:
+Durch die Kombination der \texttt{Instaloader}-Labrary \cite{noauthor_instaloader_nodate} zur Extraktion der Profil- und Postdaten sowie GPT-3.5-turbo \cite{noauthor_openai_gpt-3-5-turbo}, können umfangreiche Auswertungen erstellen erstellt werden. Die Library extrahiert sämtliche Daten des Influencers, mitsamt der Daten der 100 zuletzt geposteten Beiträge, inkl. Bild, Bildunterschriften, Kommentare und vieles mehr. Nachfolgend sind die durchgeführten Analysen aufgelistet:
 
 \begin{itemize}
 
@@ -351,10 +346,7 @@ Durch die Kombination der \texttt{Instaloader}-Labrary zur Extraktion der Profil
 
 \subsection{Persistenz}
 
-In der Datenbank sind die Benutzerinformationen strukturiert in einem Schema gespeichert, die nachfolgend definiert sind. 
-\texttt{
-Datenbank-Schema
-}
+In der Datenbank sind die Benutzerinformationen strukturiert in der Collection \texttt{registration} als flaches JSON-Objekt gespeichert. Die Analysedaten des Instagram-Accounts werden hingegen seperat, wieder als flaches JSON-Objekt in einer Collection \texttt{analysis} hinterlegt. 
 
 Die Hauptaufgaben der Datenbankschicht umfassen das Speichern, Aktualisieren und das Abrufen dieser Benutzerdaten. Es wird sichergestellt, dass zurückgegebene Daten immer das definierte Standardformat einhalten, um die Konsistenz weiterer Verarbeitungsschritte innerhalb der Anwendung sicherzustellen. Fehler während dem Speichern oder dem Abrufen von Benutzerdaten werden für eine zuverlässige Fehlerbehandlung genau protokolliert.
 
@@ -367,7 +359,7 @@ Die Hauptaufgaben der Datenbankschicht umfassen das Speichern, Aktualisieren und
 \section{Testen}
 % Referenz Jest, Pytest
 \subsection{Frontend}
-Im Frontend wurde das Testing-Framework Jest verwendet. Es kann sowohl Komponenten einzeln auf ihre Funktionalität (Unit-Test), als auch die Interaktion mit anderen Komponenten überprüfen. Es gibt folgende Testarten:
+Im Frontend wurde das Testing-Framework Jest \cite{jest} verwendet. Es kann sowohl Komponenten einzeln auf ihre Funktionalität (Unit-Test), als auch die Interaktion mit anderen Komponenten überprüfen. Es gibt folgende Testarten:
 
 \begin{itemize}
 	\item{\textbf{Rendering-Tests} - Überprüfen, ob alle Formularelemente korrekt gerendert werden.}
@@ -377,7 +369,7 @@ Im Frontend wurde das Testing-Framework Jest verwendet. Es kann sowohl Komponent
 
 
 \subsection{Backend}
-Die Verwendung von pytest ermöglichte uns umfassendes, aber effizientes Testen unserer Datenvalidierungslogik. Pytest ist ein Testframework für Python, das das Schreiben, Organisieren und Ausführen von Tests vereinfacht, da diese mit einfachen Mitteln zu implementieren sind. Durch die Nutzung der Funktionen von pytest wie Fixtures, Mocks und Parametrisierung konnten wir eine robuste Validierungslogik für die eingegebenen Daten des Users sicherstellen, bzw. potenzielle Probleme beseitigen und so schlussendlich die Zuverlässigkeit der gesamten Anwendung verbessern. 
+Die Verwendung von pytest \cite{noauthor_pytest_nodate} ermöglichte uns umfassendes, aber effizientes Testen unserer Datenvalidierungslogik. Pytest ist ein Testframework für Python, das das Schreiben, Organisieren und Ausführen von Tests vereinfacht, da diese mit einfachen Mitteln zu implementieren sind. Durch die Nutzung der Funktionen von pytest wie Fixtures, Mocks und Parametrisierung konnten wir eine robuste Validierungslogik für die eingegebenen Daten des Users sicherstellen, bzw. potenzielle Probleme beseitigen und so schlussendlich die Zuverlässigkeit der gesamten Anwendung verbessern. 
 
 
 
@@ -385,7 +377,7 @@ Die Verwendung von pytest ermöglichte uns umfassendes, aber effizientes Testen 
 \section{Fazit und Ausblik}
 InfluenzaConnect bietet zum aktuellen Zeitpunkt nur einen kleinen Ausschnitt der geplanten Funktionalität. Das MVP wurde in der zu verfügbaren Zeit nur knapp verfehlt, dafür wurde die WebApp sehr ansprechend und solide aufgebaut. Ein wichtiger Schritt wurde hinsichtlich der automatischen Analyse des Instagram-Profils des Influencers getan. Diese kann zukünftig noch erweitert, verbessert und auf weitere Social-Media-Plattformen angewendet werden. 
 
-Es gibt, wie im bereits Fachkonzept beschrieben, noch etliche vielversprechende Möglichkeiten zur Erweiterung der Anwendung, wie eine Detailansicht und eine Vergleichsfunktion zwischen Influencern, sowie eine Registrierung für Unternehmen und eine Kommunikationsfunktionalität. Darüber hinaus sollte die Sicherheit und der Datenschutz der Anwendung weiter verbessert werden, insbesondere in Bezug auf die Verarbeitung und Speicherung personenbezogener Daten. Die CD-Automatisierung mittels Docker und GitHub Actions bietet dafür eine robuste Basis für den Betrieb und die Weiterentwicklung von InfluenzaConnect. 
+Es gibt, wie im bereits Fachkonzept beschrieben, noch etliche vielversprechende Möglichkeiten zur Erweiterung der Anwendung, wie eine Detailansicht und eine Vergleichsfunktion zwischen Influencern, sowie eine Registrierung für Unternehmen und eine Kommunikationsfunktionalität. Darüber hinaus sollte die Sicherheit und der Datenschutz der Anwendung weiter verbessert werden, insbesondere in Bezug auf die Verarbeitung und Speicherung personenbezogener Daten. Die CD-Automatisierung mittels Docker \cite{docker} und GitHub Actions \cite{GitHubActions} bietet dafür eine robuste Basis für den Betrieb und die Weiterentwicklung von InfluenzaConnect. 
 
 
 
@@ -395,23 +387,23 @@ Es gibt, wie im bereits Fachkonzept beschrieben, noch etliche vielversprechende 
 
 
 %%% Previous TechReps
-\nocite{ModA-TR-2023SS-WAE-TeamWeiss-Neunerln}
-\nocite{ModA-TR-2023SS-BDCC-TeamRot-CompVisPipeline}
-\nocite{ModA-TR-2023SS-BDCC-TeamBlau-NauticalNonsense}
-\nocite{ModA-TR-2023SS-BCN-TeamGruen-TorpedoTactics}
-\nocite{ModA-TR-2023SS-BCN-TeamCyan-Stockbird}
-\nocite{ModA-TR-2023SS-BCN-TeamBlau-FancyChess}
-\nocite{ModA-TR-2023WS-SWT-TeamRot-SGDb}
-\nocite{ModA-TR-2023WS-SWT-TeamGruen-OPCUANetzwerk}
-\nocite{ModA-TR-2022SS-WAE-TeamWeiss-WoIstMeinGeld}
-\nocite{ModA-TR-2022SS-BDCC-TeamWeiss-TwitterDash}
-\nocite{ModA-TR-2022SS-BDCC-TeamRot-Reddiment}
-\nocite{ModA-TR-2022SS-BDCC-TeamGruen-ExplosionGuy}
-\nocite{ModA-TR-2022SS-BDCC-TeamCyan-OTHWiki}
-\nocite{ModA-TR-2022WS-SWT-TeamGruen-Graphvio}
-\nocite{ModA-TR-2021SS-WAE-TeamWeiss-CovidDashboard}
-\nocite{ModA-TR-2021SS-WAE-TeamRot-FireForceDefense}
-\nocite{ModA-TR-2021SS-WAE-TeamGruen-MedPlanner}
+% \nocite{ModA-TR-2023SS-WAE-TeamWeiss-Neunerln}
+% \nocite{ModA-TR-2023SS-BDCC-TeamRot-CompVisPipeline}
+% \nocite{ModA-TR-2023SS-BDCC-TeamBlau-NauticalNonsense}
+% \nocite{ModA-TR-2023SS-BCN-TeamGruen-TorpedoTactics}
+% \nocite{ModA-TR-2023SS-BCN-TeamCyan-Stockbird}
+% \nocite{ModA-TR-2023SS-BCN-TeamBlau-FancyChess}
+% \nocite{ModA-TR-2023WS-SWT-TeamRot-SGDb}
+% \nocite{ModA-TR-2023WS-SWT-TeamGruen-OPCUANetzwerk}
+% \nocite{ModA-TR-2022SS-WAE-TeamWeiss-WoIstMeinGeld}
+% \nocite{ModA-TR-2022SS-BDCC-TeamWeiss-TwitterDash}
+% \nocite{ModA-TR-2022SS-BDCC-TeamRot-Reddiment}
+% \nocite{ModA-TR-2022SS-BDCC-TeamGruen-ExplosionGuy}
+% \nocite{ModA-TR-2022SS-BDCC-TeamCyan-OTHWiki}
+% \nocite{ModA-TR-2022WS-SWT-TeamGruen-Graphvio}
+% \nocite{ModA-TR-2021SS-WAE-TeamWeiss-CovidDashboard}
+% \nocite{ModA-TR-2021SS-WAE-TeamRot-FireForceDefense}
+% \nocite{ModA-TR-2021SS-WAE-TeamGruen-MedPlanner}
 
 % ======== References =========
 \sloppy

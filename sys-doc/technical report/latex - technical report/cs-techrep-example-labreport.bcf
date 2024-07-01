@@ -2370,7 +2370,27 @@
     <bcf:citekey order="1" intorder="1">selfref</bcf:citekey>
     <bcf:citekey order="2" intorder="1">selfref</bcf:citekey>
     <bcf:citekey order="3" intorder="1">selfref</bcf:citekey>
-    <bcf:citekey order="4" intorder="1">selfref</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">mongodb</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">selfref</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">iaria2009editorialrules</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">python</bcf:citekey>
+    <bcf:citekey order="8" intorder="1" nocite="1">ModA-TR-2023SS-WAE-TeamWeiss-Neunerln</bcf:citekey>
+    <bcf:citekey order="9" intorder="2" nocite="1">ModA-TR-2023SS-BDCC-TeamRot-CompVisPipeline</bcf:citekey>
+    <bcf:citekey order="10" intorder="3" nocite="1">ModA-TR-2023SS-BDCC-TeamBlau-NauticalNonsense</bcf:citekey>
+    <bcf:citekey order="11" intorder="4" nocite="1">ModA-TR-2023SS-BCN-TeamGruen-TorpedoTactics</bcf:citekey>
+    <bcf:citekey order="12" intorder="5" nocite="1">ModA-TR-2023SS-BCN-TeamCyan-Stockbird</bcf:citekey>
+    <bcf:citekey order="13" intorder="6" nocite="1">ModA-TR-2023SS-BCN-TeamBlau-FancyChess</bcf:citekey>
+    <bcf:citekey order="14" intorder="7" nocite="1">ModA-TR-2023WS-SWT-TeamRot-SGDb</bcf:citekey>
+    <bcf:citekey order="15" intorder="8" nocite="1">ModA-TR-2023WS-SWT-TeamGruen-OPCUANetzwerk</bcf:citekey>
+    <bcf:citekey order="16" intorder="9" nocite="1">ModA-TR-2022SS-WAE-TeamWeiss-WoIstMeinGeld</bcf:citekey>
+    <bcf:citekey order="17" intorder="10" nocite="1">ModA-TR-2022SS-BDCC-TeamWeiss-TwitterDash</bcf:citekey>
+    <bcf:citekey order="18" intorder="11" nocite="1">ModA-TR-2022SS-BDCC-TeamRot-Reddiment</bcf:citekey>
+    <bcf:citekey order="19" intorder="12" nocite="1">ModA-TR-2022SS-BDCC-TeamGruen-ExplosionGuy</bcf:citekey>
+    <bcf:citekey order="20" intorder="13" nocite="1">ModA-TR-2022SS-BDCC-TeamCyan-OTHWiki</bcf:citekey>
+    <bcf:citekey order="21" intorder="14" nocite="1">ModA-TR-2022WS-SWT-TeamGruen-Graphvio</bcf:citekey>
+    <bcf:citekey order="22" intorder="15" nocite="1">ModA-TR-2021SS-WAE-TeamWeiss-CovidDashboard</bcf:citekey>
+    <bcf:citekey order="23" intorder="16" nocite="1">ModA-TR-2021SS-WAE-TeamRot-FireForceDefense</bcf:citekey>
+    <bcf:citekey order="24" intorder="17" nocite="1">ModA-TR-2021SS-WAE-TeamGruen-MedPlanner</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
