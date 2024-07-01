@@ -27,16 +27,16 @@ describe('LandingPage Component', () => {
   });
 
   it('buttons and links have correct behavior', async () => {
-    // Click on the Spectator card
+    // Klick auf Spectator card
     await act(async () => {
       userEvent.click(screen.getByText('Spectator').closest('a')!);
     });
-    expect(window.location.pathname).toBe('/homepage'); // Assuming this path, adjust if needed
+    expect(window.location.pathname).toBe('/homepage'); 
 
-    // Click on the Influencer card
+    // Klick auf Influencer card
     await act(async () => {
       userEvent.click(screen.getByText('Influencer').closest('a')!);
     });
-    expect(window.location.pathname).toBe('/signup'); // Assuming this path, adjust if needed
+    expect(window.location.pathname).toBe('/signup'); 
   });
 });

@@ -1,67 +1,78 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Signup from '../pages/Signup';
 import { BrowserRouter } from 'react-router-dom';
+import { act } from 'react-dom/test-utils';
+//ich konnte den Fehler nicht
+//  console.error
+//Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+// Wrapper-Komponente für den Routing-Kontext
+const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <BrowserRouter>{children}</BrowserRouter>;
+};
 
 describe('Signup Component', () => {
-  let wrapper: { find: (arg0: string) => { (): any; new(): any; exists: { (): any; new(): any; }; text: { (): any; new(): any; }; simulate: { (arg0: string, arg1: { target: { value: string; } | { value: string; } | { value: string; } | { value: string; } | { value: string; } | { value: string; } | { value: string; }; } | undefined): void; new(): any; }; }; };
+  it('renders initial form and navigates through steps', async () => {
+    await act(async () => {
+      render(<Signup />, { wrapper: RouterWrapper });
+    });
 
-  beforeEach(() => {
-    wrapper = shallow(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-  });
-
-  it('renders initial form and navigates through steps', () => {
     // Das erste Formular sollte gerendert werden
-    expect(wrapper.find('Signup').exists()).toBeTruthy();
-    expect(wrapper.find('h1').text()).toEqual('Registrierung InfluenzaConnect');
+    const headingElement = screen.getByText(/Registrierung InfluenzaConnect/i);
+    expect(headingElement).toBeInTheDocument();
 
     // Simuliere das Ausfüllen des ersten Formulars und Klicken auf "Weiter"
-    wrapper.find('input#firstName').simulate('change', { target: { value: 'Max' } });
-    wrapper.find('input#lastName').simulate('change', { target: { value: 'Mustermann' } });
-    wrapper.find('button#nextStepButton').simulate('click');
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Max' } });
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'Mustermann' } });
+    fireEvent.click(screen.getByText('Weiter'));
 
     // Überprüfe, ob das zweite Formular nach der Navigation gerendert wird
-    expect(wrapper.find('h2').text()).toEqual('Weitere Informationen');
+    const secondFormHeading = await screen.findByText(/Weitere Informationen/i);
+    expect(secondFormHeading).toBeInTheDocument();
 
     // Simuliere das Ausfüllen des zweiten Formulars und Klicken auf "Weiter"
-    wrapper.find('input#email').simulate('change', { target: { value: 'max.mustermann@example.com' } });
-    wrapper.find('button#nextStepButton').simulate('click');
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'max.mustermann@example.com' } });
+    fireEvent.click(screen.getByText('Weiter'));
 
     // Überprüfe, ob das dritte Formular nach der Navigation gerendert wird
-    expect(wrapper.find('h2').text()).toEqual('Passwort');
+    const thirdFormHeading = await screen.findByText(/Passwort/i);
+    expect(thirdFormHeading).toBeInTheDocument();
 
     // Simuliere das Ausfüllen des dritten Formulars und Klicken auf "Registrieren"
-    wrapper.find('input#password').simulate('change', { target: { value: 'securePassword123' } });
-    wrapper.find('button#registerButton').simulate('click');
+    fireEvent.change(screen.getByLabelText(/Passwort/i), { target: { value: 'securePassword123' } });
+    fireEvent.click(screen.getByText('Registrieren'));
 
     // Du kannst hier weitere Assertions hinzufügen, um die erfolgreiche Übermittlung oder ein anderes Verhalten zu überprüfen
     // Zum Beispiel kannst du eine Erfolgsmeldung überprüfen oder die Navigation zu einer anderen Seite
   });
 
-  it('allows navigating back through steps', () => {
+  it('allows navigating back through steps', async () => {
+    await act(async () => {
+      render(<Signup />, { wrapper: RouterWrapper });
+    });
+
     // Simuliere die Navigation zum zweiten Formular
-    wrapper.find('input#firstName').simulate('change', { target: { value: 'Max' } });
-    wrapper.find('input#lastName').simulate('change', { target: { value: 'Mustermann' } });
-    wrapper.find('button#nextStepButton').simulate('click');
+    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Max' } });
+    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'Mustermann' } });
+    fireEvent.click(screen.getByText('Weiter'));
 
     // Simuliere die Navigation zum dritten Formular
-    wrapper.find('input#email').simulate('change', { target: { value: 'max.mustermann@example.com' } });
-    wrapper.find('button#nextStepButton').simulate('click');
+    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'max.mustermann@example.com' } });
+    fireEvent.click(screen.getByText('Weiter'));
 
     // Simuliere das Zurückgehen zum zweiten Formular
-    wrapper.find('button#backButton').simulate('click');
+    fireEvent.click(screen.getByText('Zurück'));
 
     // Überprüfe, ob wir wieder im zweiten Formular sind
-    expect(wrapper.find('h2').text()).toEqual('Weitere Informationen');
+    const secondFormHeading = await screen.findByText(/Weitere Informationen/i);
+    expect(secondFormHeading).toBeInTheDocument();
 
     // Simuliere das Zurückgehen zum ersten Formular
-    wrapper.find('button#backButton').simulate('click');
+    fireEvent.click(screen.getByText('Zurück'));
 
     // Überprüfe, ob wir wieder im ersten Formular sind
-    expect(wrapper.find('h1').text()).toEqual('Registrierung InfluenzaConnect');
+    const firstFormHeading = await screen.findByText(/Registrierung InfluenzaConnect/i);
+    expect(firstFormHeading).toBeInTheDocument();
   });
 });
