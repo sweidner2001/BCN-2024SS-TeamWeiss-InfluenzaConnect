@@ -1,4 +1,3 @@
-from user_analysis import load_instagram_profile
 import re
 from dotenv import load_dotenv
 import os

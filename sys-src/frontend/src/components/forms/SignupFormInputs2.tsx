@@ -10,11 +10,33 @@ import InputMultiSelectDropdown from "../input/InputMultiSelectDropdown";
 
 
 //___________________ Datentypen  ________________
+/**
+ * @interface ISignupForm2 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member form2 React-Form-Hook useForm<ISignupForm2>
+ */
 interface ISignupForm2 {
     form2: any;
 }
 
 
+/**
+ * @interface IFormInputs2 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member anrede Formularfeld: anrede
+ * @member vorname Formularfeld: vorname
+ * @member nachname Formularfeld: nachname
+ * @member land Formularfeld: land
+ * @member telefonnr Formularfeld: telefonnr
+ * @member sprache Formularfeld: sprache
+ * @member ueberMich Formularfeld: ueberMich
+ */
 interface IFormInputs2 {
     anrede: string;
     vorname: string;
@@ -41,6 +63,9 @@ const getMaxFieldLength = (maxLength: number): [number, string] => {
     return [maxLength, maxFieldLengthText];
 };
 
+
+
+// Yup-Resolver Schema
 const SignupSchema2 = yup.object({
     anrede: yup.string().required("Bitte geben Sie eine Anrede an!"),
     vorname: yup.string().trim().required("Bitte geben Sie Ihren Vornamen an!").max(...getMaxFieldLength(30)),
@@ -53,6 +78,9 @@ const SignupSchema2 = yup.object({
 });
 
 
+
+
+//___________________ Formular Auswahlmöglichkeiten  ________________
 const languages: string[] = [
     'Deutsch',
     'Englisch',
@@ -62,8 +90,8 @@ const languages: string[] = [
 ];
 
 const countries = ['Deutschland', 'Österreich', 'England', 'USA', 'Frankreich', 'Italien', 'Spanien'];
-// const bundesland = ['Bayern', 'Hessen', 'Sachsen'];
 const sex = ['Herr', 'Frau', 'Divers'];
+// const bundesland = ['Bayern', 'Hessen', 'Sachsen'];
 
 
 /**

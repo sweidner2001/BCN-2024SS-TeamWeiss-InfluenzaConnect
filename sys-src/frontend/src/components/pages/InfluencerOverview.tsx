@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import InputMultiCheckboxDropdown from "../input/InputMultiCheckboxDropdown";
+import NavBar from "../NavBar";
 
 
 // Funktion zur Generierung eines Hash-Wertes aus einem String
@@ -26,6 +27,14 @@ const stringToColor = (str: string): string => {
     return lightColor;
 };
 
+
+
+/**
+ * @interface IUserData Datentyp für die anzuzeigenden Spalten
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ */
 interface IUserData {
     profileImage: string;
     gender: string;
@@ -47,48 +56,55 @@ interface IUserData {
 
 
 
-
+/**
+ * @function InfluencerOverview Tabelle, die alle Infos zu allen Influencer anzeigt
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ */
 const InfluencerOverview: React.FC = () => {
 
+    //__________________ Daten holen: _____________________
     const [data, setData] = useState<IUserData[]>([]);
 
-    useEffect(() => {
-        axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
-            .then(response => {
-
-
-                const newData: IUserData[] = response.data.results.map((user :any)=> ({
-                    gender: user.gender,
-                    name: user.name.last + ' ' + user.name.first,
-                    instagram_comments_avg: user.dob.age,
-                    instagram_username: '@' + user.location.city + user.name.last,
-                    language: 'Deutsch',
-                    nationality: user.location.country,
-                    profileImage: user.picture.medium,
-                    advertisingDivision: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-                    statusColor: 'bg-green-500',
-                    about_me: 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer den es auf der ganzen Welt gibt!'
-                }));
-
-                setData(newData);
-
-            })
-            .catch(error => {
-                console.error('There was an error making the request!', error);
-            });
+     useEffect(() => {
+        axios.post('http://localhost:5001/collectData')
+        .then(response => {
+          const newData: IUserData[] = Object.values(response.data).map((user: any) => ({
+            gender: user.gender || '',
+            name: user.first_name + ' ' + user.last_name,
+            instagram_comments_avg: user.instagram_comments_avg.toString(), 
+            instagram_username: user.instagram_username,
+            language: user.language || 'Deutsch',
+            nationality: user.country,
+            profileImage: user.profileImage || '',  
+            advertisingDivision: user.hashtags || ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+            statusColor: user.statusColor || 'bg-green-500',
+            about_me: user.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
+            instagram_followers: user.instagram_followers.toString(), 
+            instagram_likes_avg: user.instagram_likes_avg.toString(), 
+            instagram_engagement_rate: user.instagram_engagement_rate.toString(), 
+            instagram_time_since_last_post: user.instagram_time_since_last_post.toString() 
+          }));
+  
+          setData(newData);
+        })
+        .catch(error => {
+          console.error('There was an error making the request!', error);
+        });
     }, []);
 
 
 
 
     //___________________ Suchleiste ___________________
-
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
+    // Daten filtern:
     const filteredData = data.filter(item =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -111,6 +127,8 @@ const InfluencerOverview: React.FC = () => {
         instagram_time_since_last_post: "letzter Post",
         about_me: "Über mich"
     };
+
+    // anzuzeigende Standard-Spalten beim Laden der Tabelle
     const initialSelectedOptions = ['name', 'age', 'instagram_username', 'language', 'nationality', 'advertisingDivision'];
     const [selectedColumns, setSelectedColumns] = useState<string[]>(initialSelectedOptions);
 
@@ -121,7 +139,15 @@ const InfluencerOverview: React.FC = () => {
 
 
     return (
+
+        <>
+        <NavBar/>
+
+        {/*------------------- Influencer Tabelle ---------------------*/}
         <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+
+
+            {/*----- Tabelleneinstellungen und Filteroptionen ------*/}
             <div className="flex justify-between mb-4">
 
                 {/* Anzahl Tabelleneinträge */}
@@ -145,7 +171,7 @@ const InfluencerOverview: React.FC = () => {
 
             </div>
 
-
+            {/*----- Tabelle ------*/}
             {/*// overflow-hidden*/}
             <div className="bg-white shadow-md sm:rounded-lg flex-1">
                 <div
@@ -323,8 +349,9 @@ const InfluencerOverview: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+            </div>
         </div>
-        </div>
+        </>
     );
 };
 

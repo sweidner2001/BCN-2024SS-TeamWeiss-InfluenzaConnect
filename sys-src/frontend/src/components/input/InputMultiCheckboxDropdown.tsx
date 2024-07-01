@@ -1,15 +1,34 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import useHandleClickOutside from "../../functions/useHandleClickOutside";
 
 
-interface MultiSelectDropdownProps {
+/**
+ * @interface InputMultiSelectDropdownProps Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member selectOptions Anzuzeigende Elemente in Form einen assoziativen Arrays
+ * @member label Text über Input-Feld
+ * @member onChange Methode, die die akutell ausgewählten Elemente des MultiSelectCheckboxDropdown übergeben bekommt (Keys von selectOptions)
+ * @member initialSelectedOptions bereits ausgewähtle Einträge (Keys von selectOptions)
+ */
+interface InputMultiSelectDropdownProps {
     selectOptions: { [key: string]: string };
     label: string;
     onChange: (selectedOptions: string[]) => void; // Callback für Änderungen hinzufügen
     initialSelectedOptions?: string[];
 }
 
-const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ selectOptions, label, onChange , initialSelectedOptions = []}) => {
+
+
+/**
+ * @function InputMultiSelectCheckboxDropdown Multiselect-Dropdown Element, das Checkboxen für die Auswahl der Einträge hat.
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ */
+const InputMultiSelectCheckboxDropdown: React.FC<InputMultiSelectDropdownProps> = ({ selectOptions, label, onChange , initialSelectedOptions = []}) => {
 
     //_____________________ React-Hooks: _______________________
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -95,4 +114,4 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({ selectOptions
     );
 };
 
-export default MultiSelectDropdown;
+export default InputMultiSelectCheckboxDropdown;

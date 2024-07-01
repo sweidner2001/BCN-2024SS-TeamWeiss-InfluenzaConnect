@@ -1,5 +1,5 @@
 // React Imports:
-import React, {useState} from 'react';
+import React from 'react';
 import * as yup from "yup";
 
 // Imports eigene Componenten:
@@ -9,10 +9,27 @@ import InputFieldWithFixedText from "../input/InputFieldWithFixedText";
 
 
 //___________________ Datentypen  ________________
-interface ISignupForm1 {
+/**
+ * @interface ISignupForm3 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member form3 React-Form-Hook useForm<IFormInputs3>
+ */
+interface ISignupForm3 {
     form3: any;
 }
 
+
+/**
+ * @interface IFormInputs3 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member instaUsername Formularfeld: instaUsername
+ */
 interface IFormInputs3 {
     instaUsername: string;
 }
@@ -35,6 +52,7 @@ const getMaxFieldLength = (maxLength: number): [number, string] => {
 };
 
 
+// Yup-Resolver Schema
 const SignupSchema3 = yup.object({
     instaUsername: yup.string().trim().required("Bitte Geben Sie Ihren Instagram-Usernamen an!").max(...getMaxFieldLength(25))
 });
@@ -52,7 +70,7 @@ const SignupSchema3 = yup.object({
  *
  * @param ISignupForm3 "react-hook-form" Daten
  */
-const SignupFormInputs3: React.FC<ISignupForm1> = ({form3}) => {
+const SignupFormInputs3: React.FC<ISignupForm3> = ({form3}) => {
 
     //___________________ HTML: Formular ________________
     return (
