@@ -76,7 +76,7 @@ const LandingPage: React.FC = () => {
                         alt="Logo" 
                         className="w-20 h-20 animate-spin-slow hover:scale-105 transition-transform duration-150"
                     />
-                    <Link to="/" className="text-white text-2xl font-bold ml-4">InfluenzaConnect</Link>
+                    <Link to="/landing" className="text-white text-2xl font-bold ml-4">InfluenzaConnect</Link>
                     <Link to="/about" className="ml-4 text-white hover:text-gray-400">About Us</Link>
                 </div>
                 <div className="flex items-center mt-4 md:mt-0">
