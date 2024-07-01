@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { act } from 'react';
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
-import { SignupFormInputs2 } from '../forms/SignupFormInputs2'; // Stelle sicher, dass der Pfad korrekt ist
+import { SignupFormInputs2 } from '../forms/SignupFormInputs2';
 
 // Mocken des useForm Hooks
 jest.mock('react-hook-form', () => ({
@@ -15,7 +16,7 @@ describe('SignupFormInputs2 Komponenten', () => {
   const mockedForm = {
     register: jest.fn(),
     formState: {
-      errors: {}, // Hier können ggf. Fehler simuliert werden, die getestet werden sollen
+      errors: {}, //Dummywerte
     },
   };
 

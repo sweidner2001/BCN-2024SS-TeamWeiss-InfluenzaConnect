@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types';
 
-const config: Config.InitialOptions = {
+const config: Partial<Config.InitialOptions> = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   transform: {
@@ -8,7 +8,14 @@ const config: Config.InitialOptions = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
-  transformIgnorePatterns: ['<rootDir>/node_modules/'],
+  moduleNameMapper: {
+    '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
+  },
+  // Optional: Testabdeckungskonfiguration
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!<rootDir>/node_modules/'],
+  coverageReporters: ['lcov', 'text-summary'],
 };
 
 export default config;

@@ -1,0 +1,40 @@
+-------------------------------|---------|----------|---------|---------|------------------------------
+File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------------------|---------|----------|---------|---------|------------------------------
+All files                      |   51.46 |    47.45 |   34.37 |   53.01 |                              
+ src                           |       0 |        0 |       0 |       0 |                              
+  App.tsx                      |       0 |      100 |       0 |       0 | 14-30                        
+  index.tsx                    |       0 |      100 |     100 |       0 | 7-19                         
+  reportWebVitals.ts           |       0 |        0 |       0 |       0 | 3-10
+ src/components                |      30 |     62.5 |   33.33 |      30 | 
+  Button.tsx                   |       0 |      100 |       0 |       0 | 4-14
+  ButtonSend2DB.tsx            |       0 |      100 |       0 |       0 | 4-14
+  FormularButton.tsx           |     100 |     62.5 |     100 |     100 | 36-66
+ src/components/forms          |     100 |      100 |     100 |     100 | 
+  SignupFormInputs1.tsx        |     100 |      100 |     100 |     100 | 
+  SignupFormInputs2.tsx        |     100 |      100 |     100 |     100 | 
+  SignupFormInputs3.tsx        |     100 |      100 |     100 |     100 | 
+ src/components/input          |   67.44 |     40.9 |   52.38 |   70.73 | 
+  ErrorField.tsx               |     100 |       50 |     100 |     100 | 21
+  InputField.tsx               |     100 |      100 |     100 |     100 | 
+  InputFieldWithFixedText.tsx  |     100 |      100 |     100 |     100 | 
+  InputLabel.tsx               |     100 |      100 |     100 |     100 | 
+  InputMultiSelectDropdown.tsx |   51.72 |     37.5 |   28.57 |   55.55 | 36-40,46,74-104
+  InputSelect.tsx              |     100 |       50 |     100 |     100 | 42
+  InputTextarea.tsx            |     100 |       50 |     100 |     100 | 43
+ src/components/login          |   51.85 |       60 |   11.11 |   51.85 | 
+  DropdownItem.tsx             |   33.33 |      100 |       0 |   33.33 | 9-14
+  DropdownMenu.tsx             |   54.16 |       60 |    12.5 |   54.16 | 31-32,61,65,76-94
+ src/components/pages          |   35.55 |       55 |   11.11 |   38.09 | 
+  Landing.tsx                  |      75 |      100 |      50 |      75 | 29
+  Signup.tsx                   |    31.7 |       55 |    6.25 |   34.21 | 60-82,92-101,111-133,161-193
+-------------------------------|---------|----------|---------|---------|------------------------------
+
+
+
+
+console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+Ich konnte den fehler bei Signup.test.tsx nicht überwinden
+Testcoverage wurde aufgerufen mit: npm run test -- --coverage --watchAll=false

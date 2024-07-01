@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { SignupFormInputs1 } from '../forms/SignupFormInputs1'; 
 
 
+
 afterEach(() => {
   cleanup();
 });
@@ -42,6 +43,7 @@ const renderWithForm = (Component: React.FC<{ form1: UseFormReturn<any> }>): voi
   };
 
   render(<Wrapper />);
+
 };
 
 test('renders SignupFormInputs1 component texts correctly', () => {
