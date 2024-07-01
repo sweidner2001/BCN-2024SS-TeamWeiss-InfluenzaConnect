@@ -6,7 +6,7 @@ from flask_cors import CORS
 from userinfo_scripts import user_analysis as analysis
 from userinfo_scripts import categorization
 from datetime import timedelta
-
+from werkzeug.exceptions import BadRequest, InternalServerError
 
 app = Flask(__name__)
 # Session handling
@@ -151,43 +151,69 @@ def add_user_analysis():
     """
     Endpoint zum Hinzufügen von Benutzer-Analyse-Daten für Instagram.
 
-    Erwartet JSON-Daten mit dem Benutzernamen (`username`).
+    Erwartet JSON-Daten mit dem Benutzernamen (username).
     Ruft Hashtags und Kategorien für den Benutzer ab und speichert die Analyse-Daten.
 
     Returns:
         JSON-Antwort mit Erfolgsmeldung oder Fehlermeldung.
 
     Raises:
-        HTTPException (404): Wenn die Benutzeranalyse nicht gefunden wird.
+        BadRequest: Wenn die Eingabedaten ungültig sind.
+        InternalServerError: Bei internen Verarbeitungsfehlern.
     """
     try:
-        data = request.json
-        username = data['username']
+        # Überprüfen und Extrahieren der Eingabedaten
+        data = request.get_json()
+        if not data or 'instaUsername' not in data:
+            raise BadRequest("Missing 'username' in request data")
         
-        # Hashtags und Kategorien erhalten
-        hashtags = categorization.get_instagram_hashtags(username)
-        category = categorization.hashtagGPT(hashtags)
-        
-        # Analyse-Daten zusammenstellen
-        analysis_data = {
-            'instagram_username': username,
-            'followers': analysis.get_instagram_followers(username),
-            'average_comments': analysis.get_instagram_comments(username),
-            'average_likes': analysis.get_instagram_likes(username),
-            'time_since_last_post': analysis.time_since_last_post(username),
-            'engagement_rate': analysis.engagement_rate(username),
-            'primary_category': category[0],
-            'secondary_category': category[1]
-        }
-        
-        # Analyse-Daten speichern
-        save_user_analysis(analysis_data)
-        
-        return jsonify({'success': 'User analysis data added successfully'}), 200
-    
-    except Exception as e:
-        return jsonify({'error': 'User analysis not found'}), 404
+        username = data['instaUsername']
+        if not username or not isinstance(username, str):
+            raise BadRequest("Invalid 'username' provided")
 
+        # Hashtags und Kategorien erhalten
+        try:
+            hashtags = categorization.get_instagram_hashtags(username)
+        except Exception as e:
+            raise InternalServerError(f"Error fetching hashtags: {str(e)}")
+
+        try:
+            category = categorization.hashtagGPT(hashtags)
+        except Exception as e:
+            raise InternalServerError(f"Error categorizing hashtags: {str(e)}")
+
+        # Analyse-Daten zusammenstellen
+        try:
+            analysis_data = {
+                'instagram_username': username,
+                'followers': analysis.get_instagram_followers(username),
+                'average_comments': analysis.get_instagram_comments(username),
+                'average_likes': analysis.get_instagram_likes(username),
+                'time_since_last_post': analysis.time_since_last_post(username),
+                'engagement_rate': analysis.engagement_rate(username),
+                'primary_category': category[0] if len(category) > 0 else '',
+                'secondary_category': category[1] if len(category) > 1 else ''
+            }
+        except Exception as e:
+            raise InternalServerError(f"Error compiling analysis data: {str(e)}")
+
+        # Analyse-Daten speichern
+        try:
+            save_user_analysis(app, analysis_data)
+        except Exception as e:
+            raise InternalServerError(f"Error saving user analysis: {str(e)}")
+
+        return jsonify({'success': 'User analysis data added successfully'}), 200
+
+    except BadRequest as e:
+        app.logger.warning(f"Bad request: {str(e)}")
+        return jsonify({'error': str(e)}), 400
+    except InternalServerError as e:
+        app.logger.error(f"Internal server error: {str(e)}")
+        return jsonify({'error': 'An internal error occurred'}), 500
+    except Exception as e:
+        app.logger.critical(f"Unexpected error: {str(e)}")
+        return jsonify({'error': 'An unexpected error occurred'}), 500
 
 # Datenbeschaffung für Profilansicht
 @app.route('/profileView', methods=['POST'])
