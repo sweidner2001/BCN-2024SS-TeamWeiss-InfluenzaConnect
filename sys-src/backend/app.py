@@ -3,13 +3,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from database import save_user, find_user_by_email
 from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
-<<<<<<< HEAD
 from userinfo_scripts import user_analysis as analysis
 from userinfo_scripts import categorization
 import database
-=======
 from datetime import timedelta
->>>>>>> main
+
 
 app = Flask(__name__)
 # Session handling 
@@ -153,7 +151,8 @@ def add_user_analysis():
     try:
         # extract JSON data
         data = request.json
-        username = data['username']  # Extrahieren des Benutzernamens aus den JSON-Daten
+        # extract username from JSON data
+        username = data['username']
         hashtags = categorization.get_instagram_hashtags(username)
         category = categorization.hashtagGPT(hashtags)
         analysis_data = {
@@ -171,14 +170,13 @@ def add_user_analysis():
     except Exception as e:
         return jsonify({'error': 'User analysis not found'}), 404
 
-<<<<<<< HEAD
 
 @app.route('/get_user_analysis/<username>', methods=['GET'])
 def get_user_analysis(username):
     try:
         user = analysis_collection.find_one({'username': username})
         if user:
-            # Sicherstellen, dass das zurückgegebene Dokument alle Felder des Standardschemas enthält
+            # standard format
             analysis_data = {
             'instagram_username': username,
             'followers': user.get('followers', ''),
@@ -195,29 +193,6 @@ def get_user_analysis(username):
     except Exception as e:
         app.logger.error(f"Error finding user: {e}")
         return jsonify({'error': 'An error occurred while retrieving user analysis'}), 500
-=======
-# Datenbeschaffung für Profilansicht 
-@app.route('/profileView', methods=['POST'])
-def get_profile_data():
-    data = request.json
-    email = data.get('email')
-
-    user = find_user_by_email(app, email)
-
-    if not user:
-        return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
-
-    webscraping_data = []
-    profile_picture = []
-
-    user_data = {
-        'user': user,
-        'webscraping': webscraping_data,
-        'profilPicture': profile_picture
-    }
-
-    return jsonify(user_data), 200
->>>>>>> main
 
 
 # Run the app
