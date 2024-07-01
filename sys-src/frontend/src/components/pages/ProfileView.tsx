@@ -51,7 +51,7 @@ const ProfileView: React.FC = () => {
 
           if (response.ok) {
             const data = await response.json();
-            setUserData(data.user);
+            setUserData(data);
           } else {
             console.error('Failed to fetch user data:', await response.text());
           }
@@ -73,7 +73,7 @@ const ProfileView: React.FC = () => {
       body: JSON.stringify(updatedData)
     }).then(response => response.json())
       .then(data => {
-        setUserData(data.user);
+        setUserData(data);
       });
   };
 

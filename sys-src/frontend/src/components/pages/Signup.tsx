@@ -192,7 +192,7 @@ const Signup: React.FC = () => {
                         console.error('Error:', error);
                     }
                     // Redirect or update state as needed after setting the session
-                    navigate('/landing'); // Redirect to landing page
+                    navigate('/profileView'); // Redirect to landing page
                 } else {
                     console.error('Failed to set session:', await setSessionResponse.text());
                 }

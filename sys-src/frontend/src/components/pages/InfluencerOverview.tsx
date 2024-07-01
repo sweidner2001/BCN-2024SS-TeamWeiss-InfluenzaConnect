@@ -68,7 +68,7 @@ const InfluencerOverview: React.FC = () => {
     const [data, setData] = useState<IUserData[]>([]);
 
      useEffect(() => {
-        axios.post('/collectData')
+        axios.post('http://localhost:5001/collectData')
         .then(response => {
           const newData: IUserData[] = Object.values(response.data).map((user: any) => ({
             gender: user.gender || '',

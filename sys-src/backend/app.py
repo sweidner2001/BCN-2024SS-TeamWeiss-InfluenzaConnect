@@ -5,15 +5,6 @@ from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
 from userinfo_scripts import user_analysis as analysis
 from userinfo_scripts import categorization
-from userinfo_scripts.user_analysis import (
-    get_instagram_comments,
-    get_instagram_likes,
-    get_instagram_followers,
-    engagement_rate,
-    time_since_last_post,
-    get_instagram_profile_pic
-)
-from userinfo_scripts.categorization import get_instagram_hashtags
 from datetime import timedelta
 
 
@@ -157,13 +148,27 @@ def login():
 
 @app.route('/add_user_analysis', methods=['POST'])
 def add_user_analysis():
+    """
+    Endpoint zum Hinzufügen von Benutzer-Analyse-Daten für Instagram.
+
+    Erwartet JSON-Daten mit dem Benutzernamen (`username`).
+    Ruft Hashtags und Kategorien für den Benutzer ab und speichert die Analyse-Daten.
+
+    Returns:
+        JSON-Antwort mit Erfolgsmeldung oder Fehlermeldung.
+
+    Raises:
+        HTTPException (404): Wenn die Benutzeranalyse nicht gefunden wird.
+    """
     try:
-        # extract JSON data
         data = request.json
-        # extract username from JSON data
         username = data['username']
+        
+        # Hashtags und Kategorien erhalten
         hashtags = categorization.get_instagram_hashtags(username)
         category = categorization.hashtagGPT(hashtags)
+        
+        # Analyse-Daten zusammenstellen
         analysis_data = {
             'instagram_username': username,
             'followers': analysis.get_instagram_followers(username),
@@ -174,110 +179,116 @@ def add_user_analysis():
             'primary_category': category[0],
             'secondary_category': category[1]
         }
+        
+        # Analyse-Daten speichern
         save_user_analysis(analysis_data)
         
+        return jsonify({'success': 'User analysis data added successfully'}), 200
+    
     except Exception as e:
         return jsonify({'error': 'User analysis not found'}), 404
-
-
-def get_user_analysis(username):
-    try:
-        user = find_userdata_by_username(app, username)
-        if user:
-            # standard format
-            analysis_data = {
-                'instagram_username': analysis_data['instagram_username'],
-                'instagram_comments_avg': analysis_data['average_comments'],
-                'instagram_likes_avg': analysis_data['average_likes'],
-                'instagram_followers': analysis_data['followers'],
-                'instagram_engagement_rate': analysis_data['engagement_rate'],
-                'instagram_time_since_last_post': analysis_data['time_since_last_post'],
-                'instagram_primary_category': analysis_data['primary_category']
-            }
-            return analysis_data
-        else:
-            return jsonify({'error': 'User analysis not found'}), 404
-    except Exception as e:
-        app.logger.error(f"Error finding user: {e}")
-        return jsonify({'error': 'An error occurred while retrieving user analysis'}), 500
 
 
 # Datenbeschaffung für Profilansicht
 @app.route('/profileView', methods=['POST'])
 def get_profile_data():
-    data = request.json
-    email = data.get('email')
+    """
+    Endpoint zum Abrufen von Profildaten eines Benutzers.
 
-    user = find_user_by_email(app, email)
+    Ruft die Benutzerdaten und die dazugehörigen Instagram-Analyse-Daten ab.
+    Verwendet Standardwerte für die Instagram-Analyse-Daten, wenn keine gefunden werden.
 
-    if not user:
-        return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
+    Returns:
+        JSON-Antwort mit den Benutzer- und Instagram-Analyse-Daten oder Fehlermeldung.
 
-    analysis_data = get_user_analysis(user['instagram_username'])
-
-    if not analysis_data or len(analysis_data) < 6:
-        return jsonify({"error": "Keine oder unvollständige Analyse-Daten zum Influencer."}), 401
+    Raises:
+        HTTPException (401): Wenn die E-Mail-Adresse ungültig ist oder die Analyse-Daten unvollständig sind.
+    """
+    try:
+        email = session['email']
+        
+        # Benutzerdaten anhand der E-Mail-Adresse abrufen
+        user = find_user_by_email(app, email)
+        
+        if not user:
+            return jsonify({"error": "Ungültige E-Mail."}), 401
+        
+        # Instagram-Analyse-Daten für den Benutzernamen abrufen
+        analysis_data = find_userdata_by_username(app, user.get('instagram_username'))
+        
+        # Standardwerte verwenden, wenn keine Analyse-Daten gefunden werden
+        if not analysis_data:
+            analysis_data = (0, 0, 0, 0.0, '', '')
+        
+        # Benutzerdaten zusammenstellen
+        user_data = {
+            'email': user.get('email', ''),
+            'password': user.get('password', ''),
+            'title': user.get('title', ''),
+            'first_name': user.get('first_name', ''),
+            'last_name': user.get('last_name', ''),
+            'country': user.get('country', ''),
+            'phone': user.get('phone', ''),
+            'language': user.get('language', ''),
+            'about_me': user.get('about_me', ''),
+            'instagram_username': user.get('instagram_username', ''),
+            'instagram_comments_avg': analysis_data[0],
+            'instagram_likes_avg': analysis_data[1],
+            'instagram_followers': analysis_data[2],
+            'instagram_engagement_rate': analysis_data[3],
+            'instagram_time_since_last_post': analysis_data[4],
+            'hashtags': analysis_data[5]
+        }
+        
+        return jsonify(user_data), 200
     
-    user_data = {
-        'email': user.get('email', ''),
-        'password': user.get('password', ''),
-        'title': user.get('title', ''),
-        'first_name': user.get('first_name', ''),
-        'last_name': user.get('last_name', ''),
-        'country': user.get('country', ''),
-        'phone': user.get('phone', ''),
-        'language': user.get('language', ''),
-        'about_me': user.get('about_me', ''),
-        'instagram_username': user.get('instagram_username', ''),
-        'instagram_comments_avg': analysis_data[0],
-        'instagram_likes_avg': analysis_data[1],
-        'instagram_followers': analysis_data[2],
-        'instagram_engagement_rate': analysis_data[3],
-        'instagram_time_since_last_post': analysis_data[4],
-        'hashtags': analysis_data[5]
-    }
-
-    return jsonify(user_data), 200
+    except Exception as e:
+        print(f"Error retrieving profile data: {e}")
+        return jsonify({'error': 'An error occurred while retrieving profile data'}), 500
 
 
 
 
-@app.route('/collectData', methods=['POST'])
+@app.route('/collectData', methods=['GET', 'POST'])
 def collectData():
     """"
-    Sammelt alle Daten für die Anzeige aller Instagramm Profile zusammen und gibt alle Daten zurück
+    Sammelt alle Daten für die Anzeige aller Instagram Profile zusammen und gibt alle Daten zurück
 
     Returns:
         JSON-Antwort mit gesammelten Userdaten.
     """
     try:
-        # Userdaten aus der Registrierungsdatenbank
+        # Userdaten aus der Registrierungsdatenbank abrufen
         all_users = fetch_all_users(app)
         user_data_dict = {}
 
         for user in all_users:
-            analysis_data = get_user_analysis(user['instagram_username'])
-            if(analysis_data):
-                user_data = {
-                    'email': user.get('email', ''),
-                    'password': user.get('password', ''),
-                    'title': user.get('title', ''),
-                    'first_name': user.get('first_name', ''),
-                    'last_name': user.get('last_name', ''),
-                    'country': user.get('country', ''),
-                    'phone': user.get('phone', ''),
-                    'language': user.get('language', ''),
-                    'about_me': user.get('about_me', ''),
-                    'instagram_username': user.get('instagram_username', ''),
-                    'instagram_comments_avg': analysis_data[0],
-                    'instagram_likes_avg': analysis_data[1],
-                    'instagram_followers': analysis_data[2],
-                    'instagram_engagement_rate': analysis_data[3],
-                    'instagram_time_since_last_post': analysis_data[4],
-                    'hashtags': analysis_data[5]
-                }
-            else:
-                return jsonify({"error": "Keine Analyse Daten gespeichert"}), 401  
+            # Analyse-Daten für den Instagram-Benutzernamen des aktuellen Benutzers abrufen
+            analysis_data = find_userdata_by_username(app, user.get('instagram_username'))
+            
+            # Wenn keine Analyse-Daten gefunden werden, verwende Standardwerte
+            if not analysis_data:
+                analysis_data = (0, 0, 0, 0.0, '', '')  
+
+            # Benutzerdaten zusammenstellen
+            user_data = {
+                'email': user.get('email', ''),
+                'password': user.get('password', ''),
+                'title': user.get('title', ''),
+                'first_name': user.get('first_name', ''),
+                'last_name': user.get('last_name', ''),
+                'country': user.get('country', ''),
+                'phone': user.get('phone', ''),
+                'language': user.get('language', ''),
+                'about_me': user.get('about_me', ''),
+                'instagram_username': user.get('instagram_username', ''),
+                'instagram_comments_avg': analysis_data[0],
+                'instagram_likes_avg': analysis_data[1],
+                'instagram_followers': analysis_data[2],
+                'instagram_engagement_rate': analysis_data[3],
+                'instagram_time_since_last_post': analysis_data[4],
+                'hashtags': analysis_data[5]
+            }
 
             user_data_dict[user['_id']] = user_data
 
@@ -286,6 +297,7 @@ def collectData():
     except Exception as e:
         print(f"Error collecting data: {e}")
         return jsonify({'error': str(e)}), 500
+
 
 
 # Run the app

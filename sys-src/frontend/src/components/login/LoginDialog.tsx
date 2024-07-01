@@ -72,7 +72,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
 
           if (userResponse.ok) {
             const userData = await userResponse.json();
-            onLoginSuccess({ firstName: userData.user.first_name });  // Call the callback with user data
+            onLoginSuccess({ firstName: userData.first_name });  // Call the callback with user data
             onClose();  // Close the dialog
           }
         } else {

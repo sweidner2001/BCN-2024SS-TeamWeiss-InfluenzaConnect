@@ -1,7 +1,5 @@
 from pymongo import MongoClient
 from config import MONGO_URI, DATABASE_NAME, COLLECTION_REGISTRATION, COLLECTION_ANALYSIS
-import userinfo_scripts.categorization as categorization
-import userinfo_scripts.user_analysis as analysis
 
 # MongoDB-Verbindung herstellen
 client = MongoClient(MONGO_URI)
@@ -133,7 +131,7 @@ def save_user_analysis(app, analysis_data):
         app.logger.error(f"Error saving user analysis: {e}")
         raise e
     
-    
+
 
 def find_userdata_by_username(app, username):
     """
