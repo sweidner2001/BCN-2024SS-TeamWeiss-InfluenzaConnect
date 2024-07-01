@@ -1,5 +1,4 @@
 import pytest
-from datetime import datetime
 
 # Importiere die zu testenden Funktionen
 from validation import validate_registration_data, validate_login_data, validate_instagram_username, validate_age

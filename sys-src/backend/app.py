@@ -8,18 +8,29 @@ from userinfo_scripts import categorization
 from datetime import timedelta
 from werkzeug.exceptions import BadRequest, InternalServerError
 
+# Initialisiere die Flask-Anwendung
 app = Flask(__name__)
-# Session handling
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
-app.secret_key = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96'  # Use a strong secret key
-app.config['SESSION_COOKIE_SECURE'] = False  # Should be True in production with HTTPS
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_HTTPONLY'] = True
 
+# Konfiguration der Session-Verwaltung
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.secret_key                           = '4a88c8ffb1f57a2a7c0cb5f13d3e6e2b23a3490e59c2b0d2a1fa8a7d1b7c7f96'  # Verwende einen starken Secret Key
+app.config['SESSION_COOKIE_SECURE']      = False  # Sollte in Produktion mit HTTPS True sein
+app.config['SESSION_COOKIE_SAMESITE']    = 'Lax'
+app.config['SESSION_COOKIE_HTTPONLY']    = True
+
+# Konfiguration von CORS (Cross-Origin Resource Sharing)
 CORS(app, supports_credentials=True)
 
 @app.route('/set_session', methods=['POST'])
 def set_session():
+    """
+    Setzt die E-Mail-Adresse in der aktuellen Session.
+
+    Erwartet JSON-Daten mit einem 'email'-Feld.
+
+    Returns:
+        JSON-Antwort mit Erfolgsmeldung oder Fehlercode.
+    """
     data = request.json
     email = data.get('email')
     if email:
@@ -28,38 +39,66 @@ def set_session():
         return jsonify(message=f'Session-Daten für {email} gesetzt!')
     return jsonify(message='Bitte eine E-Mail-Adresse angeben.'), 400
 
+
 @app.route('/get_session_email', methods=['GET'])
 def get_session_email():
+    """
+    Gibt die in der Session gespeicherte E-Mail-Adresse zurück.
+
+    Returns:
+        JSON-Antwort mit der E-Mail-Adresse oder Fehlermeldung.
+    """
     email = session.get('email')
     app.logger.debug(f'Retrieving session email: {email}')
     if email:
         return jsonify(email=email), 200
     return jsonify(message='No email in session'), 400
 
+
 @app.route('/get_session')
 def get_session():
+    """
+    Gibt eine Nachricht mit der in der Session gespeicherten E-Mail-Adresse zurück.
+
+    Returns:
+        String-Nachricht.
+    """
     email = session.get('email', 'Nicht eingeloggt')
     return f'Eingeloggt als {email}'
 
+
 @app.route('/remove_session')
 def remove_session():
+    """
+    Entfernt die E-Mail-Adresse aus der aktuellen Session.
+
+    Returns:
+        String-Nachricht.
+    """
     session.pop('email', None)
     return 'Session-Daten entfernt!'
 
+
 @app.route('/clear_session')
 def clear_session():
+    """
+    Löscht alle Daten aus der aktuellen Session.
+
+    Returns:
+        String-Nachricht.
+    """
     session.clear()
     return 'Alle Session-Daten gelöscht!'
 
-# Registrierungshandler 
+
 @app.route('/signup', methods=['POST'])
 def signup():
     """
     Verarbeitet die Registrierung eines neuen Benutzers.
-    
+
     Erwartet JSON-Daten im Anfrage-Body, die in drei Formen aufgeteilt sind (form1, form2, form3).
     Validiert die Eingabedaten und speichert den neuen Benutzer in der Datenbank, falls gültig.
-    
+
     Returns:
         JSON-Antwort mit Erfolgs- oder Fehlermeldung.
     """
@@ -69,16 +108,13 @@ def signup():
     form2 = data.get('form2')
     form3 = data.get('form3')
 
-
     email    = form1.get('email')
     password = form1.get('passwort')
 
     title      = form2.get('anrede')
     first_name = form2.get('vorname')
     last_name  = form2.get('nachname')
-    # birthdate = data.get('geburtsdatum')
     country    = form2.get('land')
-#     state      = form2.get('bundesland')
     phone      = form2.get('telefonnr')
     language   = form2.get('sprache')
     about_me   = form2.get('ueberMich')
@@ -90,8 +126,8 @@ def signup():
     if not is_valid:
         return jsonify(errors), 400
 
+    # Prüfen ob ein Benutzer gefunden wurde
     user = find_user_by_email(app, email)
-
     if user:
         return jsonify({"email": "E-Mail-Adresse bereits registriert."}), 400
 
@@ -105,9 +141,7 @@ def signup():
         'title': title,
         'first_name': first_name,
         'last_name': last_name,
-        # 'birthdate': birthdate,
         'country': country,
-        # 'state': state,
         'phone': phone,
         'language': language,
         'about_me': about_me,
@@ -117,20 +151,20 @@ def signup():
 
     return jsonify({"message": "Registrierung erfolgreich."}), 201
 
-# Anmeldehandler
+
 @app.route('/login', methods=['POST'])
 def login():
     """
     Verarbeitet die Anmeldung eines Benutzers.
-    
-    Erwartet JSON-Daten im Anfrage-Body mit 'Email' und 'Password'.
+
+    Erwartet JSON-Daten im Anfrage-Body mit 'email' und 'password'.
     Überprüft die Eingabedaten und authentifiziert den Benutzer, falls gültig.
-    
+
     Returns:
         JSON-Antwort mit Erfolgs- oder Fehlermeldung.
     """
-    data = request.json
-    email = data.get('email')
+    data     = request.json
+    email    = data.get('email')
     password = data.get('password')
 
     # Eingabedaten validieren
@@ -138,6 +172,7 @@ def login():
     if not is_valid:
         return jsonify(error), 400
 
+    # Prüfen ob der Benutzer in der Datenbank existiert
     user = find_user_by_email(app, email)
 
     if not user or not check_password_hash(user['password'], password):
@@ -151,15 +186,11 @@ def add_user_analysis():
     """
     Endpoint zum Hinzufügen von Benutzer-Analyse-Daten für Instagram.
 
-    Erwartet JSON-Daten mit dem Benutzernamen (username).
+    Erwartet JSON-Daten mit dem Benutzernamen (instaUsername).
     Ruft Hashtags und Kategorien für den Benutzer ab und speichert die Analyse-Daten.
 
     Returns:
         JSON-Antwort mit Erfolgsmeldung oder Fehlermeldung.
-
-    Raises:
-        BadRequest: Wenn die Eingabedaten ungültig sind.
-        InternalServerError: Bei internen Verarbeitungsfehlern.
     """
     try:
         # Überprüfen und Extrahieren der Eingabedaten
@@ -215,7 +246,7 @@ def add_user_analysis():
         app.logger.critical(f"Unexpected error: {str(e)}")
         return jsonify({'error': 'An unexpected error occurred'}), 500
 
-# Datenbeschaffung für Profilansicht
+
 @app.route('/profileView', methods=['POST'])
 def get_profile_data():
     """
@@ -226,9 +257,6 @@ def get_profile_data():
 
     Returns:
         JSON-Antwort mit den Benutzer- und Instagram-Analyse-Daten oder Fehlermeldung.
-
-    Raises:
-        HTTPException (401): Wenn die E-Mail-Adresse ungültig ist oder die Analyse-Daten unvollständig sind.
     """
     try:
         email = session['email']
@@ -273,15 +301,13 @@ def get_profile_data():
         return jsonify({'error': 'An error occurred while retrieving profile data'}), 500
 
 
-
-
 @app.route('/collectData', methods=['GET', 'POST'])
 def collectData():
-    """"
-    Sammelt alle Daten für die Anzeige aller Instagram Profile zusammen und gibt alle Daten zurück
+    """
+    Sammelt alle Daten für die Anzeige aller Instagram Profile zusammen und gibt alle Daten zurück.
 
     Returns:
-        JSON-Antwort mit gesammelten Userdaten.
+        JSON-Antwort mit gesammelten Userdaten oder Fehlermeldung.
     """
     try:
         # Userdaten aus der Registrierungsdatenbank abrufen
@@ -324,8 +350,6 @@ def collectData():
         print(f"Error collecting data: {e}")
         return jsonify({'error': str(e)}), 500
 
-
-
-# Run the app
+# Start der Anwendung
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5001)
