@@ -47,7 +47,7 @@ const NavBar: React.FC = () => {
                     });
                     if (userResponse.ok) {
                         const userData = await userResponse.json();
-                        setUser({ firstName: userData.user.first_name });
+                        setUser({ firstName: userData.first_name });
                     }
                 }
             } catch (error) {
