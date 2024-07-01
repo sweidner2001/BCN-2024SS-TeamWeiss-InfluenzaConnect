@@ -49,9 +49,6 @@ def validate_registration_data(email, password, title, first_name, last_name, co
     if not country:
         errors["country"] = "Land ist erforderlich."
 
-    # if not state:
-    #     errors["state"] = "Bundesstaat/Region ist erforderlich."
-
     if not language:
         errors["language"] = "Sprache ist erforderlich."
 
@@ -67,6 +64,7 @@ def validate_registration_data(email, password, title, first_name, last_name, co
         return False, errors
 
     return True, {}
+
 
 def validate_login_data(email, password):
     """
@@ -96,6 +94,7 @@ def validate_login_data(email, password):
 
     return True, {}
 
+
 def validate_instagram_username(username):
     """
     Überprüft, ob ein Instagram-Benutzername gültig und öffentlich ist.
@@ -114,6 +113,7 @@ def validate_instagram_username(username):
         is_private = soup.find('meta', property='og:description')['content'].find('•') != -1
         return not is_private
     return False
+
 
 def validate_age(birthdate):
     """

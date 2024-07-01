@@ -37,7 +37,6 @@ def save_user(app, user_data):
             'first_name': user_data.get('first_name', ''),
             'last_name': user_data.get('last_name', ''),
             'country': user_data.get('country', ''),
-#             'state': user_data.get('state', ''),
             'phone': user_data.get('phone', ''),
             'language': user_data.get('language', ''),
             'about_me': user_data.get('about_me', ''),
@@ -73,7 +72,6 @@ def find_user_by_email(app, email):
                 'first_name': user.get('first_name', ''),
                 'last_name': user.get('last_name', ''),
                 'country': user.get('country', ''),
-#                 'state': user.get('state', ''),
                 'phone': user.get('phone', ''),
                 'language': user.get('language', ''),
                 'about_me': user.get('about_me', ''),
@@ -148,8 +146,10 @@ def find_userdata_by_username(app, username):
         Exception: Wenn beim Finden der Benutzeranalyse ein Fehler auftritt.
     """
     try:
+        # Instagram Benutzername aus Datenbank holen
         user = analysis_collection.find_one({'instagram_username': username})
         if user:
+            # Ein Standardformat für den Benutzeranalysedatensatz definieren
             standard_analysis_data = {
                 'instagram_username': user.get('instagram_username', ''),
                 'followers': user.get('followers', 0),

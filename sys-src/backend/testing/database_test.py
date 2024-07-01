@@ -1,8 +1,8 @@
 import pytest
-from pymongo import MongoClient
+from flask import Flask
 from mongomock import MongoClient as MockMongoClient  # Mock für pymongo
-from app import save_user, find_user_by_email, get_db_connection
-from config import MONGO_URI, DATABASE_NAME, COLLECTION_NAME
+from app import save_user, find_user_by_email
+from config import  DATABASE_NAME, COLLECTION_NAME
 
 # Fixture für die Verbindung zur Testdatenbank
 @pytest.fixture
