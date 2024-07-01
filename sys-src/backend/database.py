@@ -103,3 +103,67 @@ def fetch_all_users(app):
     except Exception as e:
         app.logger.error(f"Error fetching users: {e}")
         return []
+
+
+def save_user_analysis(app, analysis_data):
+    """
+    Speichert die Benutzeranalysedaten in der MongoDB.
+
+    Args:
+        app (Flask): Die Flask-App-Instanz zum Protokollieren von Fehlern.
+        analysis_data (dict): Ein Wörterbuch mit den Benutzeranalysedaten.
+
+    Raises:
+        Exception: Wenn beim Speichern der Benutzeranalyse ein Fehler auftritt.
+    """
+    try:
+        # Ein Standardformat für den Benutzeranalysedatensatz definieren
+        standard_analysis_data = {
+            'instagram_username': analysis_data.get('instagram_username', ''),
+            'followers': analysis_data.get('followers', 0),
+            'average_comments': analysis_data.get('average_comments', 0),
+            'average_likes': analysis_data.get('average_likes', 0),
+            'time_since_last_post': analysis_data.get('time_since_last_post', ''),
+            'engagement_rate': analysis_data.get('engagement_rate', 0.0),
+            'primary_category': analysis_data.get('primary_category', ''),
+            'secondary_category': analysis_data.get('secondary_category', '')
+        }
+        analysis_collection.insert_one(standard_analysis_data)
+    except Exception as e:
+        app.logger.error(f"Error saving user analysis: {e}")
+        raise e
+    
+    
+
+def find_userdata_by_username(app, username):
+    """
+    Findet Benutzeranalysedaten in der MongoDB anhand des Instagram-Benutzernamens.
+
+    Args:
+        app (Flask): Die Flask-App-Instanz zum Protokollieren von Fehlern.
+        username (str): Der Instagram-Benutzername.
+
+    Returns:
+        dict: Die Benutzeranalysedaten im Standardformat oder None, wenn der Benutzer nicht gefunden wird.
+
+    Raises:
+        Exception: Wenn beim Finden der Benutzeranalyse ein Fehler auftritt.
+    """
+    try:
+        user = analysis_collection.find_one({'instagram_username': username})
+        if user:
+            standard_analysis_data = {
+                'instagram_username': user.get('instagram_username', ''),
+                'followers': user.get('followers', 0),
+                'average_comments': user.get('average_comments', 0),
+                'average_likes': user.get('average_likes', 0),
+                'time_since_last_post': user.get('time_since_last_post', ''),
+                'engagement_rate': user.get('engagement_rate', 0.0),
+                'primary_category': user.get('primary_category', ''),
+                'secondary_category': user.get('secondary_category', '')
+            }
+            return standard_analysis_data
+        return None
+    except Exception as e:
+        app.logger.error(f"Error finding user analysis: {e}")
+        raise e

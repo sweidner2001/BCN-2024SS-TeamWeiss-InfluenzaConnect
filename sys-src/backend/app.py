@@ -1,11 +1,10 @@
 from flask import Flask, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from database import save_user, find_user_by_email, fetch_all_users
+from database import save_user, find_user_by_email, fetch_all_users, save_user_analysis, find_userdata_by_username
 from validation import validate_registration_data, validate_login_data
 from flask_cors import CORS
 from userinfo_scripts import user_analysis as analysis
 from userinfo_scripts import categorization
-import database
 from userinfo_scripts.user_analysis import (
     get_instagram_comments,
     get_instagram_likes,
@@ -155,6 +154,7 @@ def login():
 
     return jsonify({"message": "Anmeldung erfolgreich."}), 200
 
+
 @app.route('/add_user_analysis', methods=['POST'])
 def add_user_analysis():
     try:
@@ -174,27 +174,25 @@ def add_user_analysis():
             'primary_category': category[0],
             'secondary_category': category[1]
         }
-        analysis_collection.insert_one(analysis_data)
+        save_user_analysis(analysis_data)
         
     except Exception as e:
         return jsonify({'error': 'User analysis not found'}), 404
 
 
-@app.route('/get_user_analysis/<username>', methods=['GET'])
 def get_user_analysis(username):
     try:
-        user = analysis_collection.find_one({'username': username})
+        user = find_userdata_by_username(app, username)
         if user:
             # standard format
             analysis_data = {
-            'instagram_username': username,
-            'followers': user.get('followers', ''),
-            'average_comments': user.get('average_comments', ''),
-            'average_likes': user.get('average_likes', ''),
-            'time_since_last_post': user.get('time_since_last_post', ''),
-            'engagement_rate': user.get('engagement_rate', ''),
-            'primary_category': user.get('primary_category', ''),
-            'secondary_category': user.get('secondary_category', '')
+                'instagram_username': analysis_data['instagram_username'],
+                'instagram_comments_avg': analysis_data['average_comments'],
+                'instagram_likes_avg': analysis_data['average_likes'],
+                'instagram_followers': analysis_data['followers'],
+                'instagram_engagement_rate': analysis_data['engagement_rate'],
+                'instagram_time_since_last_post': analysis_data['time_since_last_post'],
+                'instagram_primary_category': analysis_data['primary_category']
             }
             return analysis_data
         else:
@@ -215,16 +213,32 @@ def get_profile_data():
     if not user:
         return jsonify({"error": "Ungültige E-Mail oder ungültiges Passwort."}), 401
 
-    webscraping_data = []
-    profile_picture = []
+    analysis_data = get_user_analysis(user['instagram_username'])
 
+    if not analysis_data or len(analysis_data) < 6:
+        return jsonify({"error": "Keine oder unvollständige Analyse-Daten zum Influencer."}), 401
+    
     user_data = {
-        'user': user,
-        'webscraping': webscraping_data,
-        'profilPicture': profile_picture
+        'email': user.get('email', ''),
+        'password': user.get('password', ''),
+        'title': user.get('title', ''),
+        'first_name': user.get('first_name', ''),
+        'last_name': user.get('last_name', ''),
+        'country': user.get('country', ''),
+        'phone': user.get('phone', ''),
+        'language': user.get('language', ''),
+        'about_me': user.get('about_me', ''),
+        'instagram_username': user.get('instagram_username', ''),
+        'instagram_comments_avg': analysis_data[0],
+        'instagram_likes_avg': analysis_data[1],
+        'instagram_followers': analysis_data[2],
+        'instagram_engagement_rate': analysis_data[3],
+        'instagram_time_since_last_post': analysis_data[4],
+        'hashtags': analysis_data[5]
     }
 
     return jsonify(user_data), 200
+
 
 
 
@@ -242,35 +256,36 @@ def collectData():
         user_data_dict = {}
 
         for user in all_users:
-            user_data = {
-                'email': user['email'],
-                'password': user['password'],
-                'title': user['title'],
-                'first_name': user['first_name'],
-                'last_name': user['last_name'],
-                'country': user['country'],
-                'phone': user['phone'],
-                'language': user['language'],
-                'about_me': user['about_me'],
-                'instagram_username': user['instagram_username'],
-                'instagram_comments_avg': get_instagram_comments(user['instagram_username']),
-                'instagram_likes_avg': get_instagram_likes(user['instagram_username']),
-                'instagram_followers': get_instagram_followers(user['instagram_username']),
-                'instagram_engagement_rate': engagement_rate(user['instagram_username']),
-                'instagram_time_since_last_post': time_since_last_post(user['instagram_username']),
-                'hashtags': get_instagram_hashtags(user['instagram_username'])
-            }
-
-            # Optional: Download profile picture if needed
-            get_instagram_profile_pic(user['instagram_username'])
+            analysis_data = get_user_analysis(user['instagram_username'])
+            if(analysis_data):
+                user_data = {
+                    'email': user.get('email', ''),
+                    'password': user.get('password', ''),
+                    'title': user.get('title', ''),
+                    'first_name': user.get('first_name', ''),
+                    'last_name': user.get('last_name', ''),
+                    'country': user.get('country', ''),
+                    'phone': user.get('phone', ''),
+                    'language': user.get('language', ''),
+                    'about_me': user.get('about_me', ''),
+                    'instagram_username': user.get('instagram_username', ''),
+                    'instagram_comments_avg': analysis_data[0],
+                    'instagram_likes_avg': analysis_data[1],
+                    'instagram_followers': analysis_data[2],
+                    'instagram_engagement_rate': analysis_data[3],
+                    'instagram_time_since_last_post': analysis_data[4],
+                    'hashtags': analysis_data[5]
+                }
+            else:
+                return jsonify({"error": "Keine Analyse Daten gespeichert"}), 401  
 
             user_data_dict[user['_id']] = user_data
 
-        return user_data_dict
+        return jsonify(user_data_dict)
 
     except Exception as e:
         print(f"Error collecting data: {e}")
-        return {}
+        return jsonify({'error': str(e)}), 500
 
 
 # Run the app

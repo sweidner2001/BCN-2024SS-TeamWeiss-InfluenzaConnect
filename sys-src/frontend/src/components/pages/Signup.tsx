@@ -173,6 +173,24 @@ const Signup: React.FC = () => {
                     const sessionData = await setSessionResponse.json();
                     console.log(sessionData);
 
+                    try {
+                        // Aufruf der Funktionen zum webscraping
+                        const response = await fetch('http://localhost:5001/add_user_analysis', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        if (response.ok) {
+                            const result = await response.json();
+                            console.log('User analysis added successfully:', result);
+                        } else {
+                            console.error('Error adding user analysis:', response.statusText);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
                     // Redirect or update state as needed after setting the session
                     navigate('/landing'); // Redirect to landing page
                 } else {

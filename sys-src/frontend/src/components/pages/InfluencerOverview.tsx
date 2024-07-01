@@ -67,30 +67,31 @@ const InfluencerOverview: React.FC = () => {
     //__________________ Daten holen: _____________________
     const [data, setData] = useState<IUserData[]>([]);
 
-    useEffect(() => {
-        axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
-            .then(response => {
-
-
-                const newData: IUserData[] = response.data.results.map((user :any)=> ({
-                    gender: user.gender,
-                    name: user.name.last + ' ' + user.name.first,
-                    instagram_comments_avg: user.dob.age,
-                    instagram_username: '@' + user.location.city + user.name.last,
-                    language: 'Deutsch',
-                    nationality: user.location.country,
-                    profileImage: user.picture.medium,
-                    advertisingDivision: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-                    statusColor: 'bg-green-500',
-                    about_me: 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer den es auf der ganzen Welt gibt!'
-                }));
-
-                setData(newData);
-
-            })
-            .catch(error => {
-                console.error('There was an error making the request!', error);
-            });
+     useEffect(() => {
+        axios.post('/collectData')
+        .then(response => {
+          const newData: IUserData[] = Object.values(response.data).map((user: any) => ({
+            gender: user.gender || '',
+            name: user.first_name + ' ' + user.last_name,
+            instagram_comments_avg: user.instagram_comments_avg.toString(), 
+            instagram_username: user.instagram_username,
+            language: user.language || 'Deutsch',
+            nationality: user.country,
+            profileImage: user.profileImage || '',  
+            advertisingDivision: user.hashtags || ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+            statusColor: user.statusColor || 'bg-green-500',
+            about_me: user.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
+            instagram_followers: user.instagram_followers.toString(), 
+            instagram_likes_avg: user.instagram_likes_avg.toString(), 
+            instagram_engagement_rate: user.instagram_engagement_rate.toString(), 
+            instagram_time_since_last_post: user.instagram_time_since_last_post.toString() 
+          }));
+  
+          setData(newData);
+        })
+        .catch(error => {
+          console.error('There was an error making the request!', error);
+        });
     }, []);
 
 
