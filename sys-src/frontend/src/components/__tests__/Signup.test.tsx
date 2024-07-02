@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Signup from '../pages/Signup';
 import { BrowserRouter } from 'react-router-dom';
-import { act } from 'react-dom/test-utils';
-//ich konnte den Fehler nicht
+import {act} from 'react';//import { act } from 'react-dom/test-utils';
+//ich konnte die Warnung nicht wegbringen
 //  console.error
 //Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
 
