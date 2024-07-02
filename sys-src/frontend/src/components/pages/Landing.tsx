@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import LoginDialog from '../login/LoginDialog';
 import Logo from '../../logo.svg';
 import NavBar from "../NavBar";
+import LoginDialog from '../login/LoginDialog';
 
 const LandingPage: React.FC = () => {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -51,6 +51,7 @@ const LandingPage: React.FC = () => {
     const handleLoginSuccess = (userData: { firstName: string }) => {
         setUser(userData);
         setIsLoginOpen(false);
+        navigate('/profileView');
     };
 
     const handleLogout = async () => {
@@ -61,18 +62,24 @@ const LandingPage: React.FC = () => {
             });
             if (response.ok) {
                 setUser(null);
-                navigate('/landing');
+                navigate('/');
             }
         } catch (error) {
             console.error('Logout failed:', error);
         }
     };
 
+    const handleInfluencerClick = () => {
+        if (user) {
+            navigate('/profileView');
+        } else {
+            setIsLoginOpen(true);
+        }
+    };
+
     return (
-
         <>
-            <NavBar/>
-
+            <NavBar />
             <div className="flex-grow flex flex-col items-center justify-center py-16 px-4">
                 <motion.img 
                     src={Logo} 
@@ -82,7 +89,6 @@ const LandingPage: React.FC = () => {
                     animate="visible"
                     variants={logoVariants}
                 />
-
                 <h1 className="text-4xl md:text-6xl font-bold mb-4 text-blue-900">Welcome to InfluenzaConnect</h1>
                 <p className="text-xl md:text-2xl text-gray-700 mb-8">Your strategic partner in influencer marketing. Connecting brands with the right influencers seamlessly.</p>
                 
@@ -100,17 +106,21 @@ const LandingPage: React.FC = () => {
                     <motion.div 
                         className="bg-gradient-to-r from-blue-700 to-blue-900 shadow-lg rounded-lg p-8 text-center transform hover:scale-105 transition-transform duration-150"
                         whileHover={{ scale: 1.05 }}
+                        onClick={handleInfluencerClick}
                     >
-                        <Link to="/profileView">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Influencer</h2>
-                            <p className="text-lg md:text-xl text-gray-100 mb-4">Join our platform to showcase and analyze your influence.</p>
-                            <p className="text-sm text-gray-200">The uniqueness of InfluenzaConnect lies in the automated analysis of the influencer's social media profile through web scraping, as well as a user-friendly interface and a scalable backend architecture.</p>
-                        </Link>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Influencer</h2>
+                        <p className="text-lg md:text-xl text-gray-100 mb-4">Join our platform to showcase and analyze your influence.</p>
+                        <p className="text-sm text-gray-200">The uniqueness of InfluenzaConnect lies in the automated analysis of the influencer's social media profile through web scraping, as well as a user-friendly interface and a scalable backend architecture.</p>
                     </motion.div>
                 </div>
             </div>
+            <LoginDialog 
+                isOpen={isLoginOpen} 
+                onClose={() => setIsLoginOpen(false)} 
+                onLoginSuccess={handleLoginSuccess} 
+            />
         </>
     );
-}
+};
 
 export default LandingPage;

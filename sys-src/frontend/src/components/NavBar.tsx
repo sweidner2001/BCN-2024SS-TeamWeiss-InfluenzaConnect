@@ -73,7 +73,7 @@ const NavBar: React.FC = () => {
             });
             if (response.ok) {
                 setUser(null);
-                navigate('/landing');
+                navigate('/');
             }
         } catch (error) {
             console.error('Logout failed:', error);
@@ -93,7 +93,6 @@ const NavBar: React.FC = () => {
                     />
                     <Link to="/" className="text-white text-2xl font-bold ml-4">InfluenzaConnect</Link>
                     <Link to="/about" className="ml-4 text-white hover:text-gray-400">About Us</Link>
-                    <Link to="/findInfluencer" className="ml-4 text-white hover:text-gray-400">Influencer Finden</Link>
                 </div>
                 <div className="flex items-center mt-4 md:mt-0">
                     {user ? (
