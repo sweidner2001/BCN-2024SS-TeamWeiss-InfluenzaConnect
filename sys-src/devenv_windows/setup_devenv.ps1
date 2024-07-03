@@ -29,6 +29,7 @@ if (Test-Path $venvActivatePath) {
 }
 
 # Install requirements
+python -m pip install --upgrade pip setuptools
 pip install -r .\backend\requirements.txt
 check_result "Failed to install requirements"
 

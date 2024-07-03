@@ -1,0 +1,24 @@
+[0] Config.pm:307> INFO - This is Biber 2.19
+[0] Config.pm:310> INFO - Logfile is 'cs-techrep-example-labreport.blg'
+[180] biber-MSWIN64:340> INFO - === 
+[227] Biber.pm:419> INFO - Reading 'cs-techrep-example-labreport.bcf'
+[399] Biber.pm:979> INFO - Found 18 citekeys in bib section 0
+[429] Biber.pm:4419> INFO - Processing section 0
+[450] Biber.pm:4610> INFO - Looking for bibtex file 'selfref.bib' for section 0
+[517] bibtex.pm:1713> INFO - LaTeX decoding ...
+[528] bibtex.pm:1519> INFO - Found BibTeX data source 'selfref.bib'
+[587] Biber.pm:4610> INFO - Looking for bibtex file 'embedded.bib' for section 0
+[671] bibtex.pm:1713> INFO - LaTeX decoding ...
+[684] bibtex.pm:1519> INFO - Found BibTeX data source 'embedded.bib'
+[688] Biber.pm:4610> INFO - Looking for bibtex file 'webdev_commons.bib' for section 0
+[763] bibtex.pm:1713> INFO - LaTeX decoding ...
+[858] bibtex.pm:1519> INFO - Found BibTeX data source 'webdev_commons.bib'
+[868] Biber.pm:4610> INFO - Looking for bibtex file 'cpn_all_all.bib' for section 0
+[951] bibtex.pm:1713> INFO - LaTeX decoding ...
+[1115] bibtex.pm:1519> INFO - Found BibTeX data source 'cpn_all_all.bib'
+[1362] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1362] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1362] Biber.pm:4239> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[1362] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[1388] bbl.pm:660> INFO - Writing 'cs-techrep-example-labreport.bbl' with encoding 'UTF-8'
+[1429] bbl.pm:763> INFO - Output to cs-techrep-example-labreport.bbl

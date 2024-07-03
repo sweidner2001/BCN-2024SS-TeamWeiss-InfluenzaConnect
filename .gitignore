@@ -1,0 +1,11 @@
+.DS_Store
+
+# Entwicklungsumgebung
+.idea/
+.vscode/
+.ipynb_checkpoints/
+
+<<<<<<< HEAD
+.github/workflows/learn_workflow.yml
+=======
+>>>>>>> main

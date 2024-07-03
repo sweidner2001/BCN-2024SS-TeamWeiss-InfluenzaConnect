@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Functional\040Requirements}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{MVP}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Optionale\040Anforderungen}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Data\040Acquisition}{}% 5
+\BOOKMARK [1][-]{section.4}{Architectural\040Goals}{}% 6
+\BOOKMARK [1][-]{section.5}{Architecture\040of\040InfluenzaConnect}{}% 7
+\BOOKMARK [2][-]{subsection.5.1}{Technology\040Stack}{section.5}% 8
+\BOOKMARK [2][-]{subsection.5.2}{Frontend}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.3}{Backend}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.4}{Persistence}{section.5}% 11
