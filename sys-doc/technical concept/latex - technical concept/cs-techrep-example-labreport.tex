@@ -1,0 +1,326 @@
+\documentclass[conference,a4paper,flushend]{cs-techrep}
+\pdfoutput=1 % pdflatex hint for arxiv.org (within first 5 lines)
+
+% Class cs-techrep.cls loads biblatex / biber with predefined options
+\addbibresource{embedded.bib}       % its content is declared below, embedded within this tex-file
+\addbibresource{webdev_commons.bib} % includes REST, React, Angular, Vue, Svelte, Docker, AWS-*, Socket.IO, and many more!
+\addbibresource{cpn_all_all.bib}    % includes all previous CyberLytics@OTH-AW technical reports
+
+% ======================================================================
+% EDIT THESE:
+
+\cstechrepAuthorListTex{Sebastian Weidner, Jonas Hermann, Nils Bayerl, Dominik Schwagerl, \\ Timon Spichtinger, Christoph P.\ Neumann\,\orcidlink{0000-0002-5936-631X}}
+\cstechrepAuthorListBib{Sebastian Weidner and Jonas Hermann and Nils Bayerl and Dominik Schwagerl and Timon Spichtinger and Christoph P. Neumann}
+
+% Capitalization: https://capitalizemytitle.com/style/Chicago/
+\cstechrepTitleTex{InfluenzaConnect: Eine React-basierte Webanwendung für Influencer-Marketing}
+ % IF you need manual linebreaks in the titel, then clone the title without linebreaks for BibTeX:
+\cstechrepTitleBib{{\cstechrepTitleTex}}
+
+\cstechrepDepartment{CyberLytics\-/Lab at the Department of Electrical Engineering, Media, and Computer Science}
+%\cstechrepDepartment{CyberLytics\-/Lab an der Fakultät Elektrotechnik, Medien und Informatik} % DE
+\cstechrepInstitution{Ostbayerische Technische Hochschule Amberg\-/Weiden}
+\cstechrepAddress{Amberg, Germany}
+%\cstechrepAddress{Amberg, Deutschland} % DE
+\cstechrepSeries{Technical Reports}
+%\cstechrepSeries{Technische Berichte} % DE
+\cstechrepYear{2024}
+\cstechrepMonth{3}
+\cstechrepNumber{CL-\cstechrepYear{}-42}
+\cstechrepLang{english}  % en-US
+%\cstechrepLang{ngerman} % DE
+
+% Special remark on babel/csquotes terminology in regard with US-vs-UK:
+% en-US  = [english]/[american]/[usenglish] (+ [canadian])
+% en-UK  =           [british] /[ukenglish] (+ [australian]) <OXFORD>
+% For cs-techrep (like ACM), the recommended english variant is en-US!
+
+% DO NOT DELETE THIS:
+\filecontentsForceExpansion|[] % force command expansion inside a filecontents* environment
+\begin{filecontents*}[overwrite]{selfref.bib}
+    @TECHREPORT{selfref,
+        author = {|cstechrepAuthorListBib},
+        title  = {\cstechrepTitleBib},
+        institution = {\cstechrepInstitution, \cstechrepDepartment},
+        series = {\cstechrepSeries},
+        number = {\cstechrepNumber},
+        year   = {|cstechrepYear},
+        month  = {|cstechrepMonth},
+        langid  = {|cstechrepLang},
+    }
+\end{filecontents*}
+
+% ======================================================================
+% EDIT THIS:
+
+\begin{filecontents}[overwrite]{embedded.bib}
+@online{ieee2015howto,
+    author = {Michael Shell},
+    title = {How to Use the {IEEEtran} \LaTeX\ Class},
+    url = {http://mirrors.ctan.org/macros/latex/contrib/IEEEtran/IEEEtran_HOWTO.pdf},
+    year = {2015}
+}
+@online{ieee2018formattingrules,
+    author = {{IEEE}},
+    title = {Conference Template and Formatting Specifications},
+    url = {https://www.ieee.org/content/dam/ieee-org/ieee/web/org/conferences/Conference-template-A4.doc},
+    year = {2018}
+}
+@online{iaria2014formattingrules,
+    author = {{IARIA}},
+    title = {Formatting Rules},
+    url = {http://www.iaria.org/formatting.doc},
+    year = {2014}
+}
+@online{iaria2009editorialrules,
+    _author = {Cosmin Dini},
+    author = {{IARIA}},
+    title = {Editorial Rules},
+    url = {https://www.iaria.org/editorialrules.html},
+    year = {2009}
+}
+@online{languagetool,
+    author = {{LanguageTooler GmbH}},
+    title  = {{LangueTool}},
+    url    = {https://languagetool.org/overleaf}
+}
+@online{overleaf,
+    author = {{Digital Science UK Limited}},
+    title  = {{Overleaf}},
+    url    = {https://www.overleaf.com}
+}
+\end{filecontents}
+
+\usepackage{fontawesome} % i.a., \faWarning{}
+\usepackage{relsize}     % i.a., \textsmaller{...}
+\usepackage{lipsum}      % for blindtext
+
+% ======================================================================
+
+% cf. https://ctan.org/pkg/acronym
+% Usage:
+% singular, within sentence       = \ac{gui}
+% singular, beginning of sentence = \Ac{gui}
+% plural, within sentence         = \acp{gui}
+% plural, beginning of sentence   = \Acp{gui}
+\begin{acronym}
+    \acro{gui}[GUI]{Graphical User Interface}
+    \acro{ide}[IDE]{Integrated Development Environment}
+\end{acronym}
+
+% https://www.silbentrennung24.de/
+% https://www.hyphenation24.com/
+\hyphenation{block-chain block-chains Ethe-re-um}
+
+\begin{document}
+\selectlanguage{\cstechrepLang}
+
+\maketitle
+
+\begin{abstract}
+
+\textit{InfluenzaConnect: Strategische Vernetzung von Unternehmen und Influencern\\
+Dieser Bericht beschreibt die Entwicklung von InfluenzaConnect, einer Webanwendung, die durch Automatisierung und moderne Webtechnologien das Influencer-Marketing für Unternehmen effizienter gestaltet. Gleichzeitig bietet die Plattform den Influencern eine bequeme Möglichkeit, sich im Web zu präsentieren. Die Besonderheit von InfluenzaConnect ist u.a. die automatisierte Analyse des Social-Media-Profils des Influencers mittels Webscraping, sowie eine benutzerfreundliche Oberfläche und eine skalierbare Backend-Architektur.}
+\end{abstract}
+
+% A list of IEEE Computer Society appoved keywords can be obtained at
+% http://www.computer.org/mc/keywords/keywords.htm
+\begin{IEEEkeywords}
+Influencer-Marketing; WebApp; Business; SocialMedia.
+\end{IEEEkeywords}
+
+
+
+\section{Introduction}
+
+Unternehmen wollen möglichst viele ihrer Produkte verkaufen. Dazu braucht es eine gute Qualität der Produkte, preiswerte Verkaufspreise und Markenbekanntheit. Letzteres erfordert ein ausgereiftes Marketing-Konzept.
+Ein Marketing-Konzept ist dabei das Influencer-Marketing. Beim Influencer-Marketing lassen Unternehmen ihre Produkte von Influencern bewerben, um den Bekanntheitsgrad der Firma, sowie den Bekanntheitsgrad und die Umsatzzahlen ihrer Produkte weiter zu erhöhen. 
+
+Was ist das Problem?\\
+Unternehmen wollen authentische, sowie glaubwürdige Stimmen von Menschen finden, die ihr Produkt präsentieren und bewerben können. Die Lösung auf dieses Problem ist das Influencer-Marketing. Dieses ist aber noch nicht so weit verbreitet und Unternehmen, die sich für dieses Marketing-Konzept entschieden haben, stehen wieder vor neuen Problemen.
+
+\begin{enumerate}
+
+\item{Wie finde ich den passenden Influencer für meine Produkte?}
+\item{Es ist aufwending mit mehreren Influencern zu verhandeln --> Wie kann ich mit mehreren Influencern effizient verhandeln?}
+\item{Welche Social-Media-Plattformen kommen für das Bewerben meiner Produktes infrage, bzw. wie finde ich die richtige Plattform für meine Produkte? Soll es Instagram, Facebook, TikTok, YouTube, Pinterest, X, LinkedIn oder doch ein privater Blog sein, um nur einen Einblick über die Vielfalt der Plattformen zu bieten. \\}
+
+Dazu kommen generelle Probleme wie:
+
+\item{Es gibt noch nicht viele Influencer die im B2B-Space tätig sind.}
+\item{Es gibt viele unbekannte Influencer.}
+\item{Influencer mit hohen Reichweiten sehen sich selbst gar nicht als Influencer an.}
+\item{Influencer mit kleineren Reichweiten sind schwer auffindbar und haben es schwerer, Aufträge von Unternehmen zu bekommen.}
+
+\end{enumerate}
+
+Durch unsere Webbasierte Influencer-Marketing-Plattform wollen wir es schaffen, diese Probleme zu beheben und das Influencer-Marketing zu vereinfachen.
+
+
+
+\section{Functional Requirements}
+Influencer sollen sich auf der Plattform registrieren, damit diese von Unternehmen leichter aufgefunden werden, um ihre Produkte zu vermarkten. Nachfolgend werden die besuchenden User von InfluenzaConnect, die ihr Produkt vermarkten wollen als 'Unternehmen' und die User, die sich vermarkten wollen, als 'Influencer' bezeichnet.
+
+
+
+\subsection{MVP}
+\begin{enumerate}
+\item{\textit{Influencer sollen sich registrieren}\\
+ Influencer sollen sich auf der Plattform registrieren, damit Sie auf der Plattform angezeigt und von Unternehmen gefunden werden können.\\
+ \textbf{Akzeptanzkriterien:}
+
+Influencer sollen bei der Registrierung folgendes in ihrem Profil hinterlegen:
+\begin{itemize}
+\item{Ihre Kontaktdaten}
+\item{eine kleine Beschreibung über sich selbst}
+\item{Ihr Instagram-Profil}
+\end{itemize}
+Nach der Registrierung ist der Influencer angemeldet und es wird der Home-Screen angezeigt\\}
+
+
+
+\item{\textit{Webscraping des Instagram-Profils}\\
+Das Instagram-Profil des Influencers wird automatisch analysiert, um relevante Informationen für die bessere Selbstvermarktung zu speichern. Diese Informationen werden den Unternehmen später bereitgestellt, um den für sie richtigen Influencer zu finden. \\
+\\
+\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Influencer - falls möglich - einer Produkt-Werbe-Sparte zuordnen. Falls dies fehlschlägt\\
+--> manuelle Eintragung der Produkt-Werbe-Sparte vom Influencer selbst}
+\item{Analyse der Reichweite des Influencers, indem die Anzahl der Follower, Likes und Anzahl der Posts mit berücksichtigt werden.}
+\item{Das Profilbild soll von Instagram gescrapt werden\\}
+\end{itemize}}
+
+\item{\textit{Übersicht über alle registrierten Influencer}\\
+Die Unternehmen möchten auf einer Übersichtsseite einen Überblick über alle auf der Plattform registrierten Influencer bekommen, damit sie den richtigen Influencer, zu ihrem Produkt finden können. \\
+ \textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Pro Influencer soll eine kleine Auswahl relevanter Informationen auf der Übersichtsseite angezeigt werden.}
+
+\item{Influencer sollen sortiert angezeigt werden}
+
+\item{mittels Suche und Filter können die angezeigten Einträge eingeschränkt werden.\\}
+\end{itemize}}
+
+
+
+\item{\textit{Informationen zum Influencer}\\
+Unternehmen möchten durch Auswahl eines Influencers auf der 'Übersichtsseite der registrierten Influencer' nähere Informationen zu diesen angezeigt bekommen, um den Influencer besser beurteilen zu können, ob dieser zum Unternehmen passt.\\
+ \textbf{Akzeptanzkriterien:}
+ \begin{itemize}
+\item{Durch Auswahl eines Eintrages auf der Übersichtsseite werden alle relevanten Informationen zum ausgewählten Influencer angezeigt.}
+\item{Kontaktinformationen sollen verlinkt werden, um die Influencer schnell kontaktieren zu können.\\}
+\end{itemize}}
+\end{enumerate}
+
+
+
+\subsection{Optionale Anforderungen} %\textbar{} \textquote{Gesamtsystem}}
+
+\begin{enumerate}
+
+\item{\textit{Integration von Instagram-Posts in der Detailansicht}}\\
+Unternehmen wollen die neuesten Instagram-Posts eines Influencers in der Plattform-Detailansicht angezeigt bekommen, um einen Einblick in deren Inhalte zu erhalten.\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Die letzten Instagram-Posts werden in die Detailansicht integriert.}
+\item{Eine Vorschau der Posts ist sichtbar, einschließlich Bild und Bildunterschrift.\\}
+\end{itemize}
+
+\item{\textit{Bildanalyse für Influencer-Profile}}\\
+Unternehmen möchten eine Bildanalyse für Influencer-Profile, um die Inhalte besser zu verstehen und relevante Bilder zu identifizieren.\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Die Bildanalyse identifiziert Bilder, in denen der Influencer selbst zu sehen ist.}
+\item{Diese Bilder werden im Profil oder in der Detailansicht angezeigt.\\}
+\end{itemize}
+
+\item{\textit{Produkthochladen für die Influencer-Werbung}}\\
+Unternehmen möchten Produkte auf der Plattform hochladen, um passende Influencer für Werbekampagnen zu finden und diese mit relevanten Tags zu kennzeichnen.\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Unternehmen können Produktbilder hochladen.}
+\item{Eine Bildanalyse weist den Produkten passende Tags zu.}
+\item{Basierend auf den Tags werden passende Influencer vorgeschlagen.\\}
+\end{itemize}
+
+\item{\textit{Registrierung und Direktkontakt mit Influencern}}\\
+Unternehmen möchten sich auf der Plattform registrieren, um direkt mit Influencern in Kontakt zu treten.\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Unternehmen können sich registrieren und ein eigenes Profil erstellen.}
+\item{Die Plattform ermöglicht direkte Kommunikation zwischen Unternehmen und Influencern.\\}
+\end{itemize}
+
+\item{\textit{Übersicht über aktuelle Kontakte mit Influencern}}\\
+Unternehmen möchten eine Übersicht über ihre aktuellen Kontakte mit Influencern haben, um die Zusammenarbeit im Blick zu behalten und mögliche Partnerschaften zu verwalten.\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Unternehmen können auf ihrer Profilseite eine Liste der Influencer sehen, mit denen sie in Kontakt stehen.}
+\item{Die Plattform zeigt an, ob Nachrichten oder Kooperationen zwischen Unternehmen und Influencern bestehen.\\}
+\end{itemize}
+
+\item{\textit{Vergleichsfunktion für Influencer}}\\
+Unternehmen möchten eine Vergleichsfunktion haben, um verschiedene Influencer direkt nebeneinander vergleichen zu können und so die beste Entscheidung für Kooperationen zu treffen.\\
+\textbf{Akzeptanzkriterien:}
+\begin{itemize}
+\item{Die Plattform ermöglicht es, mehrere Influencer auszuwählen und deren Profile nebeneinander zu vergleichen.}
+\item{Die Vergleichsfunktion zeigt relevante Metriken wie Follower-Zahl, Engagement-Rate und Produktübereinstimmung an.\\}
+\end{itemize}
+\end{enumerate}
+
+
+\section{Data Acquisition}
+
+Um relevante Informationen über Instagram-Influencer zu sammeln, verwenden wir eine Kombination aus der Instagram-API und Web-Scraping. Die API liefert grundlegende Daten wie Follower-Zahlen und Engagement-Raten, während Web-Scraping zusätzliche Informationen wie Profildetails, Beiträge und Story-Daten extrahiert. Wir nutzen Python und Bibliotheken wie instascrape, um diese Daten zu sammeln und in einer Datenbank zu speichern. Die gesammelten Informationen können dann für potenzielle Werbepartner zugänglich gemacht werden. Die Umsetzung wird dabei in einen Web-Service ausgelagert.
+
+
+
+\section{Architectural Goals} % \textbar{} \textquote{Architekturziele}}
+Die Architektur von InfluenzaConnect zielt darauf ab, ein robustes und skalierbares System zu schaffen, das effizient mit externen API‘s  und den Benutzern der WebApp interagiert. Durch Nutzung modernster Webtechnologien, soll eine hohe Verfügbarkeit und Wartbarkeit des Systems gewährleistet werden. 
+
+\section{Architecture of InfluenzaConnect}
+
+\subsection{Technology Stack} %\textbar{} \textquote{Gesamtsystem}}
+Um die genannten Anforderungen zu erfüllen haben wir uns für folgenden Tech-Stack entschieden:
+
+ Das Backend basiert auf Python mit Flask, da diese Sprachen einen sehr modernen Ansatz bieten. Außerdem fördert ein in Python geschriebenes Backend die Möglichkeit, dass auch Junior Developer einen einfachen Einstieg in den Code finden können. Das Frontend wird mit React und TypeScript entwickelt, wobei Tailwind CSS für Design und Styling verwendet wird. MongoDB dient als Datenbanksystem, mit GraphQL für Datenbankabfragen, was eine flexible und leistungsfähige Datenmanipulation ermöglicht. 
+
+\subsection{Frontend}
+
+Das Frontend von InfluenzaConnect ist darauf ausgerichtet, eine intuitive und interaktive Benutzeroberfläche zu bieten, die Nutzern eine effiziente Navigation durch die Plattform ermöglicht. Für die Entwicklung dieser interaktiven Komponenten nutzen wir React und TypeScript, die eine solide Struktur bereitstellen. Tailwind CSS erleichtert uns das schnelle und flexible Design der Benutzeroberflächen.
+
+\subsection{Backend}
+
+Python gepaart mit Flask bildet das Rückgrat unseres Backends und ermöglicht die Entwicklung von API-Services, die essenziell für Funktionen wie Benutzerauthentifizierung und Datenmanagement sind. Diese technische Wahl gewährleistet Flexibilität im Umgang mit verschiedenen Datenquellen. Zusätzlich erleichtert es die Integration mit Plattformen wie Instagram, wodurch unsere Anwendung eine breitere Palette von Marketing-Tools effizient unterstützen kann. 
+
+\subsection{Persistence}
+
+Die Daten werden mittels einer MongoDB persistiert, ein NoSQL-Datenbanksystem, das für seine Flexibilität und Leistungsfähigkeit bei der Verwaltung großer Mengen unstrukturierter Daten bekannt ist. GraphQL wird eingesetzt, um effiziente und flexible Datenabfragen zu ermöglichen, die es Entwicklern erlauben, genau die Daten abzurufen, die sie benötigen.
+
+
+
+%%% Previous TechReps
+\nocite{ModA-TR-2023SS-WAE-TeamWeiss-Neunerln}
+\nocite{ModA-TR-2023SS-BDCC-TeamRot-CompVisPipeline}
+\nocite{ModA-TR-2023SS-BDCC-TeamBlau-NauticalNonsense}
+\nocite{ModA-TR-2023SS-BCN-TeamGruen-TorpedoTactics}
+\nocite{ModA-TR-2023SS-BCN-TeamCyan-Stockbird}
+\nocite{ModA-TR-2023SS-BCN-TeamBlau-FancyChess}
+\nocite{ModA-TR-2023WS-SWT-TeamRot-SGDb}
+\nocite{ModA-TR-2023WS-SWT-TeamGruen-OPCUANetzwerk}
+\nocite{ModA-TR-2022SS-WAE-TeamWeiss-WoIstMeinGeld}
+\nocite{ModA-TR-2022SS-BDCC-TeamWeiss-TwitterDash}
+\nocite{ModA-TR-2022SS-BDCC-TeamRot-Reddiment}
+\nocite{ModA-TR-2022SS-BDCC-TeamGruen-ExplosionGuy}
+\nocite{ModA-TR-2022SS-BDCC-TeamCyan-OTHWiki}
+\nocite{ModA-TR-2022WS-SWT-TeamGruen-Graphvio}
+\nocite{ModA-TR-2021SS-WAE-TeamWeiss-CovidDashboard}
+\nocite{ModA-TR-2021SS-WAE-TeamRot-FireForceDefense}
+\nocite{ModA-TR-2021SS-WAE-TeamGruen-MedPlanner}
+
+% ======== References =========
+\sloppy
+\printbibliography[notcategory=selfref]
+
+\end{document}
