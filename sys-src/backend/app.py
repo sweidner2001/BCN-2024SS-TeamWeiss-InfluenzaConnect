@@ -272,7 +272,7 @@ def get_profile_data():
         
         # Standardwerte verwenden, wenn keine Analyse-Daten gefunden werden
         if not analysis_data:
-            analysis_data = (0, 0, 0, 0.0, '', '')
+            analysis_data = (0, 0, 0, 0.0, 'String', 'String')
         
         # Benutzerdaten zusammenstellen
         user_data = {
@@ -299,6 +299,41 @@ def get_profile_data():
     except Exception as e:
         print(f"Error retrieving profile data: {e}")
         return jsonify({'error': 'An error occurred while retrieving profile data'}), 500
+
+#test enpoint to see if we can get engagement rate to specific user. takes the email as input
+@app.route('/getEngagementRate', methods=['POST'])
+def getEngagementRate():
+    """
+    Endpoint zum Abrufen der Engagement-Rate eines Benutzers.
+
+    Erwartet JSON-Daten mit der E-Mail-Adresse des Benutzers.
+    Ruft die Engagement-Rate des Benutzers ab und gibt sie zurück.
+
+    Returns:
+        JSON-Antwort mit der Engagement-Rate oder Fehlermeldung.
+    """
+    try:
+        data = request.json
+        email = data.get('email')
+
+        # Benutzerdaten anhand der E-Mail-Adresse abrufen
+        user = find_user_by_email(app, email)
+        
+        if not user:
+            return jsonify({"error": "Ungültige E-Mail."}), 401
+        
+        # Instagram-Analyse-Daten für den Benutzernamen abrufen
+        analysis_data = find_userdata_by_username(app, user.get('instagram_username'))
+        
+        # Standardwert für Engagement-Rate verwenden, wenn keine Analyse-Daten gefunden werden
+        if not analysis_data:
+            return jsonify({'engagement_rate': 0.0}), 200
+        
+        return jsonify({'engagement_rate': analysis_data[3]}), 200
+    
+    except Exception as e:
+        print(f"Error retrieving engagement rate: {e}")
+        return jsonify({'error': 'An error occurred while retrieving engagement rate'}), 500
 
 
 @app.route('/collectData', methods=['GET', 'POST'])

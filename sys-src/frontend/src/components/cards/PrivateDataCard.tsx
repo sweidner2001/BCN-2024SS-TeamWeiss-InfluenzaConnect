@@ -28,7 +28,7 @@ const PrivateDataCard: React.FC<PrivateDataCardProps> = ({ userData, onSave }) =
   };
 
   const handleChangePassword = (currentPassword: string, newPassword: string) => {
-    // ... existing code ...
+    // Implement password change logic here
   };
 
   return (

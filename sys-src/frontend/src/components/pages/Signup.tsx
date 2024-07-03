@@ -172,7 +172,8 @@ const Signup: React.FC = () => {
                 if (setSessionResponse.ok) {
                     const sessionData = await setSessionResponse.json();
                     console.log(sessionData);
-
+                    // Redirect or update state as needed after setting the session
+                    navigate('/'); // Redirect to landing page
                     try {
                         // Aufruf der Funktionen zum webscraping
                         const response = await fetch('http://localhost:5001/add_user_analysis', {
