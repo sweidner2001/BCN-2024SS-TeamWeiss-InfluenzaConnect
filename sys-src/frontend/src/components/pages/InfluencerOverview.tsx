@@ -91,6 +91,31 @@ const InfluencerOverview: React.FC = () => {
         })
         .catch(error => {
           console.error('There was an error making the request!', error);
+
+            // Testdaten holen, um in der Demo nicht blank dazustehen:
+            axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
+                .then(response => {
+
+
+                    const newData: IUserData[] = response.data.results.map((user :any)=> ({
+                        gender: user.gender,
+                        name: user.name.last + ' ' + user.name.first,
+                        instagram_comments_avg: user.dob.age,
+                        instagram_username: '@' + user.location.city + user.name.last,
+                        language: 'Deutsch',
+                        nationality: user.location.country,
+                        profileImage: user.picture.medium,
+                        advertisingDivision: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
+                        statusColor: 'bg-green-500',
+                        about_me: 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer den es auf der ganzen Welt gibt!'
+                    }));
+
+                    setData(newData);
+
+                })
+                .catch(error => {
+                    console.error('There was an error making the Testdata-request!', error);
+                });
         });
     }, []);
 
@@ -144,199 +169,202 @@ const InfluencerOverview: React.FC = () => {
         <NavBar/>
 
         {/*------------------- Influencer Tabelle ---------------------*/}
-        <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
 
 
-            {/*----- Tabelleneinstellungen und Filteroptionen ------*/}
-            <div className="flex justify-between mb-4">
+                {/*----- Tabelleneinstellungen und Filteroptionen ------*/}
+                <div className="flex justify-between mb-4">
 
-                {/* Anzahl Tabelleneinträge */}
-                <div className="flex items-center space-x-4">
-                    <div className="text-gray-700 font-medium">
-                        Einträge: {filteredData.length}
+                    {/* Anzahl Tabelleneinträge */}
+                    <div className="flex items-center space-x-4">
+                        <div className="text-gray-700 font-medium">
+                            Einträge: {filteredData.length}
+                        </div>
                     </div>
+
+
+                    {/* Suchfunktion */}
+                    <div className="w-1/3">
+                        <input type="text" placeholder="Search by name..."
+                               className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                               value={searchTerm} onChange={handleSearchChange}/>
+                    </div>
+
+                    {/* Spaltenfilter */}
+                    <InputMultiCheckboxDropdown selectOptions={columnsTableHead} label="Filter"
+                                                onChange={handleDropdownChange}
+                                                initialSelectedOptions={selectedColumns}/>
+
                 </div>
 
+                {/*<div className="flex flex-col overflow-x-auto">*/}
+                {/*    <div className="sm:-mx-6 lg:-mx-8">*/}
+                {/*        <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">*/}
+                {/*            <div className="overflow-x-auto">*/}
+                {/*<table className="min-w-full text-start text-sm font-light text-surface dark:text-white">*/}
 
-                {/* Suchfunktion */}
-                <div className="w-1/3">
-                    <input type="text" placeholder="Search by name..."
-                           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                           value={searchTerm} onChange={handleSearchChange}/>
-                </div>
-
-                {/* Spaltenfilter */}
-                <InputMultiCheckboxDropdown selectOptions={columnsTableHead} label="Filter" onChange={handleDropdownChange}
-                                            initialSelectedOptions={selectedColumns}/>
-
-            </div>
-
-            {/*----- Tabelle ------*/}
-            {/*// overflow-hidden*/}
-            <div className="bg-white shadow-md sm:rounded-lg flex-1">
-                <div
-                    // className="overflow-x-auto h-2/3"
-                >
+                {/*----- Tabelle ------*/}
+                {/*// overflow-hidden*/}
+                <div className="w-full h-[calc(100vh-4.5rem)] overflow-hidden bg-white shadow-md sm:rounded-lg mb-2">
+                    <div className="w-full h-full overflow-x-auto overflow-y-auto ">
+                        <table className="w-full text-sm text-left text-gray-700 ">
 
 
-                    <table className="w-full text-sm text-left text-gray-700 ">
+                            <thead
+                                className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900 px-6 py-3 xl:py-4 xl:px-6">
+                            <tr>
+                                <th scope="col" className="pl-6 pr-3 py-3 xl:py-4 bg-blue-700">
+                                    #
+                                </th>
 
-
-                        <thead
-                            className="text-xs text-gray-200 uppercase bg-gradient-to-r from-blue-700 to-blue-900 px-6 py-3 xl:py-4 xl:px-6">
-                        <tr>
-                            <th scope="col" className="pl-6 pr-3 py-3 xl:py-4 bg-blue-700">
-                                #
-                            </th>
-
-                            {/* Alle Überschriften */}
-                            {Object.entries(columnsTableHead).map(([key, value]) => (
-                                selectedColumns.includes(key) && (
+                                {/* Alle Überschriften */}
+                                {Object.entries(columnsTableHead).map(([key, value]) => (
+                                    selectedColumns.includes(key) && (
                                         <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">
                                             {value}
                                         </th>
                                     )
-                            ))}
+                                ))}
 
-                            {/*<th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">*/}
-                            {/*    Action*/}
-                            {/*</th>*/}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {filteredData.map((item, index) => (
-                            <tr key={index} className="bg-white border-b hover:bg-gray-50">
-                                {/* Tabellenindex */}
-                                <th className="pl-6 pr-3 py-4 text-blue-700">
-                                    {index + 1}
-                                </th>
+                                {/*<th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">*/}
+                                {/*    Action*/}
+                                {/*</th>*/}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {filteredData.map((item, index) => (
+                                <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                                    {/* Tabellenindex */}
+                                    <th className="pl-6 pr-3 py-4 text-blue-700">
+                                        {index + 1}
+                                    </th>
 
-                                {/* Name */}
-                                {selectedColumns.includes('name') && (
-                                    <th
-                                        scope="row"
-                                        className="pl-3 pr-6 py-4 text-gray-900 whitespace-nowrap"
-                                    >
-                                        <div className="flex items-center">
-                                            <img
-                                                className="w-10 h-10 rounded-full"
-                                                src={item.profileImage}
-                                                alt={'Bild'}
-                                            />
-                                            <div className="pl-3">
-                                                <div className="text-base font-semibold">
-                                                    {item.name}
-                                                </div>
-                                                <div className="font-normal text-gray-500">
-                                                    {item.gender}
+                                    {/* Name */}
+                                    {selectedColumns.includes('name') && (
+                                        <th
+                                            scope="row"
+                                            className="pl-3 pr-6 py-4 text-gray-900 whitespace-nowrap"
+                                        >
+                                            <div className="flex items-center">
+                                                <img
+                                                    className="w-10 h-10 rounded-full"
+                                                    src={item.profileImage}
+                                                    alt={'Bild'}
+                                                />
+                                                <div className="pl-3">
+                                                    <div className="text-base font-semibold">
+                                                        {item.name}
+                                                    </div>
+                                                    <div className="font-normal text-gray-500">
+                                                        {item.gender}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </th>
-                                )}
-                                {/*{selectedColumns.includes('age') && (*/}
-                                {/*    <td className="px-6 py-4">*/}
-                                {/*        {item.age}*/}
-                                {/*    </td>*/}
-                                {/*)}*/}
+                                        </th>
+                                    )}
+                                    {/*{selectedColumns.includes('age') && (*/}
+                                    {/*    <td className="px-6 py-4">*/}
+                                    {/*        {item.age}*/}
+                                    {/*    </td>*/}
+                                    {/*)}*/}
 
-                                {/* Werbesparte */}
-                                {selectedColumns.includes('advertisingDivision') && (
-                                    <td className="px-2 sm:px-4 py-4 min-w-80">
-                                        <div className="flex flex-wrap gap-0.5">
-                                            {item.advertisingDivision.map(
-                                                (category, i) => (
-                                                    <span
-                                                        key={i}
-                                                        className="text-xs font-medium px-2 py-1 m-0.5 rounded-md whitespace-nowrap"
-                                                        style={{
-                                                            backgroundColor: stringToColor(
-                                                                category
-                                                            ),
-                                                        }}
-                                                    >
+                                    {/* Werbesparte */}
+                                    {selectedColumns.includes('advertisingDivision') && (
+                                        <td className="px-2 sm:px-4 py-4 min-w-80">
+                                            <div className="flex flex-wrap gap-0.5">
+                                                {item.advertisingDivision.map(
+                                                    (category, i) => (
+                                                        <span
+                                                            key={i}
+                                                            className="text-xs font-medium px-2 py-1 m-0.5 rounded-md whitespace-nowrap"
+                                                            style={{
+                                                                backgroundColor: stringToColor(
+                                                                    category
+                                                                ),
+                                                            }}
+                                                        >
                                                             {category}
                                                         </span>
-                                                )
-                                            )}
-                                        </div>
-                                    </td>
-                                )}
+                                                    )
+                                                )}
+                                            </div>
+                                        </td>
+                                    )}
 
-                                {/* Nationalität */}
-                                {selectedColumns.includes('nationality') && (
-                                    <td className="px-6 py-4">
-                                        <div className="flex items-center">
-                                            <div
-                                                className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
-                                            ></div>
-                                            {' '}
-                                            {item.nationality}
-                                        </div>
-                                    </td>
-                                )}
+                                    {/* Nationalität */}
+                                    {selectedColumns.includes('nationality') && (
+                                        <td className="px-6 py-4">
+                                            <div className="flex items-center">
+                                                <div
+                                                    className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
+                                                ></div>
+                                                {' '}
+                                                {item.nationality}
+                                            </div>
+                                        </td>
+                                    )}
 
-                                {/* Sprache */}
-                                {selectedColumns.includes('language') && (
-                                    <td className="px-6 py-4">
-                                        {item.language}
-                                    </td>
-                                )}
+                                    {/* Sprache */}
+                                    {selectedColumns.includes('language') && (
+                                        <td className="px-6 py-4">
+                                            {item.language}
+                                        </td>
+                                    )}
 
-                                {/* Instagram Username */}
-                                {selectedColumns.includes('instagram_username') && (
-                                    <td className="px-6 py-4">
-                                        <a href="https://www.instagram.com/festdamen.ffwschoenkirch2024/"
-                                            className="font-medium hover:text-blue-600 hover:underline whitespace-nowrap">
-                                            {item.instagram_username}
-                                        </a>
-                                    </td>
-                                )}
+                                    {/* Instagram Username */}
+                                    {selectedColumns.includes('instagram_username') && (
+                                        <td className="px-6 py-4">
+                                            <a href="https://www.instagram.com/festdamen.ffwschoenkirch2024/"
+                                               className="font-medium hover:text-blue-600 hover:underline whitespace-nowrap">
+                                                {item.instagram_username}
+                                            </a>
+                                        </td>
+                                    )}
 
-                                {/* Instagram - Follower  */}
-                                {selectedColumns.includes('instagram_followers') && (
-                                    <td className="px-6 py-4">
-                                        {item.instagram_followers}
-                                    </td>
-                                )}
+                                    {/* Instagram - Follower  */}
+                                    {selectedColumns.includes('instagram_followers') && (
+                                        <td className="px-6 py-4">
+                                            {item.instagram_followers}
+                                        </td>
+                                    )}
 
-                                {/* Instagram - durchschnittliche Kommentare  */}
-                                {selectedColumns.includes('instagram_comments_avg') && (
-                                    <td className="px-6 py-4">
-                                        {item.instagram_comments_avg}
-                                    </td>
-                                )}
+                                    {/* Instagram - durchschnittliche Kommentare  */}
+                                    {selectedColumns.includes('instagram_comments_avg') && (
+                                        <td className="px-6 py-4">
+                                            {item.instagram_comments_avg}
+                                        </td>
+                                    )}
 
-                                {/* Instagram - durchschnittliche Likes  */}
-                                {selectedColumns.includes('instagram_likes_avg') && (
-                                    <td className="px-6 py-4">
-                                        {item.instagram_likes_avg}
-                                    </td>
-                                )}
+                                    {/* Instagram - durchschnittliche Likes  */}
+                                    {selectedColumns.includes('instagram_likes_avg') && (
+                                        <td className="px-6 py-4">
+                                            {item.instagram_likes_avg}
+                                        </td>
+                                    )}
 
-                                {/* Instagram - Score  */}
-                                {selectedColumns.includes('instagram_engagement_rate') && (
-                                    <td className="px-6 py-4">
-                                        {item.instagram_engagement_rate}
-                                    </td>
-                                )}
+                                    {/* Instagram - Score  */}
+                                    {selectedColumns.includes('instagram_engagement_rate') && (
+                                        <td className="px-6 py-4">
+                                            {item.instagram_engagement_rate}
+                                        </td>
+                                    )}
 
-                                {/* Instagram - wann war letzter Post  */}
-                                {selectedColumns.includes('instagram_time_since_last_post') && (
-                                    <td className="px-6 py-4">
-                                        {item.instagram_time_since_last_post}
-                                    </td>
-                                )}
+                                    {/* Instagram - wann war letzter Post  */}
+                                    {selectedColumns.includes('instagram_time_since_last_post') && (
+                                        <td className="px-6 py-4">
+                                            {item.instagram_time_since_last_post}
+                                        </td>
+                                    )}
 
-                                {/* Über mich  */}
-                                {selectedColumns.includes('about_me') && (
-                                    <td className="px-6 py-4 text-xs min-w-80">
-                                        {item.about_me}
-                                    </td>
-                                )}
+                                    {/* Über mich  */}
+                                    {selectedColumns.includes('about_me') && (
+                                        <td className="px-6 py-4 text-xs min-w-80">
+                                            {item.about_me}
+                                        </td>
+                                    )}
 
-                                {/* Button */}
-                                {/* <td className="px-6 py-4">
+                                    {/* Button */}
+                                    {/* <td className="px-6 py-4">
                                     <a
                                         href="#"
                                         className="font-medium text-blue-600 hover:underline whitespace-nowrap"
@@ -344,17 +372,16 @@ const InfluencerOverview: React.FC = () => {
                                         Edit user
                                     </a>
                                 </td> */}
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
         </>
     );
 };
-
 
 
 
