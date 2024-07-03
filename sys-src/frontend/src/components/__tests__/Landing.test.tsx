@@ -1,9 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen , cleanup} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import LandingPage from '../pages/Landing';
 import { act } from 'react'; 
+
+
+afterEach(cleanup);
+
 describe('LandingPage Component', () => {
   beforeEach(() => {
     act(() => {
@@ -31,7 +35,7 @@ describe('LandingPage Component', () => {
     await act(async () => {
       userEvent.click(screen.getByText('Spectator').closest('a')!);
     });
-    expect(window.location.pathname).toBe('/homepage'); 
+    expect(window.location.pathname).toBe('/findInfluencer'); 
 
     // Klick auf Influencer card
     await act(async () => {

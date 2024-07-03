@@ -15,7 +15,7 @@ function check_result {
 Set-Location -Path ..
 
 # Create virtual environment
-py -m venv backend
+python -m venv backend
 check_result "Failed to create virtual environment"
 
 # Activate virtual environment
@@ -29,6 +29,7 @@ if (Test-Path $venvActivatePath) {
 }
 
 # Install requirements
+python -m pip install --upgrade pip setuptools
 pip install -r .\backend\requirements.txt
 check_result "Failed to install requirements"
 

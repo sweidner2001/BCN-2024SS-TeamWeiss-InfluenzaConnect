@@ -1,78 +1,69 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import Signup from '../pages/Signup';
-import { BrowserRouter } from 'react-router-dom';
-import {act} from 'react';//import { act } from 'react-dom/test-utils';
-//ich konnte die Warnung nicht wegbringen
-//  console.error
-//Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
 
-// Wrapper-Komponente für den Routing-Kontext
-const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <BrowserRouter>{children}</BrowserRouter>;
-};
+// Jest-Mock für die fetch API
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
 
-describe('Signup Component', () => {
-  it('renders initial form and navigates through steps', async () => {
-    await act(async () => {
-      render(<Signup />, { wrapper: RouterWrapper });
-    });
+// Jest-Mock für useNavigate
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn(),
+}));
 
-    // Das erste Formular sollte gerendert werden
-    const headingElement = screen.getByText(/Registrierung InfluenzaConnect/i);
-    expect(headingElement).toBeInTheDocument();
-
-    // Simuliere das Ausfüllen des ersten Formulars und Klicken auf "Weiter"
-    fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Max' } });
-    fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'Mustermann' } });
-    fireEvent.click(screen.getByText('Weiter'));
-
-    // Überprüfe, ob das zweite Formular nach der Navigation gerendert wird
-    const secondFormHeading = await screen.findByText(/Weitere Informationen/i);
-    expect(secondFormHeading).toBeInTheDocument();
-
-    // Simuliere das Ausfüllen des zweiten Formulars und Klicken auf "Weiter"
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'max.mustermann@example.com' } });
-    fireEvent.click(screen.getByText('Weiter'));
-
-    // Überprüfe, ob das dritte Formular nach der Navigation gerendert wird
-    const thirdFormHeading = await screen.findByText(/Passwort/i);
-    expect(thirdFormHeading).toBeInTheDocument();
-
-    // Simuliere das Ausfüllen des dritten Formulars und Klicken auf "Registrieren"
-    fireEvent.change(screen.getByLabelText(/Passwort/i), { target: { value: 'securePassword123' } });
-    fireEvent.click(screen.getByText('Registrieren'));
-
-    // Du kannst hier weitere Assertions hinzufügen, um die erfolgreiche Übermittlung oder ein anderes Verhalten zu überprüfen
-    // Zum Beispiel kannst du eine Erfolgsmeldung überprüfen oder die Navigation zu einer anderen Seite
+describe('Anmeldeprozess', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('allows navigating back through steps', async () => {
-    await act(async () => {
-      render(<Signup />, { wrapper: RouterWrapper });
+  it('sollte den Anmeldeprozess erfolgreich abschließen', async () => {
+    // Mocken der fetch-Antworten
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({}),
+    }).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve({}),
     });
 
-    // Simuliere die Navigation zum zweiten Formular
+    render(<Signup />);
+
+    // Schritt 1: Formular 1 ausfüllen
     fireEvent.change(screen.getByLabelText(/Vorname/i), { target: { value: 'Max' } });
     fireEvent.change(screen.getByLabelText(/Nachname/i), { target: { value: 'Mustermann' } });
-    fireEvent.click(screen.getByText('Weiter'));
+    fireEvent.change(screen.getByLabelText(/E-Mail/i), { target: { value: 'max.mustermann@example.com' } });
+    fireEvent.change(screen.getByLabelText(/Passwort/i), { target: { value: 'pass1234' } });
+    fireEvent.click(screen.getByText(/Weiter/i));
 
-    // Simuliere die Navigation zum dritten Formular
-    fireEvent.change(screen.getByLabelText(/Email/i), { target: { value: 'max.mustermann@example.com' } });
-    fireEvent.click(screen.getByText('Weiter'));
+    // Header nach Formular 1 überprüfen
+    await waitFor(() => {
+      expect(screen.getByText(/InfluenzaConnect/i)).toBeInTheDocument();
+    });
 
-    // Simuliere das Zurückgehen zum zweiten Formular
-    fireEvent.click(screen.getByText('Zurück'));
+    // Schritt 2: Formular 2 ausfüllen
+    fireEvent.change(screen.getByLabelText(/Geburtsdatum/i), { target: { value: '1990-01-01' } });
+    fireEvent.change(screen.getByLabelText(/Wohnort/i), { target: { value: 'Berlin' } });
+    fireEvent.change(screen.getByLabelText(/Telefonnummer/i), { target: { value: '+49123456789' } });
+    fireEvent.click(screen.getByText(/Weiter/i));
 
-    // Überprüfe, ob wir wieder im zweiten Formular sind
-    const secondFormHeading = await screen.findByText(/Weitere Informationen/i);
-    expect(secondFormHeading).toBeInTheDocument();
+    // Header nach Formular 2 überprüfen
+    await waitFor(() => {
+      expect(screen.getByText(/Fast fertig!/i)).toBeInTheDocument();
+    });
 
-    // Simuliere das Zurückgehen zum ersten Formular
-    fireEvent.click(screen.getByText('Zurück'));
+    // Schritt 3: Formular 3 ausfüllen und absenden
+    fireEvent.change(screen.getByLabelText(/Interessen/i), { target: { value: 'Sport, Musik' } });
+    fireEvent.click(screen.getByText(/Registrieren/i));
 
-    // Überprüfe, ob wir wieder im ersten Formular sind
-    const firstFormHeading = await screen.findByText(/Registrierung InfluenzaConnect/i);
-    expect(firstFormHeading).toBeInTheDocument();
+    // Überprüfen, ob der API-Aufruf und die Weiterleitung korrekt erfolgen
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledTimes(2); // Annahme: 2 fetch-Aufrufe: signup und set_session
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:5001/signup', expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith('http://localhost:5001/set_session', expect.any(Object));
+    });
+
+    // Navigation zur Profilansicht überprüfen
+    expect(screen.getByText(/Profilansicht/i)).toBeInTheDocument();
   });
 });

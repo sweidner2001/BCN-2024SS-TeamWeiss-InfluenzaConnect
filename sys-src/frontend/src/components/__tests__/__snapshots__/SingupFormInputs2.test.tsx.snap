@@ -1,0 +1,268 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`stimmt mit snapshot überein 1`] = `
+<DocumentFragment>
+  <div
+    class="border-b-2 border-gray-900/10 pb-4"
+  >
+    <h3
+      class="text-xl font-bold mt-6 mb-0 text-gray-900 "
+    >
+      Persönliche Daten
+    </h3>
+    <p
+      class="mt-1 pt-0 text-sm leading-6 text-gray-500"
+    >
+      Diese Informationen sind öffentlich sichtbar. Seien Sie vorsichtig, was Sie teilen.
+    </p>
+  </div>
+  <div
+    class="mt-6 mb-2 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6"
+  >
+    <div
+      class="sm:col-span-4"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+        for="anrede"
+      >
+        Anrede
+      </label>
+      <div
+        class="mt-2"
+      >
+        <select
+          autocomplete="sex"
+          class="px-2 py-2 rounded-lg block w-full
+ text-gray-900 placeholder:text-gray-400
+ border-0 shadow-sm
+ ring-1 ring-inset ring-gray-300
+ focus:outline-none focus:ring-1 focus:ring-indigo-700"
+          id="anrede"
+          name="anrede"
+        >
+          <option
+            value="Herr"
+          >
+            Herr
+          </option>
+          <option
+            value="Frau"
+          >
+            Frau
+          </option>
+          <option
+            value="Divers"
+          >
+            Divers
+          </option>
+        </select>
+        <div
+          class="px-2 pt-1 h-4"
+        />
+      </div>
+    </div>
+    <div
+      class="sm:col-span-4"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+        for="vorname"
+      >
+        Vorname
+      </label>
+      <div
+        class="mt-2"
+      >
+        <input
+          autocomplete="given-name"
+          class="px-4 py-2 rounded-lg block w-full
+ text-gray-900 placeholder:text-gray-400
+ border-0 shadow-sm ring-1 ring-inset ring-gray-300
+ focus:outline-none focus:ring-1 focus:ring-indigo-700"
+          id="vorname"
+          name="vorname"
+          placeholder="Vorname"
+          type="text"
+        />
+        <div
+          class="px-2 pt-1 h-4"
+        />
+      </div>
+    </div>
+    <div
+      class="sm:col-span-4"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+        for="nachname"
+      >
+        Nachname
+      </label>
+      <div
+        class="mt-2"
+      >
+        <input
+          autocomplete="family-name"
+          class="px-4 py-2 rounded-lg block w-full
+ text-gray-900 placeholder:text-gray-400
+ border-0 shadow-sm ring-1 ring-inset ring-gray-300
+ focus:outline-none focus:ring-1 focus:ring-indigo-700"
+          id="nachname"
+          name="nachname"
+          placeholder="Nachname"
+          type="text"
+        />
+        <div
+          class="px-2 pt-1 h-4"
+        />
+      </div>
+    </div>
+    <div
+      class="sm:col-span-4"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+        for="land"
+      >
+        In welchem Land leben Sie?
+      </label>
+      <div
+        class="mt-2"
+      >
+        <select
+          autocomplete="country-name"
+          class="px-2 py-2 rounded-lg block w-full
+ text-gray-900 placeholder:text-gray-400
+ border-0 shadow-sm
+ ring-1 ring-inset ring-gray-300
+ focus:outline-none focus:ring-1 focus:ring-indigo-700"
+          id="land"
+          name="land"
+        >
+          <option
+            value="Deutschland"
+          >
+            Deutschland
+          </option>
+          <option
+            value="Österreich"
+          >
+            Österreich
+          </option>
+          <option
+            value="England"
+          >
+            England
+          </option>
+          <option
+            value="USA"
+          >
+            USA
+          </option>
+          <option
+            value="Frankreich"
+          >
+            Frankreich
+          </option>
+          <option
+            value="Italien"
+          >
+            Italien
+          </option>
+          <option
+            value="Spanien"
+          >
+            Spanien
+          </option>
+        </select>
+        <div
+          class="px-2 pt-1 h-4"
+        />
+      </div>
+    </div>
+    <div
+      class="sm:col-span-4"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+        for="telefonnr"
+      >
+        Telefonnummer
+      </label>
+      <div
+        class="mt-2"
+      >
+        <input
+          autocomplete="tel"
+          class="px-4 py-2 rounded-lg block w-full
+ text-gray-900 placeholder:text-gray-400
+ border-0 shadow-sm ring-1 ring-inset ring-gray-300
+ focus:outline-none focus:ring-1 focus:ring-indigo-700"
+          id="telefonnr"
+          name="telefonnr"
+          placeholder="Telefonnummer"
+          type="tel"
+        />
+        <div
+          class="px-2 pt-1 h-4"
+        />
+      </div>
+    </div>
+    <div
+      class="sm:col-span-4"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+      >
+        Welche Sprachen sprechen Sie?
+      </label>
+      <div
+        class="mt-2 relative"
+      >
+        <div
+          class="px-4 py-2 rounded-lg block w-full cursor-pointer 
+                                  border-0 shadow-sm ring-1 ring-inset outline-none ring-gray-300"
+        >
+          <span
+            class="text-gray-400"
+          >
+            Sprachen auswählen...
+          </span>
+        </div>
+        <div
+          class="px-2 pt-1 h-4"
+        />
+      </div>
+    </div>
+    <div
+      class="col-span-full"
+    >
+      <label
+        class="block text-sm font-medium leading-6 text-gray-900"
+        for="ueberMich"
+      >
+        Über mich
+      </label>
+      <p
+        class="mt-1 text-sm leading-6 text-gray-600"
+      >
+        Schreibe ein paar Sätze über dich.
+      </p>
+      <textarea
+        class="px-2 py-2 block w-full
+ text-gray-900 text-sm placeholder:text-gray-400
+ border-0 shadow-sm rounded-lg
+ ring-1 ring-inset ring-gray-300
+ focus:outline-none focus:ring-1 focus:ring-indigo-700"
+        id="ueberMich"
+        name="ueberMich"
+        rows="5"
+      />
+      <div
+        class="px-2 pt-1 h-4"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;

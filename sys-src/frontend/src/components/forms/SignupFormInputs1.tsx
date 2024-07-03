@@ -1,17 +1,34 @@
 // React Imports:
-import React, {useState} from 'react';
+import React from 'react';
 import * as yup from "yup";
 
 // Imports eigene Componenten:
 import InputField from "../input/InputField";
-import InputMultiSelectDropdown from "../input/InputMultiSelectDropdown";
+
+
 
 //___________________ Datentypen  ________________
+/**
+ * @interface ISignupForm1 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member form1 React-Form-Hook useForm<ISignupForm1>
+ */
 interface ISignupForm1 {
     form1: any;
 }
 
-
+/**
+ * @interface IFormInputs1 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member email Formularfeld: Email
+ * @member passwort Formularfeld: passwort
+ */
 interface IFormInputs1 {
     email: string;
     passwort: string;
@@ -35,19 +52,12 @@ const getMaxFieldLength = (maxLength: number): [number, string] => {
 
 
 
+// Yup-Resolver Schema
 const SignupSchema1 = yup.object({
     email: yup.string().trim().email("Bitte geben Sie eine gültige Email-Adresse ein!").required('Bitte geben Sie eine Email an!').max(...getMaxFieldLength(40)),
     passwort: yup.string().required("Bitte geben Sie ein Passwort an!").min(10, "Das Passwort muss min. 10 Zeichen lang sein!").max(...getMaxFieldLength(25))
 });
 
-
-const options: string[] = [
-    'Deutsch',
-    'Englisch',
-    'Französisch',
-    'Italienisch',
-    'Spanisch',
-];
 
 
 /**
@@ -81,9 +91,7 @@ const SignupFormInputs1: React.FC<ISignupForm1> = ({form1}) => {
                             register={form1.register("passwort")} error={form1.formState.errors.passwort?.message}/>
 
 
-                <InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" fieldWidth={4} selectOptions={options}
-                                          error={form1.formState.errors.email?.message}/>
-            </div>
+             </div>
         </>
     );
 };

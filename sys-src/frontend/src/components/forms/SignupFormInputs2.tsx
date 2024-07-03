@@ -1,5 +1,5 @@
 // React Imports:
-import React, {useState} from 'react';
+import React from 'react';
 import * as yup from "yup";
 
 // Imports eigene Componenten:
@@ -10,19 +10,41 @@ import InputMultiSelectDropdown from "../input/InputMultiSelectDropdown";
 
 
 //___________________ Datentypen  ________________
+/**
+ * @interface ISignupForm2 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member form2 React-Form-Hook useForm<ISignupForm2>
+ */
 interface ISignupForm2 {
     form2: any;
 }
 
 
+/**
+ * @interface IFormInputs2 Datentyp
+ * @author Sebastian Weidner
+ * @since 30.06.2024
+ * @version 1.0
+ *
+ * @member anrede Formularfeld: anrede
+ * @member vorname Formularfeld: vorname
+ * @member nachname Formularfeld: nachname
+ * @member land Formularfeld: land
+ * @member telefonnr Formularfeld: telefonnr
+ * @member sprache Formularfeld: sprache
+ * @member ueberMich Formularfeld: ueberMich
+ */
 interface IFormInputs2 {
     anrede: string;
     vorname: string;
     nachname: string;
     land: string;
-    bundesland: string;
+    // bundesland: string;
     telefonnr: string;
-    sprache: string;
+    sprache: string[];
     ueberMich: string;
 }
 
@@ -41,18 +63,24 @@ const getMaxFieldLength = (maxLength: number): [number, string] => {
     return [maxLength, maxFieldLengthText];
 };
 
+
+
+// Yup-Resolver Schema
 const SignupSchema2 = yup.object({
     anrede: yup.string().required("Bitte geben Sie eine Anrede an!"),
     vorname: yup.string().trim().required("Bitte geben Sie Ihren Vornamen an!").max(...getMaxFieldLength(30)),
     nachname: yup.string().trim().required("Bitte geben Sie Ihren Nachnamen an!").max(...getMaxFieldLength(25)),
     land: yup.string().trim().required("Bitte geben Sie Ihr Herkunftsland an!"),
-    bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
+    // bundesland: yup.string().trim().required("Bitte geben Sie Ihr Bundesland an!"),
     telefonnr: yup.string().trim().required("Bitte Geben Sie Ihre Telefonnummer an!").max(...getMaxFieldLength(25)),
-    sprache: yup.string().trim().required("Bitte geben Sie Ihre Sprachen ein, die Sie beherrschen!").max(...getMaxFieldLength(25)),
+    sprache: yup.array().min(1, "Bitte wählen Sie Ihre gesprochenen Sprachen aus!").required( "Bitte wählen Sie Ihre gesprochenen Sprachen aus!"),
     ueberMich: yup.string().trim().defined().max(...getMaxFieldLength(500))
 });
 
 
+
+
+//___________________ Formular Auswahlmöglichkeiten  ________________
 const languages: string[] = [
     'Deutsch',
     'Englisch',
@@ -60,6 +88,10 @@ const languages: string[] = [
     'Italienisch',
     'Spanisch',
 ];
+
+const countries = ['Deutschland', 'Österreich', 'England', 'USA', 'Frankreich', 'Italien', 'Spanien'];
+const sex = ['Herr', 'Frau', 'Divers'];
+// const bundesland = ['Bayern', 'Hessen', 'Sachsen'];
 
 
 /**
@@ -71,11 +103,6 @@ const languages: string[] = [
  * @param ISignupForm2 "react-hook-form" Daten
  */
 const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
-
-    const countries = ['Deutschland', 'Österreich', 'Schweiz'];
-    const bundesland = ['Bayern', 'Hessen', 'Sachsen'];
-    const sex = ['Herr', 'Frau', 'Divers'];
-
 
     //___________________ HTML: Formular ________________
     return (
@@ -99,20 +126,19 @@ const SignupFormInputs2: React.FC<ISignupForm2> = ({form2}) => {
                             register={form2.register("nachname")} error={form2.formState.errors.nachname?.message}/>
 
 
-                <InputSelect id="land" label="Land" fieldWidth={4} selectOptions={countries}
+                <InputSelect id="land" label="In welchem Land leben Sie?" fieldWidth={4} selectOptions={countries}
                              autoComplete="country-name"
                              register={form2.register("land")} error={form2.formState.errors.land?.message}/>
-                <InputSelect id="bundesland" label="Bundesland" fieldWidth={4} selectOptions={bundesland}
-                             register={form2.register("bundesland")} error={form2.formState.errors.bundesland?.message}/>
+                {/*<InputSelect id="bundesland" label="Bundesland" fieldWidth={4} selectOptions={bundesland}*/}
+                {/*             register={form2.register("bundesland")} error={form2.formState.errors.bundesland?.message}/>*/}
 
                 <InputField id="telefonnr" label="Telefonnummer" type="tel" autoComplete="tel"
                             fieldWidth={4}
                             register={form2.register("telefonnr")} error={form2.formState.errors.telefonnr?.message}/>
 
-                <InputField id="sprache" label="Sprache" type="text" fieldWidth={4}
-                            register={form2.register("sprache")} error={form2.formState.errors.sprache?.message}/>
+                <InputMultiSelectDropdown label="Welche Sprachen sprechen Sie?" backgroundText="Sprachen auswählen..." selectOptions={languages} fieldWidth={4}
+                                          control={form2.control} name="sprache" error={form2.formState.errors.sprache?.message}/>
 
-                <InputMultiSelectDropdown id="sprache" label="Gesprochene Sprachen" selectOptions={languages} fieldWidth={4}/>
                 <InputTextarea id="ueberMich" label="Über mich" defaultValue=""
                                descr="Schreibe ein paar Sätze über dich." textboxRows={5}
                                register={form2.register("ueberMich")} error={form2.formState.errors.ueberMich?.message}/>

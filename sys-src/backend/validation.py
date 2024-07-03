@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-def validate_registration_data(email, password, title, first_name, last_name, country, state, phone, language, about_me, instagram_username):
+def validate_registration_data(email, password, title, first_name, last_name, country, phone, language, about_me, instagram_username):
     """
     Validiert die Registrierungsdaten für einen neuen Benutzer.
 
@@ -23,19 +23,48 @@ def validate_registration_data(email, password, title, first_name, last_name, co
     Returns:
         tuple: Ein Tupel mit zwei Elementen:
             - bool: True, wenn die Daten gültig sind, andernfalls False.
-            - str: Eine Fehlermeldung, wenn die Daten ungültig sind, andernfalls eine leere Zeichenkette.
+            - lsit: Fehlerliste mit Spaltenangabe
     """
-    if not email or not password or not title or not first_name or not last_name or not country or not state or not language or not instagram_username:
-        return False, "Alle Felder außer Telefonnummer und Über mich sind erforderlich."
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        return False, "Ungültige E-Mail-Adresse."
-    if len(password) < 10:
-        return False, "Passwort muss mindestens 10 Zeichen lang sein."
+    errors = {}
+
+    if not email:
+        errors["email"] = "E-Mail ist erforderlich."
+    elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        errors["email"] = "Ungültige E-Mail-Adresse."
+
+    if not password:
+        errors["password"] = "Passwort ist erforderlich."
+    elif len(password) < 10:
+        errors["password"] = "Passwort muss mindestens 10 Zeichen lang sein."
+
+    if not title:
+        errors["title"] = "Titel ist erforderlich."
+
+    if not first_name:
+        errors["first_name"] = "Vorname ist erforderlich."
+
+    if not last_name:
+        errors["last_name"] = "Nachname ist erforderlich."
+
+    if not country:
+        errors["country"] = "Land ist erforderlich."
+
+    if not language:
+        errors["language"] = "Sprache ist erforderlich."
+
+    if not instagram_username:
+        errors["instagram_username"] = "Instagram-Username ist erforderlich."
+    elif not validate_instagram_username(instagram_username):
+        errors["instagram_username"] = "Ungültiger oder nicht existierender Instagram-Username."
+
     if phone and not re.match(r"^\+?[0-9\s\-]+$", phone):
-        return False, "Ungültige Telefonnummer."
-    if instagram_username and not validate_instagram_username(instagram_username):
-        return False, "Ungültiger oder nicht existierender Instagram-Username."
-    return True, ""
+        errors["phone"] = "Ungültige Telefonnummer."
+
+    if errors:
+        return False, errors
+
+    return True, {}
+
 
 def validate_login_data(email, password):
     """
@@ -50,11 +79,21 @@ def validate_login_data(email, password):
             - bool: True, wenn die Daten gültig sind, andernfalls False.
             - str: Eine Fehlermeldung, wenn die Daten ungültig sind, andernfalls eine leere Zeichenkette.
     """
-    if not email or not password:
-        return False, "E-Mail und Passwort sind erforderlich."
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        return False, "Ungültige E-Mail-Adresse."
-    return True, ""
+    errors = {}
+
+    if not email:
+        errors["email"] = "E-Mail ist erforderlich."
+    elif not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        errors["email"] = "Ungültige E-Mail-Adresse."
+
+    if not password:
+        errors["password"] = "Passwort ist erforderlich."
+
+    if errors:
+        return False, errors
+
+    return True, {}
+
 
 def validate_instagram_username(username):
     """
@@ -74,6 +113,7 @@ def validate_instagram_username(username):
         is_private = soup.find('meta', property='og:description')['content'].find('•') != -1
         return not is_private
     return False
+
 
 def validate_age(birthdate):
     """

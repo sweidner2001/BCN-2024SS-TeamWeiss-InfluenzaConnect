@@ -1,40 +1,59 @@
--------------------------------|---------|----------|---------|---------|------------------------------
-File                           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
--------------------------------|---------|----------|---------|---------|------------------------------
-All files                      |   51.46 |    47.45 |   34.37 |   53.01 |                              
- src                           |       0 |        0 |       0 |       0 |                              
-  App.tsx                      |       0 |      100 |       0 |       0 | 14-30                        
-  index.tsx                    |       0 |      100 |     100 |       0 | 7-19                         
-  reportWebVitals.ts           |       0 |        0 |       0 |       0 | 3-10
- src/components                |      30 |     62.5 |   33.33 |      30 | 
-  Button.tsx                   |       0 |      100 |       0 |       0 | 4-14
-  ButtonSend2DB.tsx            |       0 |      100 |       0 |       0 | 4-14
-  FormularButton.tsx           |     100 |     62.5 |     100 |     100 | 36-66
- src/components/forms          |     100 |      100 |     100 |     100 | 
-  SignupFormInputs1.tsx        |     100 |      100 |     100 |     100 | 
-  SignupFormInputs2.tsx        |     100 |      100 |     100 |     100 | 
-  SignupFormInputs3.tsx        |     100 |      100 |     100 |     100 | 
- src/components/input          |   67.44 |     40.9 |   52.38 |   70.73 | 
-  ErrorField.tsx               |     100 |       50 |     100 |     100 | 21
-  InputField.tsx               |     100 |      100 |     100 |     100 | 
-  InputFieldWithFixedText.tsx  |     100 |      100 |     100 |     100 | 
-  InputLabel.tsx               |     100 |      100 |     100 |     100 | 
-  InputMultiSelectDropdown.tsx |   51.72 |     37.5 |   28.57 |   55.55 | 36-40,46,74-104
-  InputSelect.tsx              |     100 |       50 |     100 |     100 | 42
-  InputTextarea.tsx            |     100 |       50 |     100 |     100 | 43
- src/components/login          |   51.85 |       60 |   11.11 |   51.85 | 
-  DropdownItem.tsx             |   33.33 |      100 |       0 |   33.33 | 9-14
-  DropdownMenu.tsx             |   54.16 |       60 |    12.5 |   54.16 | 31-32,61,65,76-94
- src/components/pages          |   35.55 |       55 |   11.11 |   38.09 | 
-  Landing.tsx                  |      75 |      100 |      50 |      75 | 29
-  Signup.tsx                   |    31.7 |       55 |    6.25 |   34.21 | 60-82,92-101,111-133,161-193
--------------------------------|---------|----------|---------|---------|------------------------------
+---------------------------------|---------|----------|---------|---------|--------------------------------------
+File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+---------------------------------|---------|----------|---------|---------|--------------------------------------
+All files                        |   42.92 |    41.53 |      40 |   43.26 |                                      
+ src                             |       0 |        0 |       0 |       0 |                                      
+  App.tsx                        |       0 |      100 |       0 |       0 | 16-32                                
+  index.tsx                      |       0 |      100 |     100 |       0 | 7-19                                 
+  reportWebVitals.ts             |       0 |        0 |       0 |       0 | 3-10
+ src/components                  |   26.08 |    36.36 |   30.76 |   26.08 | 
+  ChangePasswordDialog.tsx       |   77.77 |       50 |     100 |   77.77 | 24-25
+  NavBar.tsx                     |       0 |        0 |       0 |       0 | 13-127
+  ProfileImage.tsx               |     100 |      100 |     100 |     100 | 
+  ProfileMenu.tsx                |      50 |       50 |   33.33 |      50 | 13-19
+ src/components/buttons          |   27.27 |      100 |   28.57 |   27.27 | 
+  Button.tsx                     |       0 |      100 |       0 |       0 | 4-14
+  ButtonSend2DB.tsx              |       0 |      100 |       0 |       0 | 4-14
+  FormularButton.tsx             |     100 |      100 |     100 |     100 | 
+  SaveChangesButton.tsx          |       0 |      100 |       0 |       0 | 9-10
+ src/components/cards            |      75 |      100 |   53.84 |      75 | 
+  PrivateDataCard.tsx            |      75 |      100 |      50 |      75 | 26-27,54-60
+  PublicDataCard.tsx             |      75 |      100 |      60 |      75 | 29-30,51
+ src/components/forms            |     100 |      100 |     100 |     100 | 
+  SignupFormInputs1.tsx          |     100 |      100 |     100 |     100 | 
+  SignupFormInputs2.tsx          |     100 |      100 |     100 |     100 | 
+  SignupFormInputs3.tsx          |     100 |      100 |     100 |     100 | 
+ src/components/input            |   70.31 |    65.71 |      60 |   72.88 | 
+  EditableInputField.tsx         |     100 |      100 |     100 |     100 | 
+  EditableInputSelect.tsx        |     100 |      100 |     100 |     100 | 
+  EditableInputTextarea.tsx      |     100 |      100 |     100 |     100 | 
+  ErrorField.tsx                 |     100 |      100 |     100 |     100 | 
+  InputField.tsx                 |     100 |      100 |     100 |     100 | 
+  InputFieldWithFixedText.tsx    |     100 |      100 |     100 |     100 | 
+  InputLabel.tsx                 |     100 |      100 |     100 |     100 | 
+  InputMultiCheckboxDropdown.tsx |   88.23 |      100 |      75 |   92.85 | 103
+  InputMultiSelectDropdown.tsx   |   34.61 |     37.5 |    9.09 |    37.5 | 56-65,81-123
+  InputSelect.tsx                |     100 |       50 |     100 |     100 | 42
+  InputTextarea.tsx              |     100 |       50 |     100 |     100 | 43
+ src/components/login            |   55.55 |    36.36 |   45.45 |   55.55 | 
+  DropdownItem.tsx               |     100 |      100 |     100 |     100 | 
+  DropdownMenu.tsx               |   58.33 |       80 |      25 |   58.33 | 31-32,65,76-94
+  LoginDialog.tsx                |   44.44 |        0 |     100 |   44.44 | 41-82
+ src/components/pages            |   26.28 |    27.47 |   17.07 |   26.74 | 
+  InfluencerOverview.tsx         |       0 |        0 |       0 |       0 | 8-249
+  Landing.tsx                    |       0 |        0 |       0 |       0 | 8-71
+  ProfileView.tsx                |    72.5 |    63.15 |   54.54 |    72.5 | 29-32,56-59,68-76,89-91,106-112      
+  Signup.tsx                     |   24.28 |    43.33 |    8.33 |   24.63 | 35-46,93-114,124-132,140-203,226-255
+ src/dump                        |       0 |      100 |       0 |       0 | 
+  ExampleTable.tsx               |       0 |      100 |       0 |       0 | 11-13
+ src/functions                   |      75 |        0 |      75 |      75 | 
+  useHandleClickOutside.ts       |      75 |        0 |      75 |      75 | 14-15
+---------------------------------|---------|----------|---------|---------|--------------------------------------
+Snapshot Summary
+ › 2 snapshots written from 2 test suites.
 
-
-
-
-console.error
-      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
-
-Ich konnte den fehler bei Signup.test.tsx nicht überwinden
+Test Suites: 12 failed, 4 passed, 16 total
+Tests:       16 failed, 30 passed, 46 total
+Snapshots:   2 written, 2 total
+Time:        16.884 s
 Testcoverage wurde aufgerufen mit: npm run test -- --coverage --watchAll=false

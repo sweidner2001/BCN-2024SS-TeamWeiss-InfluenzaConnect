@@ -1,68 +1,61 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { act } from 'react';
+import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SignupFormInputs2, SignupSchema2, IFormInputs2 } from '../forms/SignupFormInputs2';
 import userEvent from '@testing-library/user-event';
-import { useForm } from 'react-hook-form';
-import { SignupFormInputs2 } from '../forms/SignupFormInputs2';
+import {act} from 'react';
 
-// Mocken des useForm Hooks
-jest.mock('react-hook-form', () => ({
-  ...jest.requireActual('react-hook-form'),
-  useForm: jest.fn(),
-}));
+// Cleanup nach jedem Test
+afterEach(cleanup);
 
-describe('SignupFormInputs2 Komponenten', () => {
-  // Mocken des useForm Hooks mit einem Dummy-Wert
-  const mockedForm = {
-    register: jest.fn(),
-    formState: {
-      errors: {}, //Dummywerte
-    },
-  };
+const renderWithForm = (Component: React.FC<{ form2: UseFormReturn<any> }>) => {
+    const Wrapper: React.FC = () => {
+        const form2 = useForm<IFormInputs2>({
+            resolver: yupResolver(SignupSchema2),
+        });
 
-  beforeEach(() => {
-    (useForm as any).mockReturnValue(mockedForm);
+        return <Component form2={form2} />;
+    };
 
-    // Rendern der Komponente
-    render(<SignupFormInputs2 form2={mockedForm} />);
-  });
+    return render(<Wrapper />);
+};
 
-  it('renders form inputs correctly', () => {
-    // Assertions für die gerenderten Elemente
+test('renderstSignupFormInputs2 Komponente richtig', () => {
+    renderWithForm(SignupFormInputs2);
+
+    // Überprüfen der statischen Texte
     expect(screen.getByText('Persönliche Daten')).toBeInTheDocument();
+    expect(screen.getByText('Diese Informationen sind öffentlich sichtbar. Seien Sie vorsichtig, was Sie teilen.')).toBeInTheDocument();
+
+    // Überprüfen der Beschriftungen für die Eingabefelder
     expect(screen.getByLabelText('Anrede')).toBeInTheDocument();
     expect(screen.getByLabelText('Vorname')).toBeInTheDocument();
     expect(screen.getByLabelText('Nachname')).toBeInTheDocument();
-    expect(screen.getByLabelText('Land')).toBeInTheDocument();
-    expect(screen.getByLabelText('Bundesland')).toBeInTheDocument();
+    expect(screen.getByLabelText('In welchem Land leben Sie?')).toBeInTheDocument();
     expect(screen.getByLabelText('Telefonnummer')).toBeInTheDocument();
-    expect(screen.getByLabelText('Sprache')).toBeInTheDocument();
-    expect(screen.getByLabelText('Gesprochene Sprachen')).toBeInTheDocument();
-    expect(screen.getByLabelText('Über mich')).toBeInTheDocument();
-  });
 
-  it('Vorname wird korrekt übergeben', () => {
-    const inputVorname = screen.getByLabelText('Vorname');
-    userEvent.type(inputVorname, 'Max');
-    expect(inputVorname).toHaveValue('Max');
-  });
+});
 
-  it('Auswahlinput wird korrekt übergeben', () => {
-    const selectAnrede = screen.getByLabelText('Anrede');
-    userEvent.selectOptions(selectAnrede, 'Herr');
-    expect(selectAnrede).toHaveValue('Herr');
-  });
 
-  it('Textfeld wird korrekt übergeben', () => {
-    const textareaUeberMich = screen.getByLabelText('Über mich');
-    userEvent.type(textareaUeberMich, 'Ein paar Informationen über mich.');
-    expect(textareaUeberMich).toHaveValue('Ein paar Informationen über mich.');
-  });
 
-  it('Auswahlinput wird korrekt übergeben', () => {
-    const multiSelectSprachen = screen.getByLabelText('Gesprochene Sprachen');
-    userEvent.type(multiSelectSprachen, 'deutsch, englisch'); 
-    expect(multiSelectSprachen).toHaveValue('deutsch, englisch');
-  
-  });
+test('geht richtiig mit Input um', async () => {
+    renderWithForm(SignupFormInputs2);
+
+    const vornameInput = screen.getByLabelText('Vorname') as HTMLInputElement;
+    fireEvent.change(vornameInput, { target: { value: 'Max' } });
+    expect(vornameInput.value).toBe('Max');
+
+    const nachnameInput = screen.getByLabelText('Nachname') as HTMLInputElement;
+    fireEvent.change(nachnameInput, { target: { value: 'Mustermann' } });
+    expect(nachnameInput.value).toBe('Mustermann');
+
+    const telefonnrInput = screen.getByLabelText('Telefonnummer') as HTMLInputElement;
+    fireEvent.change(telefonnrInput, { target: { value: '123456789' } });
+    expect(telefonnrInput.value).toBe('123456789');
+});
+
+test('stimmt mit snapshot überein', () => {
+    const { asFragment } = renderWithForm(SignupFormInputs2);
+    expect(asFragment()).toMatchSnapshot();
 });

@@ -13,7 +13,6 @@ import ErrorField from "./ErrorField";
  * @member id ID des Input-Feldes
  * @member label Text über Input-Feld
  * @member type Input-Type
- * @member required Ist das Feld ein Pflichtfeld / Eingabepflicht?
  * @member autoComplete Wert für die Auto-Vervollständigung {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete}
  * @member error anzuzeigende Fehlernachricht
  */

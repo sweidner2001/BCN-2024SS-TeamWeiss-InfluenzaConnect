@@ -1,7 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup, act } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
 import { SignupFormInputs3 } from '../forms/SignupFormInputs3';
+
+// Cleanup nach jedem Test
+afterEach(cleanup);
 
 // Mocken des useForm Hooks
 jest.mock('react-hook-form', () => ({
@@ -22,7 +25,9 @@ describe('SignupFormInputs3 Komponente', () => {
     (useForm as jest.Mock).mockReturnValue(mockedForm);
 
     // Komponente rendern
-    render(<SignupFormInputs3 form3={mockedForm} />);
+    act(() => {
+      render(<SignupFormInputs3 form3={mockedForm} />);
+    });
   });
 
   it('rendert die Formulareingaben korrekt', () => {
@@ -32,4 +37,6 @@ describe('SignupFormInputs3 Komponente', () => {
     expect(screen.getByLabelText('Instagram Username')).toBeInTheDocument();
     expect(screen.getByText('instagram.com/')).toBeInTheDocument();
   });
+
+  
 });
