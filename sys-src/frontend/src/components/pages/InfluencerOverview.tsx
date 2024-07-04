@@ -224,12 +224,12 @@ const InfluencerOverview: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
+        setSearchTerm(event.target.value.toLowerCase());
     };
 
     // Daten filtern:
     const filteredData = data.filter(item =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name.toLowerCase().includes(searchTerm) || item.instagram_username.includes(searchTerm) || item.advertisingDivision.some(str => str.toLowerCase().includes(searchTerm))
     );
 
 
