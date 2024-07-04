@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import InputMultiCheckboxDropdown from "../input/InputMultiCheckboxDropdown";
 import NavBar from "../NavBar";
+import {date} from "yup";
 
 
 
@@ -29,7 +30,7 @@ interface IUserData {
     instagram_comments_avg: string | number;
     instagram_likes_avg: string | number;
     instagram_engagement_rate: string | number;
-    instagram_time_since_last_post: string;
+    instagram_time_since_last_post: string | number | Date;
     about_me: string;
 }
 
@@ -133,6 +134,49 @@ const getRandomAdvertisingDivisions = (length: number): string[] => {
 
 
 /**
+ * @function generateRandomDateTime Gibt ein beliebiges Datum der letzten 30 Tage zurück
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param previousDays Wie viele Tage darf das Datum in der Vergangenheit sein?
+ */
+const generateRandomDateTime = (previousDays : number): Date => {
+    const now = new Date();
+    const daysAgo = Math.floor(Math.random() * previousDays);
+    now.setDate(now.getDate() - daysAgo);
+    now.setHours(Math.floor(Math.random() * 24));
+    return now;
+};
+
+
+
+/**
+ * @function formatDateTimeToGerman Gibt das Datum im Deutschen Format zurück (dd.mm.yyyy HH:00). Minuten werden immer auf 0 abgerundet
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param input Date-Objekt oder TimeStamp
+ */
+const formatDateTimeToGerman = (input: Date | number | string): string => {
+    if (typeof input === 'string') {
+        return input;
+    }
+
+    const date = input as Date;
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+
+    return `${day}.${month}.${year} ${hours}:00`;
+};
+
+
+
+
+/**
  * @function fetchRandomUserData Holt Bespieldaten von einer API
  * @author Sebastian Weidner
  * @since 04.07.2024
@@ -158,7 +202,7 @@ const fetchRandomUserData = (setData: (data: IUserData[]) => void) => {
                     instagram_followers: parseInt(randomUser.dob.age) * 10000,
                     instagram_likes_avg: parseInt(randomUser.dob.age) * 1000,
                     instagram_engagement_rate: '-',
-                    instagram_time_since_last_post: '-'
+                    instagram_time_since_last_post: generateRandomDateTime(30)
                 };
             });
 
@@ -203,7 +247,7 @@ const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void
                         instagram_followers: userDB.instagram_followers || parseInt(randomUser.dob.age)*10000,
                         instagram_likes_avg: userDB.instagram_likes_avg || parseInt(randomUser.dob.age)*1000,
                         instagram_engagement_rate: userDB.instagram_engagement_rate || '0',
-                        instagram_time_since_last_post: userDB.instagram_time_since_last_post || '-'
+                        instagram_time_since_last_post: userDB.instagram_time_since_last_post?.toString() ? Date.parse(userDB.instagram_time_since_last_post.toString()) : generateRandomDateTime(30)
                     };
                 });
 
@@ -510,7 +554,7 @@ const InfluencerOverview: React.FC = () => {
                             {/* Instagram - wann war letzter Post  */}
                             {selectedColumns.includes('instagram_time_since_last_post') && (
                                 <td className="px-6 py-4">
-                                    {item.instagram_time_since_last_post}
+                                    {formatDateTimeToGerman(item.instagram_time_since_last_post)}
                                 </td>
                             )}
 
