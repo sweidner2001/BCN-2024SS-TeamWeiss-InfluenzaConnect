@@ -66,6 +66,7 @@ const InfluencerOverview: React.FC = () => {
 
     //__________________ Daten holen: _____________________
     const [data, setData] = useState<IUserData[]>([]);
+    const [loading, setLoading] = useState(true);
 
      useEffect(() => {
         axios.post('http://localhost:5001/collectData')
@@ -101,7 +102,7 @@ const InfluencerOverview: React.FC = () => {
                         gender: user.gender,
                         name: user.name.last + ' ' + user.name.first,
                         instagram_comments_avg: user.dob.age,
-                        instagram_username: '@' + user.location.city + user.name.last,
+                        instagram_username: 'festdamen.ffwschoenkirch2024',
                         language: 'Deutsch',
                         nationality: user.location.country,
                         profileImage: user.picture.medium,
@@ -116,7 +117,11 @@ const InfluencerOverview: React.FC = () => {
                 .catch(error => {
                     console.error('There was an error making the Testdata-request!', error);
                 });
+        }).finally(() => {
+
+                setLoading(false);
         });
+
     }, []);
 
 
@@ -136,7 +141,7 @@ const InfluencerOverview: React.FC = () => {
 
 
     //__________________ Filterung der Spalten ___________________
-    // Definiere das assoziative Array
+    // Definiere das assoziative Array mit anzuzeigneden Texten als Wert. Der Key wird vom Filter zurückgegeben
     const columnsTableHead: { [key: string]: string } = {
         name: "Name",
         //age: "Alter",
@@ -166,9 +171,11 @@ const InfluencerOverview: React.FC = () => {
     return (
 
         <>
-        <NavBar/>
+            {/* Navigationsleiste */}
+            <NavBar/>
 
-        {/*------------------- Influencer Tabelle ---------------------*/}
+
+            {/*------------------- Influencer Tabelle ---------------------*/}
             <div className="max-w-full mx-auto mt-4 px-4 sm:px-6 lg:px-8">
 
 
@@ -197,15 +204,17 @@ const InfluencerOverview: React.FC = () => {
 
                 </div>
 
-                {/*<div className="flex flex-col overflow-x-auto">*/}
-                {/*    <div className="sm:-mx-6 lg:-mx-8">*/}
-                {/*        <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">*/}
-                {/*            <div className="overflow-x-auto">*/}
-                {/*<table className="min-w-full text-start text-sm font-light text-surface dark:text-white">*/}
 
                 {/*----- Tabelle ------*/}
-                {/*// overflow-hidden*/}
                 <div className="w-full h-[calc(100vh-4.5rem)] overflow-hidden bg-white shadow-md sm:rounded-lg mb-2">
+
+                    {/* Loding Animation, wenn Daten noch nicht vorhanden */}
+                    {loading ? (
+                        <div className="flex justify-center items-center h-full">
+                            <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+                        </div>
+                    ) : (
+
                     <div className="w-full h-full overflow-x-auto overflow-y-auto ">
                         <table className="w-full text-sm text-left text-gray-700 ">
 
@@ -294,13 +303,7 @@ const InfluencerOverview: React.FC = () => {
                                     {/* Nationalität */}
                                     {selectedColumns.includes('nationality') && (
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center">
-                                                <div
-                                                    className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}
-                                                ></div>
-                                                {' '}
-                                                {item.nationality}
-                                            </div>
+                                            {item.nationality}
                                         </td>
                                     )}
 
@@ -314,9 +317,9 @@ const InfluencerOverview: React.FC = () => {
                                     {/* Instagram Username */}
                                     {selectedColumns.includes('instagram_username') && (
                                         <td className="px-6 py-4">
-                                            <a href="https://www.instagram.com/festdamen.ffwschoenkirch2024/"
+                                            <a href={`https://www.instagram.com/${item.instagram_username}/`}
                                                className="font-medium hover:text-blue-600 hover:underline whitespace-nowrap">
-                                                {item.instagram_username}
+                                                @{item.instagram_username}
                                             </a>
                                         </td>
                                     )}
@@ -344,20 +347,28 @@ const InfluencerOverview: React.FC = () => {
 
                                     {/* Instagram - Score  */}
                                     {selectedColumns.includes('instagram_engagement_rate') && (
+
                                         <td className="px-6 py-4">
+                                            {/*<div className="flex items-center">*/}
+                                            {/*    <div*/}
+                                            {/*        className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}*/}
+                                            {/*    ></div>*/}
+                                            {/*    {' '}*/}
+                                            {/*    {item.instagram_engagement_rate}*/}
+                                            {/*</div>*/}
                                             {item.instagram_engagement_rate}
                                         </td>
-                                    )}
+                            )}
 
-                                    {/* Instagram - wann war letzter Post  */}
-                                    {selectedColumns.includes('instagram_time_since_last_post') && (
-                                        <td className="px-6 py-4">
-                                            {item.instagram_time_since_last_post}
-                                        </td>
-                                    )}
+                            {/* Instagram - wann war letzter Post  */}
+                            {selectedColumns.includes('instagram_time_since_last_post') && (
+                                <td className="px-6 py-4">
+                                    {item.instagram_time_since_last_post}
+                                </td>
+                            )}
 
-                                    {/* Über mich  */}
-                                    {selectedColumns.includes('about_me') && (
+                            {/* Über mich  */}
+                            {selectedColumns.includes('about_me') && (
                                         <td className="px-6 py-4 text-xs min-w-80">
                                             {item.about_me}
                                         </td>
@@ -377,12 +388,12 @@ const InfluencerOverview: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
+                    )}
                 </div>
             </div>
         </>
     );
 };
-
 
 
 export default InfluencerOverview;
