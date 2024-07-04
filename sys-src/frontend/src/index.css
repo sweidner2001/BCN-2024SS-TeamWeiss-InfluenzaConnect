@@ -54,6 +54,30 @@ thead {
 }
 
 
+
+* {
+  scrollbar-width: thin;
+  /*scrollbar-color: var(--secondary) var(--primary);*/
+}
+
+
+
+
+.loader {
+  /*@apply border-t-blue-600;*/
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /*.transition-transform {*/
 /*  transition: transform 0.5s ease;*/
 /*}*/
