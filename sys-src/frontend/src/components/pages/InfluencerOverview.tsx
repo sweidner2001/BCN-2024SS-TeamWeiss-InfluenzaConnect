@@ -4,28 +4,7 @@ import InputMultiCheckboxDropdown from "../input/InputMultiCheckboxDropdown";
 import NavBar from "../NavBar";
 
 
-// Funktion zur Generierung eines Hash-Wertes aus einem String
-const stringToHash = (str: string): number => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash |= 0; // Konvertierung zu 32bit Integer
-    }
-    return hash;
-};
 
-// Funktion zur Generierung einer hellen Farbe aus einem String
-const stringToColor = (str: string): string => {
-    const hash = stringToHash(str);
-    const r = (hash & 0xFF0000) >> 16;
-    const g = (hash & 0x00FF00) >> 8;
-    const b = hash & 0x0000FF;
-
-    // Helle Farbe erzeugen
-    const lightColor = `rgba(${r + 128}, ${g + 128}, ${b + 128}, 0.7)`;
-    return lightColor;
-};
 
 
 
@@ -54,6 +33,11 @@ interface IUserData {
     about_me: string;
 }
 
+
+
+
+
+// Beispieldaten für Demo-Zwecke:
 const advertisingDivisionsExamples: string[] = [
     'Beauty',
     'Fashion',
@@ -67,6 +51,57 @@ const advertisingDivisionsExamples: string[] = [
     'Wellness'
 ];
 
+
+//####################################### Funktionen: #########################################
+/**
+ * @function stringToHash Funktion zur Generierung eines Hash-Wertes aus einem String.
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param str String
+ */
+const stringToHash = (str: string): number => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash |= 0; // Konvertierung zu 32bit Integer
+    }
+    return hash;
+};
+
+/**
+ * @function stringToColor Funktion zur Generierung einer hellen Farbe aus einem String. Wird bspw. für die Anzeige der
+ * Produkt-Werbe-Sparte benötigt
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param str String
+ */
+const stringToColor = (str: string): string => {
+    const hash = stringToHash(str);
+    const r = (hash & 0xFF0000) >> 16;
+    const g = (hash & 0x00FF00) >> 8;
+    const b = hash & 0x0000FF;
+
+    // Helle Farbe erzeugen
+    const lightColor = `rgba(${r + 128}, ${g + 128}, ${b + 128}, 0.7)`;
+    return lightColor;
+};
+
+
+
+
+/**
+ * @function getRandomAdvertisingDivisions Gibt für die Prudukt-Werbesparte Beispiele für die Demo zurück
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param length Array-Länge der Daten die zurückgegeben werden sollen
+ */
 const getRandomAdvertisingDivisions = (length: number): string[] => {
     const randomDivisions: string[] = [];
     for (let i = 0; i < length; i++) {
@@ -76,7 +111,15 @@ const getRandomAdvertisingDivisions = (length: number): string[] => {
 };
 
 
-// Funktion, die die Daten von der API abruft und verarbeitet
+
+/**
+ * @function fetchRandomUserData Holt Bespieldaten von einer API
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param setData Funktion um Daten in die Tabelle zu setzen (Setter von useState())
+ */
 const fetchRandomUserData = (setData: (data: IUserData[]) => void) => {
     axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
         .then(randomUserDataResponse => {
@@ -107,7 +150,15 @@ const fetchRandomUserData = (setData: (data: IUserData[]) => void) => {
 };
 
 
-// Funktion, die die Daten von der API abruft und verarbeitet
+/**
+ * @function fetchRandomUserDataAndMergeDBData Holt Bespieldaten von einer API und ergänzt fehlende Daten eines vorhandenen Datenopbjekts.
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param setData Funktion um Daten in die Tabelle zu setzen (Setter von useState())
+ * @param userData zu ergänzende Daten
+ */
 const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void, userData: IUserData[]) => {
 
         // Fehlende durch Random-Daten ergänzen
@@ -145,6 +196,11 @@ const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void
 
 
 
+
+
+
+
+//####################################### Komponente: #########################################
 /**
  * @function InfluencerOverview Tabelle, die alle Infos zu allen Influencer anzeigt
  * @author Sebastian Weidner
@@ -181,44 +237,14 @@ const InfluencerOverview: React.FC = () => {
                  return newData;
              }).then((userData: IUserData[])=>{
 
+                 // Für Demo daten ergänzen
                 fetchRandomUserDataAndMergeDBData(setData, userData);
-                 //
-                 // // Fehlende durch Random-Daten ergänzen
-                 // axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
-                 //     .then(randomUserDataResponse => {
-                 //         const randomUserData = randomUserDataResponse.data.results;
-                 //
-                 //         const newDataForDemo: IUserData[] = Object.values(userData).map((userDB, index) => {
-                 //             const randomUser : any = randomUserData[index % randomUserData.length];
-                 //
-                 //             return {
-                 //                 gender: userDB.gender || randomUser.gender,
-                 //                 name: userDB.name || `${randomUser.name.first} ${randomUser.name.last}`,
-                 //                 instagram_comments_avg: userDB.instagram_comments_avg || parseInt(randomUser.dob.age)*100,
-                 //                 instagram_username: userDB.instagram_username || 'festdamen.ffwschoenkirch2024',
-                 //                 language: userDB.language || 'Deutsch',
-                 //                 nationality: userDB.nationality || randomUser.location.country,
-                 //                 profileImage: userDB.profileImage || randomUser.picture.medium,
-                 //                 advertisingDivision: userDB.advertisingDivision || getRandomAdvertisingDivisions(4),
-                 //                 statusColor: userDB.statusColor || 'bg-green-500',
-                 //                 about_me: userDB.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
-                 //                 instagram_followers: userDB.instagram_followers || parseInt(randomUser.dob.age)*10000,
-                 //                 instagram_likes_avg: userDB.instagram_likes_avg || parseInt(randomUser.dob.age)*1000,
-                 //                 instagram_engagement_rate: userDB.instagram_engagement_rate || '0',
-                 //                 instagram_time_since_last_post: userDB.instagram_time_since_last_post || '-'
-                 //             };
-                 //         });
-                 //
-                 //         setData(newDataForDemo);
-                 //     })
-                 //     .catch(error => {
-                 //         console.error('There was an error fetching random user data!', error);
-                 //     });
+
              })
              .catch(error => {
                  console.error('There was an error fetching the USER-DATA from DB!', error);
 
-                 // Nur Demo-Daten nehmen
+                 // Nur Demo-Daten nehmen, weil die anderen nicht verfügbar sind.
                  fetchRandomUserData(setData);
 
              }).finally(()=>setLoading(false));
