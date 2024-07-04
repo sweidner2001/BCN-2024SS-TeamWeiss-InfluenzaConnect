@@ -320,13 +320,34 @@ const InfluencerOverview: React.FC = () => {
                                 </th>
 
                                 {/* Alle Überschriften */}
-                                {Object.entries(columnsTableHead).map(([key, value]) => (
-                                    selectedColumns.includes(key) && (
-                                        <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">
-                                            {value}
-                                        </th>
-                                    )
-                                ))}
+                                {/*{Object.entries(columnsTableHead).map(([key, value]) => (*/}
+                                {/*    selectedColumns.includes(key) && (*/}
+
+                                {/*        <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">*/}
+                                {/*            {value}*/}
+                                {/*        </th>*/}
+                                {/*    )*/}
+                                {/*))}*/}
+
+                                {Object.entries(columnsTableHead).map(([key, value]) => {
+                                    let additionalClass = '';
+
+                                    // Überprüfe, ob der Schlüssel speziell ist und füge entsprechende Klasse hinzu
+                                    if (key === 'instagram_likes_avg' || key === 'instagram_comments_avg' || key === 'instagram_engagement_rate' || key === 'instagram_time_since_last_post' || key === 'instagram_followers' ) {
+                                        additionalClass = 'text-center';
+                                    }
+
+                                    // Überprüfe, ob der Schlüssel in selectedColumns enthalten ist
+                                    if (selectedColumns.includes(key)) {
+                                        return (
+                                            <th key={key} scope="col" className={`pl-3 pr-6 py-3 xl:py-4 xl:px-6 ${additionalClass}`}>
+                                                {value}
+                                            </th>
+                                        );
+                                    } else {
+                                        return null; // Wenn der Schlüssel nicht in selectedColumns enthalten ist, gib null zurück
+                                    }
+                                })}
 
                                 {/*<th scope="col" className="px-6 py-3 xl:py-4 xl:px-6">*/}
                                 {/*    Action*/}
@@ -419,21 +440,21 @@ const InfluencerOverview: React.FC = () => {
 
                                     {/* Instagram - Follower  */}
                                     {selectedColumns.includes('instagram_followers') && (
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-right">
                                             {formatNumberToGerman(item.instagram_followers)}
                                         </td>
                                     )}
 
                                     {/* Instagram - durchschnittliche Kommentare  */}
                                     {selectedColumns.includes('instagram_comments_avg') && (
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-center">
                                             {formatNumberToGerman(item.instagram_comments_avg)}
                                         </td>
                                     )}
 
                                     {/* Instagram - durchschnittliche Likes  */}
                                     {selectedColumns.includes('instagram_likes_avg') && (
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-center">
                                             {formatNumberToGerman(item.instagram_likes_avg)}
                                         </td>
                                     )}
@@ -441,7 +462,7 @@ const InfluencerOverview: React.FC = () => {
                                     {/* Instagram - Score  */}
                                     {selectedColumns.includes('instagram_engagement_rate') && (
 
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-right">
                                             {/*<div className="flex items-center">*/}
                                             {/*    <div*/}
                                             {/*        className={`h-2.5 w-2.5 rounded-full ${item.statusColor} mr-2`}*/}
@@ -455,7 +476,7 @@ const InfluencerOverview: React.FC = () => {
 
                             {/* Instagram - wann war letzter Post  */}
                             {selectedColumns.includes('instagram_time_since_last_post') && (
-                                <td className="px-6 py-4">
+                                <td className="px-6 py-4 text-center">
                                     {formatDateTimeToGerman(item.instagram_time_since_last_post)}
                                 </td>
                             )}
