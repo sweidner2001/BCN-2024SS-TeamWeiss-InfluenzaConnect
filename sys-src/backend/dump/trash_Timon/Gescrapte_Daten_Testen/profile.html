@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max Mustermann's Instagram Profile</title>
+    <link rel="stylesheet" href="static/profile.css">
+</head>
+<body>
+<div class="profile-container">
+    <div class="profile-header" id="profile-header">
+        <!-- Profilbild, Name und Bio werden hier eingefügt -->
+    </div>
+    <div class="profile-posts" id="profile-posts">
+        <!-- Posts werden hier eingefügt -->
+    </div>
+</div>
+
+<script>
+    // JSON-Objekt direkt im HTML definiert
+    const profile = {'Name': 'stricklandmma',
+        'profile_pic_url': 'https://scontent-muc2-1.cdninstagram.com/v/t51.2885-19/299662844_429319625828078_6245757436019650951_n.jpg?stp=dst-jpg_s320x320&_nc_ht=scontent-muc2-1.cdninstagram.com&_nc_cat=1&_nc_ohc=tFjDl4Q1p_EQ7kNvgGtrHPF&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYCa0Vbb47stihcEe1WokmyGtgh6vgr2Jeqth53NS8Ut8w&oe=6675B6C2&_nc_sid=8b3546',
+        'profile_bio': 'Welcome to the shadow realm!!!!\nShop my merch!',
+        'posts_url': ['https://scontent-muc2-1.cdninstagram.com/v/t51.29350-15/448337849_1648429729255617_6082228138596517774_n.jpg?stp=dst-jpg_e15&_nc_ht=scontent-muc2-1.cdninstagram.com&_nc_cat=109&_nc_ohc=Tx47o0Bnu3cQ7kNvgFBcvg0&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYCu0WDYQiLU9iFfUNKQieTFAeNqq2boiI6JewqG38lGJQ&oe=6671E3DD&_nc_sid=8b3546',
+            'https://scontent-muc2-1.cdninstagram.com/v/t51.29350-15/448174405_988956546198521_166872059866037835_n.jpg?stp=dst-jpg_e15&_nc_ht=scontent-muc2-1.cdninstagram.com&_nc_cat=105&_nc_ohc=S4vY7ElcQ6MQ7kNvgG_OIgX&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AYBsMEfy5bbJvGCffez3723gFLdxbI1_OrmNozT3myPRvg&oe=6671C4E8&_nc_sid=8b3546',
+            'https://scontent-muc2-1.cdninstagram.com/v/t51.29350-15/448156161_430994896586898_3117261836315622501_n.heic?stp=dst-jpg_e35_s1080x1080&_nc_ht=scontent-muc2-1.cdninstagram.com&_nc_cat=106&_nc_ohc=9jCkSXXtGI4Q7kNvgEnX-kh&edm=AOQ1c0wBAAAA&ccb=7-5&ig_cache_key=MzM4ODI2NDI5Mjg5NjY5NTQ2NA%3D%3D.2-ccb7-5&oh=00_AYCpIXvn6LUbghHA1ePFUNLG_KXr52ArZf-Wbjj9Y4L6uw&oe=6675ED43&_nc_sid=8b3546'],
+        'posts_caption': ['Thanks for the explanation @drdavidabbasi\nI woke up in the hospital after a motorcycle crash and the first thing the surgeon said was "we xrayed your legs, can you walk?" Had no idea why he asked me that until I seen the xray of my legs...',
+            'Fun day of training with @kkohl11_ ... I felt like a real beginner today lol..... Thanks for all the pointers...',
+            'What a life of MMA does to your bones lol!!!!!']};
+
+    // Dynamisches Einfügen der Profilinformationen
+    document.getElementById('profile-header').innerHTML = `
+            <img src="${profile.profile_pic_url}" alt="Profile" class="profile-pic">
+            <h1>${profile.Name}</h1>
+            <p>${profile.profile_bio}</p>
+        `;
+
+    // Dynamisches Einfügen der Posts
+    const profilePosts = document.getElementById('profile-posts');
+    profile.posts_url.forEach((url, index) => {
+        const caption = profile.posts_caption[index];
+        const postElement = document.createElement('div');
+        postElement.className = 'post';
+        postElement.innerHTML = `
+                <a href="${url}" target="_blank" rel="noopener noreferrer">
+                    <img src="${url}" alt="Post">
+                </a>
+                <p>${caption}</p>
+            `;
+        profilePosts.appendChild(postElement);
+    });
+</script>
+</body>
+</html>
