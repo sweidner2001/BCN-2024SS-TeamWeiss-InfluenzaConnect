@@ -91,7 +91,27 @@ const stringToColor = (str: string): string => {
     return lightColor;
 };
 
+/**
+ * @function formatNumberToGerman Formatiert eine Nummer ins Deutsche Format
+ * @author Sebastian Weidner
+ * @since 04.07.2024
+ * @version 1.0
+ *
+ * @param number Nummer die formatiert werden soll
+ */
+const formatNumberToGerman = (input: number | string): string => {
+    let number;
+    if (typeof(input) === 'string') {
+        number = parseFloat(input);
+        if (isNaN(number)) {
+            return input;
+        }
+    } else {
+        number = input;
+    }
 
+    return new Intl.NumberFormat("de-DE").format(number);
+};
 
 
 /**
@@ -454,21 +474,21 @@ const InfluencerOverview: React.FC = () => {
                                     {/* Instagram - Follower  */}
                                     {selectedColumns.includes('instagram_followers') && (
                                         <td className="px-6 py-4">
-                                            {item.instagram_followers}
+                                            {formatNumberToGerman(item.instagram_followers)}
                                         </td>
                                     )}
 
                                     {/* Instagram - durchschnittliche Kommentare  */}
                                     {selectedColumns.includes('instagram_comments_avg') && (
                                         <td className="px-6 py-4">
-                                            {item.instagram_comments_avg}
+                                            {formatNumberToGerman(item.instagram_comments_avg)}
                                         </td>
                                     )}
 
                                     {/* Instagram - durchschnittliche Likes  */}
                                     {selectedColumns.includes('instagram_likes_avg') && (
                                         <td className="px-6 py-4">
-                                            {item.instagram_likes_avg}
+                                            {formatNumberToGerman(item.instagram_likes_avg)}
                                         </td>
                                     )}
 
@@ -483,7 +503,7 @@ const InfluencerOverview: React.FC = () => {
                                             {/*    {' '}*/}
                                             {/*    {item.instagram_engagement_rate}*/}
                                             {/*</div>*/}
-                                            {item.instagram_engagement_rate}
+                                            {formatNumberToGerman(item.instagram_engagement_rate)}
                                         </td>
                             )}
 
