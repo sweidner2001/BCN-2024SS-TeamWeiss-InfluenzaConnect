@@ -29,6 +29,7 @@ const stringToColor = (str: string): string => {
 
 
 
+
 /**
  * @interface IUserData Datentyp für die anzuzeigenden Spalten
  * @author Sebastian Weidner
@@ -45,14 +46,102 @@ interface IUserData {
     language: string;
     statusColor: string;
     instagram_username: string;
-    instagram_followers: string;
-    instagram_comments_avg: string;
-    instagram_likes_avg: string;
-    instagram_engagement_rate: string;
+    instagram_followers: string | number;
+    instagram_comments_avg: string | number;
+    instagram_likes_avg: string | number;
+    instagram_engagement_rate: string | number;
     instagram_time_since_last_post: string;
     about_me: string;
 }
 
+const advertisingDivisionsExamples: string[] = [
+    'Beauty',
+    'Fashion',
+    'Health',
+    'Fitness',
+    'Lifestyle',
+    'Travel',
+    'Food & Beverage',
+    'Tech Gadgets',
+    'Home Decor',
+    'Wellness'
+];
+
+const getRandomAdvertisingDivisions = (length: number): string[] => {
+    const randomDivisions: string[] = [];
+    for (let i = 0; i < length; i++) {
+        randomDivisions.push(advertisingDivisionsExamples[Math.floor(Math.random() * advertisingDivisionsExamples.length)]);
+    }
+    return randomDivisions;
+};
+
+
+// Funktion, die die Daten von der API abruft und verarbeitet
+const fetchRandomUserData = (setData: (data: IUserData[]) => void) => {
+    axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
+        .then(randomUserDataResponse => {
+            const userData: IUserData[] = Object.values(randomUserDataResponse.data.results).map((randomUser: any, index) => {
+                return {
+                    gender: randomUser.gender,
+                    name: `${randomUser.name.first} ${randomUser.name.last}`,
+                    instagram_comments_avg: parseInt(randomUser.dob.age) * 100,
+                    instagram_username: 'festdamen.ffwschoenkirch2024',
+                    language: 'Deutsch',
+                    nationality: randomUser.location.country,
+                    profileImage: randomUser.picture.medium,
+                    advertisingDivision: getRandomAdvertisingDivisions(4),
+                    statusColor: 'bg-green-500',
+                    about_me: 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
+                    instagram_followers: parseInt(randomUser.dob.age) * 10000,
+                    instagram_likes_avg: parseInt(randomUser.dob.age) * 1000,
+                    instagram_engagement_rate: '-',
+                    instagram_time_since_last_post: '-'
+                };
+            });
+
+            setData(userData);
+        })
+        .catch(error => {
+            console.error('There was an error fetching the RANDOM USER-DATA from the API!', error);
+        });
+};
+
+
+// Funktion, die die Daten von der API abruft und verarbeitet
+const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void, userData: IUserData[]) => {
+
+        // Fehlende durch Random-Daten ergänzen
+        axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
+            .then(randomUserDataResponse => {
+                const randomUserData = randomUserDataResponse.data.results;
+
+                const newDataForDemo: IUserData[] = Object.values(userData).map((userDB, index) => {
+                    const randomUser : any = randomUserData[index % randomUserData.length];
+
+                    return {
+                        gender: userDB.gender || randomUser.gender,
+                        name: userDB.name || `${randomUser.name.first} ${randomUser.name.last}`,
+                        instagram_comments_avg: userDB.instagram_comments_avg || parseInt(randomUser.dob.age)*100,
+                        instagram_username: userDB.instagram_username || 'festdamen.ffwschoenkirch2024',
+                        language: userDB.language || 'Deutsch',
+                        nationality: userDB.nationality || randomUser.location.country,
+                        profileImage: userDB.profileImage || randomUser.picture.medium,
+                        advertisingDivision: userDB.advertisingDivision || getRandomAdvertisingDivisions(4),
+                        statusColor: userDB.statusColor || 'bg-green-500',
+                        about_me: userDB.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
+                        instagram_followers: userDB.instagram_followers || parseInt(randomUser.dob.age)*10000,
+                        instagram_likes_avg: userDB.instagram_likes_avg || parseInt(randomUser.dob.age)*1000,
+                        instagram_engagement_rate: userDB.instagram_engagement_rate || '0',
+                        instagram_time_since_last_post: userDB.instagram_time_since_last_post || '-'
+                    };
+                });
+
+                setData(newDataForDemo);
+            })
+            .catch(error => {
+                console.error('There was an error fetching random user data!', error);
+            });
+};
 
 
 
@@ -69,58 +158,70 @@ const InfluencerOverview: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
      useEffect(() => {
-        axios.post('http://localhost:5001/collectData')
-        .then(response => {
-          const newData: IUserData[] = Object.values(response.data).map((user: any) => ({
-            gender: user.gender || '',
-            name: user.first_name + ' ' + user.last_name,
-            instagram_comments_avg: user.instagram_comments_avg.toString(), 
-            instagram_username: user.instagram_username,
-            language: user.language || 'Deutsch',
-            nationality: user.country,
-            profileImage: user.profileImage || '',  
-            advertisingDivision: user.hashtags || ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-            statusColor: user.statusColor || 'bg-green-500',
-            about_me: user.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
-            instagram_followers: user.instagram_followers.toString(), 
-            instagram_likes_avg: user.instagram_likes_avg.toString(), 
-            instagram_engagement_rate: user.instagram_engagement_rate.toString(), 
-            instagram_time_since_last_post: user.instagram_time_since_last_post.toString() 
-          }));
-  
-          setData(newData);
-        })
-        .catch(error => {
-          console.error('There was an error making the request!', error);
+         axios.post('http://localhost:5001/collectData')
+             .then(response => {
+                 const newData: IUserData[] = Object.values(response.data).map((user: any) => ({
+                     gender: user.gender,
+                     name: user.first_name + ' ' + user.last_name,
+                     instagram_comments_avg: user.instagram_comments_avg.toString(),
+                     instagram_username: user.instagram_username,
+                     language: user.language,
+                     nationality: user.country,
+                     profileImage: user.profileImage,
+                     advertisingDivision: user.hashtags,
+                     statusColor: user.statusColor,
+                     about_me: user.about_me ,
+                     instagram_followers: user.instagram_followers.toString(),
+                     instagram_likes_avg: user.instagram_likes_avg.toString(),
+                     instagram_engagement_rate: user.instagram_engagement_rate.toString(),
+                     instagram_time_since_last_post: user.instagram_time_since_last_post.toString()
+                 }));
 
-            // Testdaten holen, um in der Demo nicht blank dazustehen:
-            axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
-                .then(response => {
+                 setData(newData);
+                 return newData;
+             }).then((userData: IUserData[])=>{
 
+                fetchRandomUserDataAndMergeDBData(setData, userData);
+                 //
+                 // // Fehlende durch Random-Daten ergänzen
+                 // axios.get('https://randomuser.me/api/?inc=gender,name,nat,location,email,picture,dob&results=50')
+                 //     .then(randomUserDataResponse => {
+                 //         const randomUserData = randomUserDataResponse.data.results;
+                 //
+                 //         const newDataForDemo: IUserData[] = Object.values(userData).map((userDB, index) => {
+                 //             const randomUser : any = randomUserData[index % randomUserData.length];
+                 //
+                 //             return {
+                 //                 gender: userDB.gender || randomUser.gender,
+                 //                 name: userDB.name || `${randomUser.name.first} ${randomUser.name.last}`,
+                 //                 instagram_comments_avg: userDB.instagram_comments_avg || parseInt(randomUser.dob.age)*100,
+                 //                 instagram_username: userDB.instagram_username || 'festdamen.ffwschoenkirch2024',
+                 //                 language: userDB.language || 'Deutsch',
+                 //                 nationality: userDB.nationality || randomUser.location.country,
+                 //                 profileImage: userDB.profileImage || randomUser.picture.medium,
+                 //                 advertisingDivision: userDB.advertisingDivision || getRandomAdvertisingDivisions(4),
+                 //                 statusColor: userDB.statusColor || 'bg-green-500',
+                 //                 about_me: userDB.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
+                 //                 instagram_followers: userDB.instagram_followers || parseInt(randomUser.dob.age)*10000,
+                 //                 instagram_likes_avg: userDB.instagram_likes_avg || parseInt(randomUser.dob.age)*1000,
+                 //                 instagram_engagement_rate: userDB.instagram_engagement_rate || '0',
+                 //                 instagram_time_since_last_post: userDB.instagram_time_since_last_post || '-'
+                 //             };
+                 //         });
+                 //
+                 //         setData(newDataForDemo);
+                 //     })
+                 //     .catch(error => {
+                 //         console.error('There was an error fetching random user data!', error);
+                 //     });
+             })
+             .catch(error => {
+                 console.error('There was an error fetching the USER-DATA from DB!', error);
 
-                    const newData: IUserData[] = response.data.results.map((user :any)=> ({
-                        gender: user.gender,
-                        name: user.name.last + ' ' + user.name.first,
-                        instagram_comments_avg: user.dob.age,
-                        instagram_username: 'festdamen.ffwschoenkirch2024',
-                        language: 'Deutsch',
-                        nationality: user.location.country,
-                        profileImage: user.picture.medium,
-                        advertisingDivision: ['UX Design', 'UI Design', 'Prototyping', 'User Research'],
-                        statusColor: 'bg-green-500',
-                        about_me: 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer den es auf der ganzen Welt gibt!'
-                    }));
+                 // Nur Demo-Daten nehmen
+                 fetchRandomUserData(setData);
 
-                    setData(newData);
-
-                })
-                .catch(error => {
-                    console.error('There was an error making the Testdata-request!', error);
-                });
-        }).finally(() => {
-
-                setLoading(false);
-        });
+             }).finally(()=>setLoading(false));
 
     }, []);
 
