@@ -320,24 +320,15 @@ const InfluencerOverview: React.FC = () => {
                                 </th>
 
                                 {/* Alle Überschriften */}
-                                {/*{Object.entries(columnsTableHead).map(([key, value]) => (*/}
-                                {/*    selectedColumns.includes(key) && (*/}
-
-                                {/*        <th scope="col" className="pl-3 pr-6 py-3 xl:py-4 xl:px-6">*/}
-                                {/*            {value}*/}
-                                {/*        </th>*/}
-                                {/*    )*/}
-                                {/*))}*/}
-
                                 {Object.entries(columnsTableHead).map(([key, value]) => {
                                     let additionalClass = '';
 
-                                    // Überprüfe, ob der Schlüssel speziell ist und füge entsprechende Klasse hinzu
+                                    // Text bei bestimmten Spalten zentrieren
                                     if (key === 'instagram_likes_avg' || key === 'instagram_comments_avg' || key === 'instagram_engagement_rate' || key === 'instagram_time_since_last_post' || key === 'instagram_followers' ) {
                                         additionalClass = 'text-center';
                                     }
 
-                                    // Überprüfe, ob der Schlüssel in selectedColumns enthalten ist
+                                    // ausgewählte Spalten anzeigen
                                     if (selectedColumns.includes(key)) {
                                         return (
                                             <th key={key} scope="col" className={`pl-3 pr-6 py-3 xl:py-4 xl:px-6 ${additionalClass}`}>
@@ -345,7 +336,7 @@ const InfluencerOverview: React.FC = () => {
                                             </th>
                                         );
                                     } else {
-                                        return null; // Wenn der Schlüssel nicht in selectedColumns enthalten ist, gib null zurück
+                                        return null;
                                     }
                                 })}
 
