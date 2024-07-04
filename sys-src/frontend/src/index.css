@@ -54,6 +54,13 @@ thead {
 }
 
 
+
+* {
+  scrollbar-width: thin;
+  /*scrollbar-color: var(--secondary) var(--primary);*/
+}
+
+
 /*.transition-transform {*/
 /*  transition: transform 0.5s ease;*/
 /*}*/
