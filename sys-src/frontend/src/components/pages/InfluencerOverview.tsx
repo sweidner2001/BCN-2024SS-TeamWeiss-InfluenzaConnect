@@ -143,7 +143,7 @@ const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void
                         language: userDB.language || ['Deutsch','Englisch'],
                         nationality: userDB.nationality || randomUser.location.country,
                         profileImage: userDB.profileImage || randomUser.picture.medium,
-                        advertisingDivision: userDB.advertisingDivision || getRandomAdvertisingDivisions(4),
+                        advertisingDivision: (userDB.advertisingDivision && userDB.advertisingDivision.length == 1 && userDB.advertisingDivision[0] !== '') ? userDB.advertisingDivision : getRandomAdvertisingDivisions(4),
                         statusColor: userDB.statusColor || 'bg-green-500',
                         about_me: userDB.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
                         instagram_followers: userDB.instagram_followers || parseInt(randomUser.dob.age)*10000,
@@ -193,10 +193,10 @@ const InfluencerOverview: React.FC = () => {
                      advertisingDivision: new Array(user.hashtags),
                      statusColor: user.statusColor,
                      about_me: user.about_me ,
-                     instagram_followers: user.instagram_followers.toString(),
-                     instagram_likes_avg: user.instagram_likes_avg.toString(),
-                     instagram_engagement_rate: user.instagram_engagement_rate.toString(),
-                     instagram_time_since_last_post: user.instagram_time_since_last_post.toString()
+                     instagram_followers: user.instagram_followers,
+                     instagram_likes_avg: user.instagram_likes_avg,
+                     instagram_engagement_rate: user.instagram_engagement_rate,
+                     instagram_time_since_last_post: user.instagram_time_since_last_post
                  }));
 
                  setData(newData);

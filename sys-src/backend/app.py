@@ -272,7 +272,7 @@ def get_profile_data():
         
         # Standardwerte verwenden, wenn keine Analyse-Daten gefunden werden
         if not analysis_data:
-            analysis_data = ('0', '0', '0', '0', '', [])
+            analysis_data = ('', '', '', '', '', [])
         
         # Benutzerdaten zusammenstellen
         user_data = {
