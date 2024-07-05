@@ -3,13 +3,35 @@ import ProfileImage from '../ProfileImage';
 import MenuBar from '../ProfileMenu';
 import PrivateDataCard from '../cards/PrivateDataCard';
 import PublicDataCard from '../cards/PublicDataCard';
+import AnalyticsCard from '../cards/AnalyticsCard';
 import '../../styles/ProfileView.css';
+import '../NavBar'
+import NavBar from '../NavBar';
+
+interface UserData {
+  email: string;
+  password: string;
+  title: string;
+  first_name: string;
+  last_name: string;
+  country: string;
+  phone: string;
+  language: string;
+  about_me: string;
+  instagram_username: string;
+  instagram_comments_avg: number;
+  instagram_likes_avg: number;
+  instagram_followers: number;
+  instagram_engagement_rate: number;
+  instagram_time_since_last_post: string;
+  hashtags: string;
+}
 
 const ProfileView: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('personalData');
   const [selectedDataCard, setSelectedDataCard] = useState('private');
-  const [userData, setUserData] = useState(null);
-  const [sessionEmail, setSessionEmail] = useState(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [sessionEmail, setSessionEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSessionEmail = async () => {
@@ -51,7 +73,7 @@ const ProfileView: React.FC = () => {
 
           if (response.ok) {
             const data = await response.json();
-            setUserData(data.user);
+            setUserData(data);
           } else {
             console.error('Failed to fetch user data:', await response.text());
           }
@@ -73,7 +95,7 @@ const ProfileView: React.FC = () => {
       body: JSON.stringify(updatedData)
     }).then(response => response.json())
       .then(data => {
-        setUserData(data.user);
+        setUserData(data);
       });
   };
 
@@ -92,8 +114,21 @@ const ProfileView: React.FC = () => {
     }
   };
 
+  const renderAnalyticsCards = () => {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <AnalyticsCard title="Average Comments" value={userData.instagram_comments_avg} />
+        <AnalyticsCard title="Average Likes" value={userData.instagram_likes_avg} />
+        <AnalyticsCard title="Followers" value={userData.instagram_followers} />
+        <AnalyticsCard title="Engagement Rate" value={userData.instagram_engagement_rate} />
+        <AnalyticsCard title="Time Since Last Post" value={userData.instagram_time_since_last_post} />
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      <NavBar />
       <div className="relative flex flex-col sm:flex-row items-center custom-menu-bar text-white p-4">
         <ProfileImage />
         <MenuBar selectedTab={selectedTab} onSelectTab={setSelectedTab} />
@@ -121,8 +156,8 @@ const ProfileView: React.FC = () => {
           </div>
         )}
         {selectedTab === 'analytics' && (
-          <div className="flex flex-grow justify-center items-center">
-            <h2 className="text-2xl font-bold">Analytics View Placeholder</h2>
+          <div className="flex flex-grow justify-center items-center p-4">
+            {renderAnalyticsCards()}
           </div>
         )}
       </div>

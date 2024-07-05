@@ -4,12 +4,13 @@ import { Fragment } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { Link } from 'react-router-dom';
 import InputField from '../input/InputField';
 
 interface LoginDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onLoginSuccess: (userData: { firstName: string }) => void;  // Add this prop
+  onLoginSuccess: (userData: { firstName: string }) => void;
 }
 
 interface ILoginInputs {
@@ -22,7 +23,7 @@ const LoginSchema = yup.object({
   password: yup.string().required('Password is required')
 });
 
-const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSuccess }) => {  // Add onLoginSuccess here
+const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSuccess }) => {
   const { register, handleSubmit, formState: { errors } } = useForm<ILoginInputs>({
     resolver: yupResolver(LoginSchema)
   });
@@ -39,8 +40,6 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
       });
 
       if (response.ok) {
-        // const loginData = await response.json(); // Remove this line
-
         const setSessionResponse = await fetch('http://localhost:5001/set_session', {
           method: 'POST',
           headers: {
@@ -50,17 +49,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
           credentials: 'include'
         });
 
-        // const emailResponse = await fetch('http://localhost:5001/get_session_email', { // Remove this line
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   credentials: 'include' // This ensures cookies (session data) are sent with the request
-        // });
-
         if (setSessionResponse.ok) {
-          // const sessionData = await setSessionResponse.json(); // Remove this line
-
           const userResponse = await fetch('http://localhost:5001/profileView', {
             method: 'POST',
             headers: {
@@ -72,8 +61,8 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
 
           if (userResponse.ok) {
             const userData = await userResponse.json();
-            onLoginSuccess({ firstName: userData.user.first_name });  // Call the callback with user data
-            onClose();  // Close the dialog
+            onLoginSuccess({ firstName: userData.first_name });
+            onClose();
           }
         } else {
           console.error('Fehler beim Setzen der Session:', await setSessionResponse.text());
@@ -88,7 +77,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto border-blue-500" onClose={onClose}>
+      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
         <div className="min-h-screen px-4 text-center">
           <Transition.Child
             as={Fragment}
@@ -143,7 +132,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
                     error={errors.password?.message} 
                   />
                 </div>
-                <div className="mt-6 flex justify-end">
+                <div className="mt-6 flex justify-between items-center">
                   <button
                     type="button"
                     className="mr-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
@@ -159,6 +148,11 @@ const LoginDialog: React.FC<LoginDialogProps> = ({ isOpen, onClose, onLoginSucce
                   </button>
                 </div>
               </form>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-500">
+                  Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign up</Link>
+                </p>
+              </div>
             </div>
           </Transition.Child>
         </div>

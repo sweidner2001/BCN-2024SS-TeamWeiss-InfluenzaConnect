@@ -1,0 +1,92 @@
+/* profile.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-container {
+    width: 80%;
+    max-width: 900px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header h1 {
+    margin: 10px 0 5px;
+    font-size: 24px;
+    color: #333;
+}
+
+.profile-header p {
+    font-size: 14px;
+    color: #666;
+}
+
+.profile-posts {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    gap: 10px;
+    justify-content: center;
+}
+
+.post {
+    width: calc(33.333% - 20px);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+.post img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid #eee;
+}
+
+.post p {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .post {
+        width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .post {
+        width: 100%;
+    }
+}
