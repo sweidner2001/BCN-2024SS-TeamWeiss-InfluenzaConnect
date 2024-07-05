@@ -143,7 +143,7 @@ const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void
                         language: userDB.language || 'Deutsch',
                         nationality: userDB.nationality || randomUser.location.country,
                         profileImage: userDB.profileImage || randomUser.picture.medium,
-                        advertisingDivision: userDB.advertisingDivision || getRandomAdvertisingDivisions(4),
+                        advertisingDivision: new Array(userDB.advertisingDivision) || getRandomAdvertisingDivisions(4),
                         statusColor: userDB.statusColor || 'bg-green-500',
                         about_me: userDB.about_me || 'Guten Tag, ich heiße Sebastian Weidner und bin der berühmteste Influencer, den es auf der ganzen Welt gibt!',
                         instagram_followers: userDB.instagram_followers || parseInt(randomUser.dob.age)*10000,
