@@ -133,7 +133,7 @@ def signup():
 
     # Passwort hashen
     hashed_password = generate_password_hash(password, method='scrypt')
-
+    print("Titel: ", title)
     # Benutzer in der Datenbank speichern
     new_user = {
         'email': email,
@@ -272,7 +272,7 @@ def get_profile_data():
         
         # Standardwerte verwenden, wenn keine Analyse-Daten gefunden werden
         if not analysis_data:
-            analysis_data = (0, 0, 0, 0.0, 'String', 'String')
+            analysis_data = ('0', '0', '0', '0', '', [])
         
         # Benutzerdaten zusammenstellen
         user_data = {

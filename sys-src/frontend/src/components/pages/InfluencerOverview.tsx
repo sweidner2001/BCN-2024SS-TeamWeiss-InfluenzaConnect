@@ -27,7 +27,7 @@ interface IUserData {
     //age: number;                // gibt es nicht
     advertisingDivision: string[];  // = hashtags im Backend
     nationality: string;
-    language: string;
+    language: string[];
     statusColor: string;
     instagram_username: string;
     instagram_followers: string | number;
@@ -95,7 +95,7 @@ const fetchRandomUserData = (setData: (data: IUserData[]) => void) => {
                     name: `${randomUser.name.first} ${randomUser.name.last}`,
                     instagram_comments_avg: parseInt(randomUser.dob.age) * 100,
                     instagram_username: 'festdamen.ffwschoenkirch2024',
-                    language: 'Deutsch',
+                    language: ['Deutsch','Englisch'],
                     nationality: randomUser.location.country,
                     profileImage: randomUser.picture.medium,
                     advertisingDivision: getRandomAdvertisingDivisions(4),
@@ -140,7 +140,7 @@ const fetchRandomUserDataAndMergeDBData  = (setData: (data: IUserData[]) => void
                         name: userDB.name || `${randomUser.name.first} ${randomUser.name.last}`,
                         instagram_comments_avg: userDB.instagram_comments_avg || parseInt(randomUser.dob.age)*100,
                         instagram_username: userDB.instagram_username || 'festdamen.ffwschoenkirch2024',
-                        language: userDB.language || 'Deutsch',
+                        language: userDB.language || ['Deutsch','Englisch'],
                         nationality: userDB.nationality || randomUser.location.country,
                         profileImage: userDB.profileImage || randomUser.picture.medium,
                         advertisingDivision: userDB.advertisingDivision || getRandomAdvertisingDivisions(4),
@@ -187,7 +187,7 @@ const InfluencerOverview: React.FC = () => {
                      name: user.first_name + ' ' + user.last_name,
                      instagram_comments_avg: user.instagram_comments_avg.toString(),
                      instagram_username: user.instagram_username,
-                     language: user.language,
+                     language: new Array(user.language),
                      nationality: user.country,
                      profileImage: user.profileImage,
                      advertisingDivision: new Array(user.hashtags),
@@ -415,7 +415,7 @@ const InfluencerOverview: React.FC = () => {
                                     {/* Sprache */}
                                     {selectedColumns.includes('language') && (
                                         <td className="px-6 py-4">
-                                            {item.language}
+                                            {item.language.join(', ')}
                                         </td>
                                     )}
 

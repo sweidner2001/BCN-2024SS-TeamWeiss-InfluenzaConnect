@@ -67,7 +67,7 @@ const getMaxFieldLength = (maxLength: number): [number, string] => {
 
 // Yup-Resolver Schema
 const SignupSchema2 = yup.object({
-    anrede: yup.string().required("Bitte geben Sie eine Anrede an!"),
+    anrede: yup.string().trim().required("Bitte geben Sie eine Anrede an!"),
     vorname: yup.string().trim().required("Bitte geben Sie Ihren Vornamen an!").max(...getMaxFieldLength(30)),
     nachname: yup.string().trim().required("Bitte geben Sie Ihren Nachnamen an!").max(...getMaxFieldLength(25)),
     land: yup.string().trim().required("Bitte geben Sie Ihr Herkunftsland an!"),

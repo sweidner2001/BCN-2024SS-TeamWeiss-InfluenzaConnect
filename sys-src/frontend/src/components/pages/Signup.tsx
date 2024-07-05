@@ -147,6 +147,7 @@ const Signup: React.FC = () => {
 
         // Daten ans Backend senden:
         try {
+            console.log(finalData);
             const response = await fetch('http://localhost:5001/signup', {
                 method: 'POST',
                 headers: {
@@ -190,7 +191,7 @@ const Signup: React.FC = () => {
                             console.error('Error adding user analysis:', response.statusText);
                         }
                     } catch (error) {
-                        console.error('Error:', error);
+                        console.error('Error User-Analysis:', error);
                     }
                     // Redirect or update state as needed after setting the session
                     navigate('/profileView'); // Redirect to landing page
