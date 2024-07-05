@@ -190,7 +190,7 @@ const InfluencerOverview: React.FC = () => {
                      language: user.language,
                      nationality: user.country,
                      profileImage: user.profileImage,
-                     advertisingDivision: user.hashtags,
+                     advertisingDivision: new Array(user.hashtags),
                      statusColor: user.statusColor,
                      about_me: user.about_me ,
                      instagram_followers: user.instagram_followers.toString(),
